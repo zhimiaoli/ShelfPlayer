@@ -29,11 +29,24 @@ extension APIResources {
     }
     
     public struct LoginResource {
-        public func post(username: String, password: String) -> APIRequest<LoginResponse> {
+        public func post(username: String, password: String) -> APIRequest<AuthorizeResponse> {
             APIRequest(method: "POST", path: "login", body: [
                 "username": username,
                 "password": password,
             ])
+        }
+    }
+}
+
+// MARK: - /api/authorize
+extension APIResources {
+    public static var authorize: AuthorizeResource {
+        AuthorizeResource()
+    }
+    
+    public struct AuthorizeResource {
+        public var post: APIRequest<AuthorizeResponse> {
+            APIRequest(method: "POST", path: "api/authorize")
         }
     }
 }

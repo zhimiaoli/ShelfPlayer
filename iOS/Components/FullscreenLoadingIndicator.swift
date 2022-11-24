@@ -16,6 +16,7 @@ struct FullscreenLoadingIndicator: View {
                 .foregroundColor(.gray)
             ProgressView()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

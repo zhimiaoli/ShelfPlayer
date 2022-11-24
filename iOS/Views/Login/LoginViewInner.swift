@@ -14,12 +14,14 @@ private enum LoginFlowState {
     case processing
 }
 
+/// Login sheet presented to the user
 struct LoginViewInner: View {
     @Environment(\.managedObjectContext) private var viewContext
     var callback: (() -> Void)
     
     @State private var currentState: LoginFlowState = .server
     @State private var serverErrorAlertVisible: Bool = false
+    /// This client is used while the user is unauthenticated. It has no token
     @State private var apiClient: APIClient?
     
     @State private var serverUrl: String?
@@ -29,21 +31,22 @@ struct LoginViewInner: View {
     var body: some View {
         NavigationView {
             Group {
-                if currentState == .server {
+                switch currentState {
+                case .server:
                     LoginFlowServer() { url in
                         serverUrl = url
                         currentState = .pinging
                     }
-                } else if currentState == .pinging {
+                case .pinging:
                     FullscreenLoadingIndicator(description: "Testing connection")
                         .task(pingServer)
-                } else if currentState == .credentials {
+                case .credentials:
                     LoginFlowCredentials() { username, password in
                         self.username = username
                         self.password = password
                         currentState = .processing
                     }
-                } else if currentState == .processing {
+                case .processing:
                     FullscreenLoadingIndicator(description: "Generating token...")
                         .task(sendCredentials)
                 }
@@ -60,14 +63,11 @@ struct LoginViewInner: View {
     @Sendable private func pingServer() async {
         do {
             apiClient = try APIClient(serverUrl: serverUrl!, token: nil)
-            guard let pingResponse = try await apiClient?.request(APIResources.ping.get) else {
-                throw APIError.invalidResponse
-            }
-            if pingResponse.success != true {
-                throw APIError.invalidResponse
+            if try await apiClient?.request(APIResources.ping.get) != nil {
+                return currentState = .credentials
             }
             
-            currentState = .credentials
+            throw APIError.invalidResponse
         } catch {
             serverErrorAlertVisible = true
             currentState = .server
@@ -83,16 +83,16 @@ struct LoginViewInner: View {
             user.serverUrl = URL(string: serverUrl!)!
             user.username = loginResponse.user.username
             user.token = loginResponse.user.token
-            
-            print("\(user.token) f (\(username))")
+            user.lastActiveLibraryId = loginResponse.userDefaultLibraryId
             
             try viewContext.save()
+            DispatchQueue.global(qos: .background).async {
+                PersistenceController.shared.updateMediaProgressDatabase(loginResponse.user.mediaProgress)
+            }
             callback()
         } catch {
             serverErrorAlertVisible = true
             currentState = .credentials
-            
-            print(error)
         }
     }
 }

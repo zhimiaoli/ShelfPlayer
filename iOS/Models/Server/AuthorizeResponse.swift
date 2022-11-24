@@ -8,7 +8,7 @@
 import Foundation
 
 // None of this classes are complete, there are a lot of values missing
-struct LoginResponse: Codable {
+struct AuthorizeResponse: Codable {
     var user: ABSUser
     var userDefaultLibraryId: String
     var serverSettings: ServerSettings

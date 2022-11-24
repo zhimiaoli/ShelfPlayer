@@ -9,7 +9,6 @@ import SwiftUI
 
 struct LoginView: View {
     @State private var loginSheetPresented = false
-    
     var callback: (() -> Void)
     
     var body: some View {
