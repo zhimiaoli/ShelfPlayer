@@ -26,6 +26,8 @@ struct ContentView: View {
                 case .unknown:
                     FullscreenLoadingIndicator(description: "Logging in")
                         .task(authorize)
+                    
+                    // TODO: add "go offline" button
                 case .offline:
                     Text("This is not implemented yet...")
                 case .online:
@@ -45,7 +47,11 @@ struct ContentView: View {
     
     @Sendable private func authorize() async {
         do {
-            let _ = try await APIClient.authorizedShared.request(APIResources.ping.get)
+            let pingResponse = try await APIClient.authorizedShared.request(APIResources.ping.get)
+            
+            if pingResponse.success != true {
+                throw APIError.invalidResponse
+            }
         } catch {
             return onlineStatus = .offline
         }

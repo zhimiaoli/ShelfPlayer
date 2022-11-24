@@ -12,7 +12,7 @@ struct NavigationRoot: View {
     var body: some View {
         TabView {
             NavigationView {
-                Home()
+                HomeView()
             }
             .tabItem {
                 Label("Listen now", systemImage: "book.circle.fill")

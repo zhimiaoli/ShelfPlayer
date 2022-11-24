@@ -50,10 +50,21 @@ extension PersistenceController {
         }
     }
     
-    func deleteAllCachedSessions() throws {
+    public func deleteAllCachedSessions() throws {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
         try container.viewContext.execute(deleteRequest)
+    }
+    
+    public func getProgressByLibraryItemId(id: String) -> Float {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
+        fetchRequest.predicate = NSPredicate(format: "libraryItemId == %@", id)
+        
+        guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {
+            return 0
+        }
+        
+        return Float(first.progress)
     }
 }

@@ -16,7 +16,7 @@
         <attribute name="updatedLocally" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
-        <attribute name="lastActiveLibraryId" optional="YES" attributeType="String"/>
+        <attribute name="lastActiveLibraryId" attributeType="String"/>
         <attribute name="serverUrl" attributeType="URI"/>
         <attribute name="token" attributeType="String"/>
         <attribute name="username" attributeType="String"/>
