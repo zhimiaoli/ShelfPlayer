@@ -20,6 +20,10 @@ struct DebugView: View {
                     Text("Logout")
                 }
                 
+                Text(PersistenceController.shared.getLoggedInUser()?.token ?? "Not logged in")
+                    .textSelection(.enabled)
+                    .font(.system(.body, design: .monospaced))
+                
                 ForEach(cachedMediaProgresses.filter { progress in
                     if search == "" {
                         return true

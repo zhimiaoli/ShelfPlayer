@@ -12,7 +12,7 @@ struct ItemRowItem: View {
     var item: LibraryItem
     
     var body: some View {
-        NavigationLink(destination: Text(item.media?.metadata.title ?? "unknown title")) {
+        NavigationLink(destination: DetailView(item: item)) {
             VStack(alignment: .leading) {
                 ItemImage(id: item.id)
                 

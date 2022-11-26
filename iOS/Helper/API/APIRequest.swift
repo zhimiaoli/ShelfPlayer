@@ -11,4 +11,5 @@ public struct APIRequest<Response> {
     var method: String
     var path: String
     var body: Encodable?
+    var query: [URLQueryItem]?
 }

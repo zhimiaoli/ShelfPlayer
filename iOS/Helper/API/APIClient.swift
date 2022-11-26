@@ -32,7 +32,12 @@ class APIClient {
     }
     
     func request<T: Decodable>(_ resource: APIRequest<T>) async throws -> T {
-        var request = URLRequest(url: baseUrl.appending(path: resource.path))
+        var url = baseUrl.appending(path: resource.path)
+        if let query = resource.query {
+            url = url.appending(queryItems: query)
+        }
+        
+        var request = URLRequest(url: url)
         request.httpMethod = resource.method
 
         if let token = token {

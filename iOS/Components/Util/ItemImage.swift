@@ -9,32 +9,25 @@ import SwiftUI
 
 struct ItemImage: View {
     var id: String
+    var size: Int = 175
+    
     private let user = PersistenceController.shared.getLoggedInUser()!
     
     var body: some View {
-        AsyncImage(url: user.serverUrl!.appending(path: "/api/items").appending(path: id).appending(path: "cover").appending(queryItems: [URLQueryItem(name: "token", value: user.token)])) { phase in
+        AsyncImage(url: ImageHelper.getImageUrl(id: id)) { phase in
             if let image = phase.image {
                 image
                     .resizable()
                     .scaledToFill()
-                    .cornerRadius(7)
             } else if phase.error != nil {
-                HStack {
-                    Spacer()
-                    VStack {
-                        Spacer()
-                        Image(systemName: "book")
-                            .dynamicTypeSize(.xLarge)
-                        Spacer()
-                    }
-                    Spacer()
-                }
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(7)
+                Image(systemName: "book")
+                    .dynamicTypeSize(.xLarge)
             } else {
                 ProgressView()
             }
         }
-        .frame(width: 175, height: 175)
+        .cornerRadius(7)
+        .frame(width: CGFloat(size), height: CGFloat(size))
+        .background(Color.gray.opacity(0.1))
     }
 }

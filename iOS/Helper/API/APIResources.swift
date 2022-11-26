@@ -63,5 +63,27 @@ extension APIResources {
         public var personalized: APIRequest<[PersonalizedLibraryRow]> {
             APIRequest(method: "GET", path: "api/libraries/\(id)/personalized")
         }
+        
+        public func items(filter: String, limit: Int = 100, page: Int = 0, minified: Bool = true) -> APIRequest<FilterResponse> {
+            return APIRequest(method: "GET", path: "api/libraries/\(id)/items", query: [
+                URLQueryItem(name: "filter", value: filter),
+                URLQueryItem(name: "limit", value: String(limit)),
+                URLQueryItem(name: "page", value: String(page)),
+                URLQueryItem(name: "minified", value: minified ? "1" : "0")
+            ])
+        }
+    }
+}
+
+// MARK: - /api/series
+extension APIResources {
+    public static var series: SeriesResource {
+        SeriesResource()
+    }
+    
+    public struct SeriesResource {
+        public func seriesByName(search: String) -> APIRequest<[SearchSeries]> {
+            APIRequest(method: "GET", path: "api/series/search", query: [URLQueryItem(name: "q", value: search)])
+        }
     }
 }
