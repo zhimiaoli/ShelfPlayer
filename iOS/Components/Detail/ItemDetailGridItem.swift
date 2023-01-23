@@ -25,7 +25,7 @@ struct ItemDetailGridItem: View {
         }
         .foregroundColor(.primary)
         .padding()
-        .frame(maxWidth: 100)
+        .frame(maxWidth: 200)
     }
 }
 

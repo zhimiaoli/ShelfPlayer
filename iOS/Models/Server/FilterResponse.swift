@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct FilterResponse: Codable {
-    var results: [LibraryItem]
+struct FilterResponse<T: Codable>: Codable {
+    var results: [T]
 }

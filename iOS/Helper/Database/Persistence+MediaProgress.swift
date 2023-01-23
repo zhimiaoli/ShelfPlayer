@@ -22,30 +22,32 @@ extension PersistenceController {
                 return first
             }()
             
-            cachedMediaProgress.id = mediaProgress.id
-            cachedMediaProgress.libraryItemId = mediaProgress.libraryItemId
-            cachedMediaProgress.episodeId = mediaProgress.episodeId
-            cachedMediaProgress.isFinished = mediaProgress.isFinished
-            cachedMediaProgress.hideFromContinueListening = mediaProgress.hideFromContinueListening
-            
-            cachedMediaProgress.currentTime = mediaProgress.currentTime ?? 0
-            cachedMediaProgress.duration = mediaProgress.duration ?? 0
-            cachedMediaProgress.progress = mediaProgress.progress ?? 0
-            
-            if let finishedAt = mediaProgress.finishedAt {
-                cachedMediaProgress.finishedAt = Date(milliseconds: Int64(finishedAt))
-            }
-            if let lastUpdate = mediaProgress.lastUpdate {
-                cachedMediaProgress.lastUpdate = Date(milliseconds: Int64(lastUpdate))
-            }
-            if let startedAt = mediaProgress.startedAt {
-                cachedMediaProgress.startedAt = Date(milliseconds: Int64(startedAt))
-            }
-            
-            do {
-                try PersistenceController.shared.container.viewContext.save()
-            } catch {
-                print("Failed to cache media progress", error)
+            if cachedMediaProgress.lastUpdate?.millisecondsSince1970 ?? 0 < Int64(mediaProgress.lastUpdate ?? 0) {
+                cachedMediaProgress.id = mediaProgress.id
+                cachedMediaProgress.libraryItemId = mediaProgress.libraryItemId
+                cachedMediaProgress.episodeId = mediaProgress.episodeId
+                cachedMediaProgress.isFinished = mediaProgress.isFinished
+                cachedMediaProgress.hideFromContinueListening = mediaProgress.hideFromContinueListening
+                
+                cachedMediaProgress.currentTime = mediaProgress.currentTime ?? 0
+                cachedMediaProgress.duration = mediaProgress.duration ?? 0
+                cachedMediaProgress.progress = mediaProgress.progress ?? 0
+                
+                if let finishedAt = mediaProgress.finishedAt {
+                    cachedMediaProgress.finishedAt = Date(milliseconds: Int64(finishedAt))
+                }
+                if let lastUpdate = mediaProgress.lastUpdate {
+                    cachedMediaProgress.lastUpdate = Date(milliseconds: Int64(lastUpdate))
+                }
+                if let startedAt = mediaProgress.startedAt {
+                    cachedMediaProgress.startedAt = Date(milliseconds: Int64(startedAt))
+                }
+                
+                do {
+                    try PersistenceController.shared.container.viewContext.save()
+                } catch {
+                    print("Failed to cache media progress", error)
+                }
             }
         }
     }

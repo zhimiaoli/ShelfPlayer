@@ -26,11 +26,17 @@ struct LibraryItem: Codable, Identifiable {
     let isMissing: Bool?
     let isInvalid: Bool?
     
-    let tags: [String]?
-    let coverPath: String?
     let size: Double?
     
     let media: LibraryItemMedia?
+    
+    // Only aviable for Podcats
+    let numEpisodes: Int?
+}
+struct LibraryItemMedia: Codable {
+    let metadata: LibraryItemMetadata
+    let tags: [String]?
+    let coverPath: String?
     
     // Only aviable for Books
     let numTracks: Int?
@@ -40,12 +46,6 @@ struct LibraryItem: Codable, Identifiable {
     let numInvalidAudioFiles: Int?
     
     let duration: Double?
-    
-    // Only aviable for Podcats
-    let numEpisodes: Int?
-}
-struct LibraryItemMedia: Codable {
-    let metadata: LibraryItemMetadata
     
 }
 struct LibraryItemMetadata: Codable {

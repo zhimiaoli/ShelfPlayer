@@ -82,17 +82,18 @@ struct BookDetailInner: View {
                     .padding()
                     .buttonStyle(SecondaryButtonStyle(colorScheme: backgroundIsLight ? .dark : .light))
                     .foregroundColor(backgroundIsLight ? .black : .white)
+                    .animation(.easeInOut, value: backgroundIsLight)
                 }
                 .padding(.top, 100)
                 .frame(maxWidth: .infinity, alignment: .top)
                 .background(Color(backgroundColor))
+                .animation(.easeInOut, value: backgroundColor)
                 
                 VStack(alignment: .leading) {
                     if let description = item.media?.metadata.description {
                         Text("Description")
                             .font(.system(.headline, design: .serif))
                             .padding(.bottom, 7)
-                            .underline()
                         Text(description)
                         
                         Divider()
@@ -109,9 +110,11 @@ struct BookDetailInner: View {
                                     }
                                 }
                             }
-                            if let duration = item.duration {
+                            if let duration = item.media?.duration {
                                 Group {
-                                    ItemDetailGridItem(title: "Duration", summary: Date.secondsToHoursMinutes(duration), description: "hrs:min")
+                                    let (h, m, _) = Date.secondsToHoursMinutesSeconds(Int(duration))
+                                    
+                                    ItemDetailGridItem(title: "Duration", summary: "\(h):\(m)", description: "hrs:min")
                                     Divider()
                                 }
                             }
@@ -121,13 +124,13 @@ struct BookDetailInner: View {
                                     Divider()
                                 }
                             }
-                            if let chapters = item.numChapters, let tracks = item.numTracks {
+                            if let chapters = item.media?.numChapters, let tracks = item.media?.numTracks {
                                 Group {
                                     ItemDetailGridItem(title: "Chapter\(chapters == 1 ? "" : "s")", summary: String(chapters), description: "\(tracks) Track\(tracks == 1 ? "" : "s")")
                                     Divider()
                                 }
                             }
-                            if let seriesName = item.media?.metadata.seriesName?.split(separator: " #") {
+                            if let seriesName = item.media?.metadata.seriesName?.split(separator: " #"), seriesName.count > 1 {
                                 // TODO: Navigate to series
                                 Group {
                                     // NavigationLink(destination: Text("oof")) {
@@ -166,7 +169,23 @@ struct BookDetailInner: View {
         .navigationTitle(item.media?.metadata.title ?? "unknown title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
-        .overlay(CustomBackButton(presentationMode: $presentationMode, visible: !isNavigationBarVisible))
+        .overlay(alignment: .topLeading) {
+            if presentationMode.isPresented {
+                Button {
+                    presentationMode.dismiss()
+                } label: {
+                    Image(systemName: "chevron.left.circle.fill")
+                        .offset(x: 0, y: 0)
+                        .dynamicTypeSize(.xxxLarge)
+                        .offset(x: 15, y: 57)
+                        .symbolRenderingMode(.hierarchical)
+                        .ignoresSafeArea()
+                        .fontWeight(.bold)
+                        .animation(.easeInOut, value: isNavigationBarVisible)
+                        .opacity(isNavigationBarVisible ? 0 : 1)
+                }
+            }
+        }
         .modifier(GestureSwipeRight(action: {
             if presentationMode.isPresented && !isNavigationBarVisible {
                 withAnimation {

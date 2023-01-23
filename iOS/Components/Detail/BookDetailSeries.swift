@@ -29,7 +29,7 @@ struct BookDetailSeries: View {
     
     @Sendable private func getSeriesItems() async {
         do {
-            let searchSeries = try await APIClient.authorizedShared.request(APIResources.series.seriesByName(search: name))
+            let searchSeries = try await APIClient.authorizedShared.request(APIResources.series.seriesByName(search: name)).results
             if searchSeries.count == 0 {
                 return failed = true
             }

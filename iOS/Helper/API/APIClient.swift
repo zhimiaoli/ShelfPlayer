@@ -57,6 +57,7 @@ class APIClient {
         }
 
         let (data, _) = try await URLSession.shared.data(for: request)
+        // print(String.init(data: data, encoding: .utf8))
         return try JSONDecoder().decode(T.self, from: data)
     }
 }
