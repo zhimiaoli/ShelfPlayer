@@ -35,6 +35,7 @@
 		3AC75B6A292FE72E0057A250 /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B69292FE72E0057A250 /* ItemRow.swift */; };
 		3AC75B6C292FE74F0057A250 /* ItemRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B6B292FE74F0057A250 /* ItemRowItem.swift */; };
 		3AD5EAD32923D87C00D74AF1 /* PersistenceController+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EAD22923D87C00D74AF1 /* PersistenceController+User.swift */; };
+		3AD7AACA297FBB2C0052C17B /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 3AD7AAC9297FBB2C0052C17B /* Introspect */; };
 		3ADEBFEA292FF9370047CE12 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFE9292FF9370047CE12 /* ItemImage.swift */; };
 		3ADEBFEF293133A40047CE12 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFEE293133A40047CE12 /* DetailView.swift */; };
 		3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFF32931FBF70047CE12 /* PlayNowButtonStyle.swift */; };
@@ -112,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AD7AACA297FBB2C0052C17B /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +327,9 @@
 			dependencies = (
 			);
 			name = Books;
+			packageProductDependencies = (
+				3AD7AAC9297FBB2C0052C17B /* Introspect */,
+			);
 			productName = Books;
 			productReference = 3AF4CB69291FA70D0080451B /* Books.app */;
 			productType = "com.apple.product-type.application";
@@ -353,6 +358,9 @@
 				Base,
 			);
 			mainGroup = 3AF4CB60291FA70D0080451B;
+			packageReferences = (
+				3AD7AAC8297FBB2C0052C17B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+			);
 			productRefGroup = 3AF4CB6A291FA70D0080451B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -630,6 +638,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3AD7AAC8297FBB2C0052C17B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3AD7AAC9297FBB2C0052C17B /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AD7AAC8297FBB2C0052C17B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3AF4CB77291FA7120080451B /* Books.xcdatamodeld */ = {
