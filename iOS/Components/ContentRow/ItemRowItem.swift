@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct ItemRowItem: View {
-    @State private var progressPercentage: Float = 0
     var item: LibraryItem
+    var size: CGFloat?
+    
+    @State private var progressPercentage: Float = 0
+    @State private var actualSize: CGFloat = 175
+    
+    @Environment(\.itemRowItemWidth) private var enviromentSize
     
     var body: some View {
         NavigationLink(destination: DetailView(item: item)) {
             VStack(alignment: .leading) {
-                ItemImage(id: item.id)
+                ItemImage(url: item.cover, size: actualSize)
                 
                 HStack {
-                    Text(verbatim: item.media?.metadata.title ?? "unknown title")
+                    Text(verbatim: item.title)
                         .font(.system(.caption, design: .serif))
                         .bold()
                         .tint(.primary)
@@ -31,14 +36,21 @@ struct ItemRowItem: View {
                         } else {
                             ProgressIndicator(completedPercentage: progressPercentage)
                         }
+                    } else if let numBooks = item.numBooks {
+                        Text(String(numBooks))
+                            .font(.system(.caption, design: .rounded).smallCaps())
+                            .foregroundColor(Color.gray)
                     }
                 }
                 .frame(height: 15)
             }
-            .frame(width: 175)
+            .frame(width: actualSize)
             .onAppear {
                 progressPercentage = PersistenceController.shared.getProgressByLibraryItemId(id: item.id)
             }
+        }
+        .onAppear {
+            // actualSize = size ?? enviromentSize.wrappedValue
         }
     }
 }

@@ -30,40 +30,75 @@ struct LibraryItem: Codable, Identifiable {
     
     let media: LibraryItemMedia?
     
-    // Only aviable for Podcats
+    // Podcasts
     let numEpisodes: Int?
-}
-struct LibraryItemMedia: Codable {
-    let metadata: LibraryItemMetadata
-    let tags: [String]?
-    let coverPath: String?
     
-    // Only aviable for Books
-    let numTracks: Int?
-    let numAudioFiles: Int?
-    let numChapters: Int?
-    let numMissingParts: Int?
-    let numInvalidAudioFiles: Int?
-    
-    let duration: Double?
-    
-}
-struct LibraryItemMetadata: Codable {
-    let title: String?
-    let titleIgnorePrefix: String?
-    
-    let subtitle: String?
+    // Authors
+    let name: String?
     let description: String?
+    let numBooks: Int?
+    let imagePath: String?
+}
+
+extension LibraryItem {
+    struct LibraryItemMedia: Codable {
+        let metadata: LibraryItemMetadata
+        let tags: [String]?
+        let coverPath: String?
+        
+        // Only aviable for Books
+        let numTracks: Int?
+        let numAudioFiles: Int?
+        let numChapters: Int?
+        let numMissingParts: Int?
+        let numInvalidAudioFiles: Int?
+        
+        let duration: Double?
+    }
+}
+
+extension LibraryItem {
+    struct LibraryItemMetadata: Codable {
+        let title: String?
+        let titleIgnorePrefix: String?
+        
+        let subtitle: String?
+        let description: String?
+        
+        let authorName: String?
+        let narratorName: String?
+        let publisher: String?
+        let seriesName: String?
+        
+        let genres: [String]
+        let publishedYear: String?
+        
+        let isbn: String?
+        let language: String?
+        let explicit: Bool
+    }
+}
+
+extension LibraryItem {
+    var title: String {
+        media?.metadata.title ?? name ?? "unknown title"
+    }
+    var cover: URL? {
+        let user = PersistenceController.shared.getLoggedInUser()!
+        
+        if isBook {
+            return user.serverUrl!.appending(path: "/api/items").appending(path: id).appending(path: "cover").appending(queryItems: [URLQueryItem(name: "token", value: user.token)])
+        } else if isAuthor && imagePath != nil {
+            return user.serverUrl!.appending(path: "/api/authors").appending(path: id).appending(path: "image").appending(queryItems: [URLQueryItem(name: "token", value: user.token)])
+        }
+        
+        return nil
+    }
     
-    let authorName: String?
-    let narratorName: String?
-    let publisher: String?
-    let seriesName: String?
-    
-    let genres: [String]
-    let publishedYear: String?
-    
-    let isbn: String?
-    let language: String?
-    let explicit: Bool
+    var isBook: Bool {
+        mediaType == "book"
+    }
+    var isAuthor: Bool {
+        numBooks != nil
+    }
 }

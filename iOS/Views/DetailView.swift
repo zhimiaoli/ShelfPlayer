@@ -15,7 +15,7 @@ struct DetailView: View {
     
     var body: some View {
         if let item = item {
-            if item.mediaType == "book" {
+            if item.isBook {
                 BookDetailInner(item: item, presentationMode: presentationMode)
             }
         } else {
@@ -27,11 +27,5 @@ struct DetailView: View {
                 FullscreenLoadingIndicator(description: "Loading")
             }
         }
-    }
-}
-
-struct DetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailView()
     }
 }

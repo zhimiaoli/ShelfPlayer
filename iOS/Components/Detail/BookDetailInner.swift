@@ -25,7 +25,7 @@ struct BookDetailInner: View {
             ScrollView(showsIndicators: false) {
                 VStack() {
                     VStack {
-                        ItemImage(id: item.id, size: 300)
+                        ItemImage(url: item.cover, size: 300)
                             .shadow(radius: 10)
                             .onBecomingVisible {
                                 if !animateNavigationBarChanges {
@@ -54,7 +54,7 @@ struct BookDetailInner: View {
                             }
                         
                         VStack {
-                            Text(item.media?.metadata.title ?? "unknown title")
+                            Text(item.title)
                                 .font(.system(.headline, design: .serif))
                             if let author = item.media?.metadata.authorName {
                                 Text(author)
@@ -91,90 +91,92 @@ struct BookDetailInner: View {
                     .background(Color(backgroundColor))
                     .animation(.easeInOut, value: backgroundColor)
                     
-                    VStack(alignment: .leading) {
-                        if let description = item.media?.metadata.description {
-                            Text("Description")
-                                .font(.system(.headline, design: .serif))
-                                .padding(.bottom, 7)
-                            Text(description)
+                    VStack {
+                        VStack(alignment: .leading) {
+                            if let description = item.media?.metadata.description {
+                                Text("Description")
+                                    .font(.system(.headline, design: .serif))
+                                    .padding(.bottom, 7)
+                                Text(description)
+                                
+                                Divider()
+                                    .padding(.vertical, 20)
+                            }
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHGrid(rows: [GridItem()]) {
+                                    if let narrator = item.media?.metadata.narratorName {
+                                        if narrator != "" {
+                                            Group {
+                                                ItemDetailGridItem(title: "Narrator", summary: narrator.components(separatedBy: " ").reduce("") { ($0 == "" ? "" : "\($0.first!)") + ($1 == "" ? "" : "\($1.first!)") }, description: narrator)
+                                                Divider()
+                                            }
+                                        }
+                                    }
+                                    if let duration = item.media?.duration {
+                                        Group {
+                                            let (h, m, _) = Date.secondsToHoursMinutesSeconds(Int(duration))
+                                            
+                                            ItemDetailGridItem(title: "Duration", summary: "\(h):\(m)", description: "hrs:min")
+                                            Divider()
+                                        }
+                                    }
+                                    if let publisher = item.media?.metadata.publisher {
+                                        Group {
+                                            ItemDetailGridItem(title: "Publisher", summary: publisher.components(separatedBy: " ").reduce("") { ($0 == "" ? "" : "\($0.first!)") + "\($1.first!)" }, description: publisher)
+                                            Divider()
+                                        }
+                                    }
+                                    if let chapters = item.media?.numChapters, let tracks = item.media?.numTracks {
+                                        Group {
+                                            ItemDetailGridItem(title: "Chapter\(chapters == 1 ? "" : "s")", summary: String(chapters), description: "\(tracks) Track\(tracks == 1 ? "" : "s")")
+                                            Divider()
+                                        }
+                                    }
+                                    if let seriesName = item.media?.metadata.seriesName?.split(separator: " #"), seriesName.count > 1 {
+                                        // TODO: Navigate to series
+                                        Group {
+                                            // NavigationLink(destination: Text("oof")) {
+                                            ItemDetailGridItem(title: "Series", summary: seriesName.count > 1 ? "#\(seriesName[1])" : "Extra", description: seriesName[0].description)
+                                            Divider()
+                                            // }
+                                        }
+                                    }
+                                    if let size = item.size {
+                                        Group {
+                                            ItemDetailGridItem(title: "Size", summary: ByteCountFormatter().string(fromByteCount: Int64(size)), description: "on disk")
+                                            Divider()
+                                        }
+                                    }
+                                    if let addedAt = Int64(item.addedAt) {
+                                        ItemDetailGridItem(title: "Added", summary: Date(milliseconds: addedAt).formatted(.dateTime.day().month()), description: Date(milliseconds: addedAt).formatted(.dateTime.year()))
+                                    }
+                                }
+                            }
+                            .frame(height: 60)
                             
                             Divider()
                                 .padding(.vertical, 20)
                         }
+                        .padding(.horizontal)
+                        .padding(.top)
                         
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHGrid(rows: [GridItem()]) {
-                                if let narrator = item.media?.metadata.narratorName {
-                                    if narrator != "" {
-                                        Group {
-                                            ItemDetailGridItem(title: "Narrator", summary: narrator.components(separatedBy: " ").reduce("") { ($0 == "" ? "" : "\($0.first!)") + ($1 == "" ? "" : "\($1.first!)") }, description: narrator)
-                                            Divider()
-                                        }
-                                    }
-                                }
-                                if let duration = item.media?.duration {
-                                    Group {
-                                        let (h, m, _) = Date.secondsToHoursMinutesSeconds(Int(duration))
-                                        
-                                        ItemDetailGridItem(title: "Duration", summary: "\(h):\(m)", description: "hrs:min")
-                                        Divider()
-                                    }
-                                }
-                                if let publisher = item.media?.metadata.publisher {
-                                    Group {
-                                        ItemDetailGridItem(title: "Publisher", summary: publisher.components(separatedBy: " ").reduce("") { ($0 == "" ? "" : "\($0.first!)") + "\($1.first!)" }, description: publisher)
-                                        Divider()
-                                    }
-                                }
-                                if let chapters = item.media?.numChapters, let tracks = item.media?.numTracks {
-                                    Group {
-                                        ItemDetailGridItem(title: "Chapter\(chapters == 1 ? "" : "s")", summary: String(chapters), description: "\(tracks) Track\(tracks == 1 ? "" : "s")")
-                                        Divider()
-                                    }
-                                }
-                                if let seriesName = item.media?.metadata.seriesName?.split(separator: " #"), seriesName.count > 1 {
-                                    // TODO: Navigate to series
-                                    Group {
-                                        // NavigationLink(destination: Text("oof")) {
-                                        ItemDetailGridItem(title: "Series", summary: seriesName.count > 1 ? "#\(seriesName[1])" : "Extra", description: seriesName[0].description)
-                                        Divider()
-                                        // }
-                                    }
-                                }
-                                if let size = item.size {
-                                    Group {
-                                        ItemDetailGridItem(title: "Size", summary: ByteCountFormatter().string(fromByteCount: Int64(size)), description: "on disk")
-                                        Divider()
-                                    }
-                                }
-                                if let addedAt = Int64(item.addedAt) {
-                                    ItemDetailGridItem(title: "Added", summary: Date(milliseconds: addedAt).formatted(.dateTime.day().month()), description: Date(milliseconds: addedAt).formatted(.dateTime.year()))
-                                }
-                            }
+                        if let seriesName = seriesName, let libraryId = item.libraryId {
+                            BookDetailSeries(name: seriesName, library: libraryId)
                         }
-                        .frame(height: 60)
-                        
-                        Divider()
-                            .padding(.vertical, 20)
                     }
-                    .padding(.horizontal)
-                    .padding(.top)
-                    .frame(maxWidth: .infinity, minHeight: reader.size.height - 400, alignment: .top)
-                    .background(.background)
-                    
-                    if let seriesName = seriesName, let libraryId = item.libraryId {
-                        BookDetailSeries(name: seriesName, library: libraryId)
-                    }
-                }.background(GeometryReader { proxy -> Color in
-                    DispatchQueue.main.async {
-                        let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
-                        changeScrollViewBackground = offset < 0
-                    }
-                    return Color.clear
-                })
+                    .frame(minHeight: reader.size.height - 400, alignment: .top)
+                }.background(
+                    GeometryReader { proxy -> Color in
+                        DispatchQueue.main.async {
+                            let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
+                            changeScrollViewBackground = offset < 0
+                        }
+                        return Color(uiColor: UIColor.systemBackground)
+                    })
             }
             .edgesIgnoringSafeArea(.top)
-            .navigationTitle(item.media?.metadata.title ?? "unknown title")
+            .navigationTitle(item.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
             .overlay(alignment: .topLeading) {
@@ -202,7 +204,7 @@ struct BookDetailInner: View {
                 }
             }))
             .task {
-                (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(id: item.id)
+                (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: item)
             }
             .onAppear {
                 if let series = item.media?.metadata.seriesName {

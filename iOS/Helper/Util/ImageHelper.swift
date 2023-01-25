@@ -9,19 +9,16 @@ import Foundation
 import UIKit
 
 struct ImageHelper {
-    public static func getImageUrl(id: String) -> URL {
-        let user = PersistenceController.shared.getLoggedInUser()!
-        return user.serverUrl!.appending(path: "/api/items").appending(path: id).appending(path: "cover").appending(queryItems: [URLQueryItem(name: "token", value: user.token)])
-    }
-    
-    public static func getAverageColor(id: String) async -> (UIColor, Bool) {
+    public static func getAverageColor(item: LibraryItem) async -> (UIColor, Bool) {
         let image: UIImage?
         
-        if let imageData: NSData = NSData(contentsOf: getImageUrl(id: id)) {
-            image = UIImage(data: imageData as Data)
-            
-            if let image = image, let averageColor = image.averageColor {
-                return (averageColor, averageColor.isLight() ?? false)
+        if let url = item.cover {
+            if let imageData: NSData = NSData(contentsOf: url) {
+                image = UIImage(data: imageData as Data)
+                
+                if let image = image, let averageColor = image.averageColor {
+                    return (averageColor, averageColor.isLight() ?? false)
+                }
             }
         }
         

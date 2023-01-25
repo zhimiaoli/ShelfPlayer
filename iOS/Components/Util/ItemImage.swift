@@ -8,26 +8,38 @@
 import SwiftUI
 
 struct ItemImage: View {
-    var id: String
-    var size: Int = 175
+    var url: URL?
+    var size: CGFloat? = 175
     
     private let user = PersistenceController.shared.getLoggedInUser()!
     
+    var fallback: some View {
+        Image(systemName: "book")
+            .dynamicTypeSize(.xLarge)
+    }
+    
     var body: some View {
-        AsyncImage(url: ImageHelper.getImageUrl(id: id)) { phase in
-            if let image = phase.image {
-                image
-                    .resizable()
-                    .scaledToFill()
-            } else if phase.error != nil {
-                Image(systemName: "book")
-                    .dynamicTypeSize(.xLarge)
+        Group {
+            if url == nil {
+                fallback
             } else {
-                ProgressView()
+                AsyncImage(url: url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } else if phase.error != nil {
+                        let _ = print(phase.error)
+                        
+                        fallback
+                    } else {
+                        ProgressView()
+                    }
+                }
             }
         }
-        .cornerRadius(7)
-        .frame(width: CGFloat(size), height: CGFloat(size))
+        .frame(width: size, height: size)
         .background(Color.gray.opacity(0.1))
+        .cornerRadius(7)
     }
 }
