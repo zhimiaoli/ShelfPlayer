@@ -10,12 +10,25 @@ import SwiftUI
 struct ItemGrid: View {
     var content: [LibraryItem]
     
+    @State private var size: CGFloat = 0
+    
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-            ForEach(content) { item in
-                ItemRowItem(item: item)
-                    .padding(.horizontal, 4)
+        GeometryReader { reader in
+            ScrollView(.vertical, showsIndicators: false) {
+                if size != 0 {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                        ForEach(content) { item in
+                            ItemRowItem(item: item, size: size)
+                                .padding(.vertical, 5)
+                                .shadow(radius: 2)
+                        }
+                    }
+                }
+            }
+            .onAppear {
+                size = (reader.size.width - 30) / 2
             }
         }
+        .padding(.horizontal, 15)
     }
 }

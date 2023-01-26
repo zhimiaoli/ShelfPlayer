@@ -19,6 +19,7 @@ struct LibraryItem: Codable, Identifiable {
     let folderId: String?
     let path: String?
     let mediaType: String?
+    let type: String?
     
     let addedAt: Double
     let updatedAt: Double?
@@ -29,6 +30,7 @@ struct LibraryItem: Codable, Identifiable {
     let size: Double?
     
     let media: LibraryItemMedia?
+    let books: [LibraryItem]?
     
     // Podcasts
     let numEpisodes: Int?
@@ -97,6 +99,9 @@ extension LibraryItem {
     
     var isBook: Bool {
         mediaType == "book"
+    }
+    var isSeries: Bool {
+        id.starts(with: "ser_")
     }
     var isAuthor: Bool {
         numBooks != nil

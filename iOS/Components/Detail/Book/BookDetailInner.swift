@@ -25,7 +25,7 @@ struct BookDetailInner: View {
             ScrollView(showsIndicators: false) {
                 VStack() {
                     VStack {
-                        ItemImage(url: item.cover, size: 300)
+                        ItemImage(item: item, size: 300)
                             .shadow(radius: 10)
                             .onBecomingVisible {
                                 if !animateNavigationBarChanges {

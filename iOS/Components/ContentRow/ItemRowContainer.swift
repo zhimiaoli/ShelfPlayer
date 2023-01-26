@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ItemRowContainer<Content: View>: View {
     var title: String?
+    var appearence: Size = .normal
     
     @Environment(\.colorScheme) var colorScheme
     @ViewBuilder var content: Content
     
-    @State private var size: CGFloat = 0
+    @State private var size: CGFloat = 175
     
     var body: some View {
         GeometryReader { reader in
@@ -35,17 +36,27 @@ struct ItemRowContainer<Content: View>: View {
                 }
                 .background {
                     if colorScheme == .light {
-                        LinearGradient(colors: [.white, .gray.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.white, .gray.opacity(0.05)], startPoint: .top, endPoint: .bottom)
                     }
                 }
             }
             .padding(.vertical, title == nil ? 0 : 10)
             .onAppear {
                 size = (reader.size.width - 60) / 2
+                
+                if appearence == .smaller {
+                    size /= 1.75
+                    size -= 23
+                }
             }
             .environment(\.itemRowItemWidth, $size)
         }
         .frame(height: size + 80)
+    }
+    
+    enum Size {
+        case normal
+        case smaller
     }
 }
 

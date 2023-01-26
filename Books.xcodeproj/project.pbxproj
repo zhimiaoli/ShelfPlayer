@@ -18,6 +18,7 @@
 		3A3F29F4292FD7DF00841C03 /* View+Recive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29F3292FD7DF00841C03 /* View+Recive.swift */; };
 		3A3F29F6292FDB3E00841C03 /* LibraryPersonalizedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29F5292FDB3E00841C03 /* LibraryPersonalizedResponse.swift */; };
 		3A3F29F8292FDC6F00841C03 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29F7292FDC6F00841C03 /* LibraryItem.swift */; };
+		3A5016272982FB5200BB2C74 /* GridDetailInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5016262982FB5200BB2C74 /* GridDetailInner.swift */; };
 		3A98B9F92920F78C00EE5ECE /* PingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9F82920F78C00EE5ECE /* PingResponse.swift */; };
 		3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9FE2920FDD900EE5ECE /* APIError.swift */; };
 		3A98BA012920FF5400EE5ECE /* APIResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98BA002920FF5400EE5ECE /* APIResources.swift */; };
@@ -35,9 +36,7 @@
 		3AC75B6A292FE72E0057A250 /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B69292FE72E0057A250 /* ItemRow.swift */; };
 		3AC75B6C292FE74F0057A250 /* ItemRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B6B292FE74F0057A250 /* ItemRowItem.swift */; };
 		3AD5EAD32923D87C00D74AF1 /* PersistenceController+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EAD22923D87C00D74AF1 /* PersistenceController+User.swift */; };
-		3AD7AACA297FBB2C0052C17B /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 3AD7AAC9297FBB2C0052C17B /* Introspect */; };
 		3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD7AACB29805AB50052C17B /* ItemGrid.swift */; };
-		3AD7AACE29805B380052C17B /* AuthorDetailInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD7AACD29805B380052C17B /* AuthorDetailInner.swift */; };
 		3ADEBFEA292FF9370047CE12 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFE9292FF9370047CE12 /* ItemImage.swift */; };
 		3ADEBFEF293133A40047CE12 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFEE293133A40047CE12 /* DetailView.swift */; };
 		3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFF32931FBF70047CE12 /* PlayNowButtonStyle.swift */; };
@@ -71,6 +70,7 @@
 		3A3F29F3292FD7DF00841C03 /* View+Recive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Recive.swift"; sourceTree = "<group>"; };
 		3A3F29F5292FDB3E00841C03 /* LibraryPersonalizedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPersonalizedResponse.swift; sourceTree = "<group>"; };
 		3A3F29F7292FDC6F00841C03 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
+		3A5016262982FB5200BB2C74 /* GridDetailInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDetailInner.swift; sourceTree = "<group>"; };
 		3A98B9F82920F78C00EE5ECE /* PingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingResponse.swift; sourceTree = "<group>"; };
 		3A98B9FE2920FDD900EE5ECE /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		3A98BA002920FF5400EE5ECE /* APIResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResources.swift; sourceTree = "<group>"; };
@@ -89,7 +89,6 @@
 		3AC75B6B292FE74F0057A250 /* ItemRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowItem.swift; sourceTree = "<group>"; };
 		3AD5EAD22923D87C00D74AF1 /* PersistenceController+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistenceController+User.swift"; sourceTree = "<group>"; };
 		3AD7AACB29805AB50052C17B /* ItemGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGrid.swift; sourceTree = "<group>"; };
-		3AD7AACD29805B380052C17B /* AuthorDetailInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorDetailInner.swift; sourceTree = "<group>"; };
 		3ADEBFE9292FF9370047CE12 /* ItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
 		3ADEBFEE293133A40047CE12 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		3ADEBFF32931FBF70047CE12 /* PlayNowButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayNowButtonStyle.swift; sourceTree = "<group>"; };
@@ -117,13 +116,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AD7AACA297FBB2C0052C17B /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A5016282982FBBB00BB2C74 /* Book */ = {
+			isa = PBXGroup;
+			children = (
+				3ADEBFFB2931FCB30047CE12 /* ItemDetailGridItem.swift */,
+				3ADEBFFF2931FD9D0047CE12 /* BookDetailInner.swift */,
+				3ADEC00A29320C6C0047CE12 /* BookDetailSeries.swift */,
+			);
+			path = Book;
+			sourceTree = "<group>";
+		};
 		3A55BE8329212F0300CDDEDC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,10 +260,8 @@
 		3ADEBFEB293133880047CE12 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				3ADEBFFB2931FCB30047CE12 /* ItemDetailGridItem.swift */,
-				3ADEBFFF2931FD9D0047CE12 /* BookDetailInner.swift */,
-				3ADEC00A29320C6C0047CE12 /* BookDetailSeries.swift */,
-				3AD7AACD29805B380052C17B /* AuthorDetailInner.swift */,
+				3A5016282982FBBB00BB2C74 /* Book */,
+				3A5016262982FB5200BB2C74 /* GridDetailInner.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -334,7 +340,6 @@
 			);
 			name = Books;
 			packageProductDependencies = (
-				3AD7AAC9297FBB2C0052C17B /* Introspect */,
 			);
 			productName = Books;
 			productReference = 3AF4CB69291FA70D0080451B /* Books.app */;
@@ -365,7 +370,6 @@
 			);
 			mainGroup = 3AF4CB60291FA70D0080451B;
 			packageReferences = (
-				3AD7AAC8297FBB2C0052C17B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 3AF4CB6A291FA70D0080451B /* Products */;
 			projectDirPath = "";
@@ -401,6 +405,7 @@
 				3ADEC0042931FF010047CE12 /* UIImage+Color.swift in Sources */,
 				3AF4CB79291FA7120080451B /* Books.xcdatamodeld in Sources */,
 				3ADEBFFA2931FC800047CE12 /* View+BecomingVisible.swift in Sources */,
+				3A5016272982FB5200BB2C74 /* GridDetailInner.swift in Sources */,
 				3A3F29EC292FD24000841C03 /* HomeView.swift in Sources */,
 				3A98B9F92920F78C00EE5ECE /* PingResponse.swift in Sources */,
 				3ADEC00929320BEB0047CE12 /* SearchSeries.swift in Sources */,
@@ -412,7 +417,6 @@
 				3A98BA0529210F2900EE5ECE /* LoginFlowCredentials.swift in Sources */,
 				3A98BA072921124B00EE5ECE /* AuthorizeResponse.swift in Sources */,
 				3ADEBFFC2931FCB30047CE12 /* ItemDetailGridItem.swift in Sources */,
-				3AD7AACE29805B380052C17B /* AuthorDetailInner.swift in Sources */,
 				3AB97F2D2920017D00E07DB5 /* LoginFlowServer.swift in Sources */,
 				3A3F29F0292FD56B00841C03 /* DebugView.swift in Sources */,
 				3AF4CB76291FA7120080451B /* Persistence.swift in Sources */,
@@ -648,25 +652,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		3AD7AAC8297FBB2C0052C17B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.4;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		3AD7AAC9297FBB2C0052C17B /* Introspect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3AD7AAC8297FBB2C0052C17B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = Introspect;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3AF4CB77291FA7120080451B /* Books.xcdatamodeld */ = {

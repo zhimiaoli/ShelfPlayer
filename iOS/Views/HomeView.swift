@@ -33,7 +33,7 @@ struct HomeView: View {
                                     .padding(.horizontal)
                             }
                             
-                            ItemRowContainer(title: row.label) {
+                            ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .smaller : .normal) {
                                 ItemRow(content: row.entities)
                             }
                         }
