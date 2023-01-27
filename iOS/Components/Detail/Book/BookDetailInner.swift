@@ -123,7 +123,9 @@ struct BookDetailInner: View {
                                     }
                                     if let publisher = item.media?.metadata.publisher {
                                         Group {
-                                            ItemDetailGridItem(title: "Publisher", summary: publisher.components(separatedBy: " ").reduce("") { ($0 == "" ? "" : "\($0.first!)") + "\($1.first!)" }, description: publisher)
+                                            ItemDetailGridItem(title: "Publisher", summary: publisher.components(separatedBy: " ").reduce("") {
+                                                $1.first == nil ? $0 : ($0 + "\($1.first!)")
+                                            }, description: publisher)
                                             Divider()
                                         }
                                     }
@@ -133,7 +135,7 @@ struct BookDetailInner: View {
                                             Divider()
                                         }
                                     }
-                                    if let seriesName = item.media?.metadata.seriesName?.split(separator: " #"), seriesName.count > 1 {
+                                    if let seriesName = item.media?.metadata.seriesName?.split(separator: " #"), seriesName.count > 0 {
                                         // TODO: Navigate to series
                                         Group {
                                             // NavigationLink(destination: Text("oof")) {

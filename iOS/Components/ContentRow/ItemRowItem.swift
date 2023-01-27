@@ -10,6 +10,7 @@ import SwiftUI
 struct ItemRowItem: View {
     var item: LibraryItem
     var size: CGFloat?
+    var shadow: Bool = false
     
     @State private var progressPercentage: Float = 0
     @State private var actualSize: CGFloat = 175
@@ -55,6 +56,7 @@ struct ItemRowItem: View {
                         }
                         .background(.gray.opacity(0.1))
                         .cornerRadius(7)
+                        .shadow(radius: shadow ? 2 : 0)
                     } else {
                         ItemImage(item: nil, size: actualSize)
                     }

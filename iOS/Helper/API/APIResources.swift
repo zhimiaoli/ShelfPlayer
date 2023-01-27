@@ -72,6 +72,14 @@ extension APIResources {
                 URLQueryItem(name: "minified", value: minified ? "1" : "0")
             ])
         }
+        
+        public func series(sort: ItemSortOrder, descending: Bool = false, minified: Bool = true) -> APIRequest<FilterResponse<LibraryItem>> {
+            return APIRequest(method: "GET", path: "api/libraries/\(id)/series", query: [
+                URLQueryItem(name: "sort", value: sort.rawValue),
+                URLQueryItem(name: "desc", value: descending ? "1" : "0"),
+                URLQueryItem(name: "minified", value: minified ? "1" : "0")
+            ])
+        }
     }
 }
 

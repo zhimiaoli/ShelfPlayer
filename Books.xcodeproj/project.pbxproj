@@ -19,6 +19,10 @@
 		3A3F29F6292FDB3E00841C03 /* LibraryPersonalizedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29F5292FDB3E00841C03 /* LibraryPersonalizedResponse.swift */; };
 		3A3F29F8292FDC6F00841C03 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29F7292FDC6F00841C03 /* LibraryItem.swift */; };
 		3A5016272982FB5200BB2C74 /* GridDetailInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5016262982FB5200BB2C74 /* GridDetailInner.swift */; };
+		3A50162A298418F600BB2C74 /* SeriesBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A501629298418F600BB2C74 /* SeriesBanner.swift */; };
+		3A50162C29841E8500BB2C74 /* SeriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50162B29841E8500BB2C74 /* SeriesView.swift */; };
+		3A50162E29841EF500BB2C74 /* ItemGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50162D29841EF500BB2C74 /* ItemGridView.swift */; };
+		3A501630298421A800BB2C74 /* ItemSortOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50162F298421A800BB2C74 /* ItemSortOrder.swift */; };
 		3A98B9F92920F78C00EE5ECE /* PingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9F82920F78C00EE5ECE /* PingResponse.swift */; };
 		3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9FE2920FDD900EE5ECE /* APIError.swift */; };
 		3A98BA012920FF5400EE5ECE /* APIResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98BA002920FF5400EE5ECE /* APIResources.swift */; };
@@ -71,6 +75,10 @@
 		3A3F29F5292FDB3E00841C03 /* LibraryPersonalizedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPersonalizedResponse.swift; sourceTree = "<group>"; };
 		3A3F29F7292FDC6F00841C03 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
 		3A5016262982FB5200BB2C74 /* GridDetailInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDetailInner.swift; sourceTree = "<group>"; };
+		3A501629298418F600BB2C74 /* SeriesBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesBanner.swift; sourceTree = "<group>"; };
+		3A50162B29841E8500BB2C74 /* SeriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesView.swift; sourceTree = "<group>"; };
+		3A50162D29841EF500BB2C74 /* ItemGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGridView.swift; sourceTree = "<group>"; };
+		3A50162F298421A800BB2C74 /* ItemSortOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSortOrder.swift; sourceTree = "<group>"; };
 		3A98B9F82920F78C00EE5ECE /* PingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingResponse.swift; sourceTree = "<group>"; };
 		3A98B9FE2920FDD900EE5ECE /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		3A98BA002920FF5400EE5ECE /* APIResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResources.swift; sourceTree = "<group>"; };
@@ -189,6 +197,7 @@
 				3A3F29ED292FD35300841C03 /* NavigationRoot.swift */,
 				3A3F29EF292FD56B00841C03 /* DebugView.swift */,
 				3ADEBFEE293133A40047CE12 /* DetailView.swift */,
+				3A50162B29841E8500BB2C74 /* SeriesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -211,6 +220,8 @@
 				3AC75B64292FE6CC0057A250 /* Util */,
 				3AC75B63292FE6AD0057A250 /* ContentRow */,
 				3AB97F25291FB8F000E07DB5 /* ButtonStyles */,
+				3A501629298418F600BB2C74 /* SeriesBanner.swift */,
+				3A50162D29841EF500BB2C74 /* ItemGridView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -319,6 +330,7 @@
 			children = (
 				3A98B9F62920F77100EE5ECE /* Server */,
 				3A3F29F7292FDC6F00841C03 /* LibraryItem.swift */,
+				3A50162F298421A800BB2C74 /* ItemSortOrder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -398,6 +410,8 @@
 			files = (
 				3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */,
 				3AC75B6C292FE74F0057A250 /* ItemRowItem.swift in Sources */,
+				3A50162E29841EF500BB2C74 /* ItemGridView.swift in Sources */,
+				3A50162A298418F600BB2C74 /* SeriesBanner.swift in Sources */,
 				3A3F29F4292FD7DF00841C03 /* View+Recive.swift in Sources */,
 				3A0D7796297F04E3004F5A7D /* Date+Conversions.swift in Sources */,
 				3AB97F342920061400E07DB5 /* APIClient.swift in Sources */,
@@ -434,6 +448,7 @@
 				3AC75B66292FE6DD0057A250 /* ProgressIndicator.swift in Sources */,
 				3ADEBFF82931FC5E0047CE12 /* GestureSwipeRight.swift in Sources */,
 				3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */,
+				3A50162C29841E8500BB2C74 /* SeriesView.swift in Sources */,
 				3AF4CB6D291FA70D0080451B /* BooksApp.swift in Sources */,
 				3AD5EAD32923D87C00D74AF1 /* PersistenceController+User.swift in Sources */,
 				3A98BA032921006300EE5ECE /* APIRequest.swift in Sources */,
@@ -441,6 +456,7 @@
 				3A3F29EE292FD35300841C03 /* NavigationRoot.swift in Sources */,
 				3A3F29F2292FD74A00841C03 /* Notification+Custom.swift in Sources */,
 				3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */,
+				3A501630298421A800BB2C74 /* ItemSortOrder.swift in Sources */,
 				3A3F29EA292FCD9200841C03 /* Persistence+MediaProgress.swift in Sources */,
 				3ADEC00F293216C20047CE12 /* FilterResponse.swift in Sources */,
 				3ADEBFF62931FC140047CE12 /* SecondaryButtonStyle.swift in Sources */,
@@ -500,7 +516,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -554,7 +570,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

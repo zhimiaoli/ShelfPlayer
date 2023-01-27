@@ -18,9 +18,8 @@ struct ItemGrid: View {
                 if size != 0 {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
                         ForEach(content) { item in
-                            ItemRowItem(item: item, size: size)
+                            ItemRowItem(item: item, size: size, shadow: true)
                                 .padding(.vertical, 5)
-                                .shadow(radius: 2)
                         }
                     }
                 }

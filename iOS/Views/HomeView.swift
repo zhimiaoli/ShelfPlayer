@@ -36,6 +36,13 @@ struct HomeView: View {
                             ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .smaller : .normal) {
                                 ItemRow(content: row.entities)
                             }
+                            
+                            if row.id == "continue-series" {
+                                NavigationLink(destination: SeriesView()) {
+                                    SeriesBanner()
+                                        .padding(.top, -18)
+                                }
+                            }
                         }
                     }
                 }
