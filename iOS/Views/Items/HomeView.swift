@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+/// Home view containing a curated list of items fetched from the server
 struct HomeView: View {
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     @Environment(\.colorScheme) var colorScheme
     @State private var rows: [PersonalizedLibraryRow]?
     
@@ -50,11 +52,9 @@ struct HomeView: View {
             .navigationTitle("Listen now")
         } else {
             FullscreenLoadingIndicator(description: "Loading")
-                .task(loadContent)
+                .task {
+                    rows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
+                }
         }
-    }
-    
-    @Sendable private func loadContent() async {
-        rows = try! await APIClient.authorizedShared.request(APIResources.libraries(id: PersistenceController.shared.getLoggedInUser()!.lastActiveLibraryId!).personalized)
     }
 }

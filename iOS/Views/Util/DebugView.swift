@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+/// View only used for debug purposes
 struct DebugView: View {
+    @EnvironmentObject private var globalViewModel: GlobalViewModel
     @FetchRequest(sortDescriptors: [SortDescriptor(\.id, order: .reverse)]) private var cachedMediaProgresses: FetchedResults<CachedMediaProgress>
     @State private var search: String = ""
     
@@ -15,7 +17,7 @@ struct DebugView: View {
         NavigationView {
             List {
                 Button {
-                    NotificationCenter.default.post(name: .logout, object: nil)
+                    globalViewModel.logout()
                 } label: {
                     Text("Logout")
                 }

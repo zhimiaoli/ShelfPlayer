@@ -7,37 +7,17 @@
 
 import SwiftUI
 
-struct BookDetailSeries: View {
-    var name: String
-    var library: String
-
-    @State private var failed: Bool = false
-    @State private var items: [LibraryItem]?
-    
-    var body: some View {
-        if !failed {
-            if let items = items {
-                ItemRowContainer(title: "Also in series") {
-                    ItemRow(content: items)
+extension DetailView {
+    /// More books from the same series as the item
+    struct BookDetailSeries: View {
+        @EnvironmentObject private var viewModel: BookDetailViewModel
+        
+        var body: some View {
+            if let moreBooksFromSeries = viewModel.moreBooksFromSeries {
+                ItemRowContainer(title: "Also in series", destinationId: viewModel.seriesId) {
+                    ItemRow(content: moreBooksFromSeries)
                 }
-            } else {
-                ProgressView()
-                    .task(getSeriesItems)
             }
-        }
-    }
-    
-    @Sendable private func getSeriesItems() async {
-        do {
-            let searchSeries = try await APIClient.authorizedShared.request(APIResources.series.seriesByName(search: name)).results
-            if searchSeries.count == 0 {
-                return failed = true
-            }
-            
-            let seriesId = searchSeries[0].id
-            items = try await APIClient.authorizedShared.request(APIResources.libraries(id: library).items(filter: "series.\(seriesId.toBase64())")).results
-        } catch {
-            failed = true
         }
     }
 }

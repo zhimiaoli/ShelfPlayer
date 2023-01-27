@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Root view when the user is logged in and online
+/// Main navigation controller. Only used when the user is logged in and online
 struct NavigationRoot: View {
     var body: some View {
         TabView {

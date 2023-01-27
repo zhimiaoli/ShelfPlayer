@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class APIClient {
-    static private(set) var authorizedShared = getAuthorizedClient()
+    static private(set) var authorizedShared: APIClient = getAuthorizedClient()
     
     private static func getAuthorizedClient() -> APIClient {
         let user = PersistenceController.shared.getLoggedInUser()

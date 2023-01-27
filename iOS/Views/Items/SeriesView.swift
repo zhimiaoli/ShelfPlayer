@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+/// View containing all series of the last active library
 struct SeriesView: View {
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     @State var sortOrder: ItemSortOrder = .name
     
     var body: some View {
         ItemGridView(getItems: {
-            try await APIClient.authorizedShared.request(APIResources.libraries(id: PersistenceController.shared.getLoggedInUser()!.lastActiveLibraryId ?? "").series(sort: sortOrder)).results
+            try await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).series(sort: sortOrder)).results
         })
         .navigationTitle("Series")
         /*

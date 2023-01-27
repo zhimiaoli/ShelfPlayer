@@ -12,7 +12,9 @@ import Foundation
  Also the "media" field works for both books and podcasts
  */
 
+/// Item retrived from a ABS server
 struct LibraryItem: Codable, Identifiable {
+    /// Unique identifier for each item
     let id: String
     let ino: String?
     let libraryId: String?
@@ -57,9 +59,7 @@ extension LibraryItem {
         
         let duration: Double?
     }
-}
-
-extension LibraryItem {
+    
     struct LibraryItemMetadata: Codable {
         let title: String?
         let titleIgnorePrefix: String?
@@ -82,9 +82,11 @@ extension LibraryItem {
 }
 
 extension LibraryItem {
+    /// Get the title of the itrm
     var title: String {
         media?.metadata.title ?? name ?? "unknown title"
     }
+    /// Returns the cover url of the item or nil
     var cover: URL? {
         let user = PersistenceController.shared.getLoggedInUser()!
         

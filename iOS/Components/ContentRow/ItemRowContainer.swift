@@ -9,23 +9,39 @@ import SwiftUI
 
 struct ItemRowContainer<Content: View>: View {
     var title: String?
+    var destinationId: String?
     var appearence: Size = .normal
-    
-    @Environment(\.colorScheme) var colorScheme
     @ViewBuilder var content: Content
     
+    @Environment(\.colorScheme) var colorScheme
     @State private var size: CGFloat = 175
     
     var body: some View {
         GeometryReader { reader in
             VStack(alignment: .leading) {
                 if let title = title {
-                    Text(title)
+                    let text = Text(title)
                         .font(.system(.body, design: .serif))
                         .dynamicTypeSize(.xxLarge)
-                        .bold()
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, -10)
+                    
+                    Group {
+                        if let destinationId = destinationId {
+                            NavigationLink(destination: DetailView(id: destinationId)) {
+                                HStack {
+                                    text
+                                        .foregroundColor(.primary)
+                                    
+                                    Image(systemName: "chevron.right.circle")
+                                        .foregroundColor(.accentColor)
+                                }
+                            }
+                        } else {
+                            text
+                        }
+                    }
+                    .bold()
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, -10)
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack() {
