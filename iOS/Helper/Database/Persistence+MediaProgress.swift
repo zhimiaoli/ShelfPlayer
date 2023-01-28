@@ -59,9 +59,16 @@ extension PersistenceController {
         try container.viewContext.execute(deleteRequest)
     }
     
-    public func getProgressByLibraryItemId(id: String) -> Float {
+    public func getProgressByLibraryItem(item: LibraryItem) -> Float {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
-        fetchRequest.predicate = NSPredicate(format: "libraryItemId == %@", id)
+        if item.hasEpisode {
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "libraryItemId == %@", item.id),
+                NSPredicate(format: "episodeId == %@", item.recentEpisode?.id ?? ""),
+            ])
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "libraryItemId == %@", item.id)
+        }
         
         guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {
             return 0

@@ -91,7 +91,7 @@ struct ItemRowItem: View {
             }
             .frame(width: actualSize)
             .onAppear {
-                progressPercentage = PersistenceController.shared.getProgressByLibraryItemId(id: item.id)
+                progressPercentage = PersistenceController.shared.getProgressByLibraryItem(item: item)
             }
         }
         .onAppear {

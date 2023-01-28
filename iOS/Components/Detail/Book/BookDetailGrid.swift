@@ -10,7 +10,7 @@ import SwiftUI
 extension DetailView {
     /// Grid cotaining small pieces of information of a book
     struct BookDetailGrid: View {
-        @EnvironmentObject private var viewModel: BookDetailViewModel
+        @EnvironmentObject private var viewModel: ViewModel
         
         var body: some View {
             ScrollView(.horizontal, showsIndicators: false) {

@@ -10,7 +10,7 @@ import SwiftUI
 extension DetailView {
     /// Detail view for books
     struct BookDetailInner: View {
-        @StateObject var viewModel: BookDetailViewModel
+        @StateObject var viewModel: ViewModel
         @Binding var presentationMode: PresentationMode
         
         var body: some View {
@@ -45,19 +45,21 @@ extension DetailView {
                 .toolbar(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
                 .overlay(alignment: .topLeading) {
                     if presentationMode.isPresented {
-                        Button {
-                            presentationMode.dismiss()
-                        } label: {
-                            Image(systemName: "chevron.left.circle.fill")
-                                .offset(x: 0, y: 0)
-                                .dynamicTypeSize(.xxxLarge)
-                                .offset(x: 15, y: 57)
-                                .symbolRenderingMode(.hierarchical)
-                                .ignoresSafeArea()
-                                .fontWeight(.bold)
-                                .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
-                                .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
-                        }
+                        // A button does not work here
+                        Image(systemName: "chevron.left.circle.fill")
+                            .foregroundColor(.accentColor)
+                            .dynamicTypeSize(.xxxLarge)
+                            .symbolRenderingMode(.hierarchical)
+                            .fontWeight(.bold)
+                            .offset(x: 15, y: 57)
+                            .ignoresSafeArea()
+                            .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
+                            .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
+                            .onTapGesture {
+                                withAnimation {
+                                    presentationMode.dismiss()
+                                }
+                            }
                     }
                 }
                 
@@ -77,7 +79,7 @@ extension DetailView {
 }
 
 extension DetailView {
-    class BookDetailViewModel: ObservableObject {
+    class ViewModel: ObservableObject {
         @Published var item: LibraryItem
         
         @Published var isNavigationBarVisible: Bool = false

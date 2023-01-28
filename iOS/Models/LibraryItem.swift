@@ -13,8 +13,7 @@ import Foundation
  */
 
 /// Item retrived from a ABS server
-struct LibraryItem: Codable, Identifiable {
-    /// Unique identifier for each item
+struct LibraryItem: Codable, Identifiable, Equatable {
     let id: String
     let ino: String?
     let libraryId: String?
@@ -36,12 +35,30 @@ struct LibraryItem: Codable, Identifiable {
     
     // Podcasts
     let numEpisodes: Int?
+    let recentEpisode: PodcastEpisode?
     
     // Authors
     let name: String?
     let description: String?
     let numBooks: Int?
     let imagePath: String?
+    
+    static func == (lhs: LibraryItem, rhs: LibraryItem) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+struct PodcastEpisode: Codable {
+    let id: String?
+    let libraryItemId: String?
+    let index: Int?
+    let season: String?
+    let episode: String?
+    let title: String?
+    let description: String?
+    
+    let publishedAt: Double?
+    let addedAt: Double?
+    let updatedAt: Double?
 }
 
 extension LibraryItem {
@@ -82,15 +99,23 @@ extension LibraryItem {
 }
 
 extension LibraryItem {
-    /// Get the title of the itrm
+    /// Get the unique identifier of the item
+    var identifier: String {
+        recentEpisode?.id ?? id
+    }
+    
+    /// Get the title of the item
     var title: String {
-        media?.metadata.title ?? name ?? "unknown title"
+        recentEpisode?.title ?? media?.metadata.title  ?? name ?? "unknown title"
+    }
+    var author: String {
+        media?.metadata.authorName ?? "unknown author"
     }
     /// Returns the cover url of the item or nil
     var cover: URL? {
         let user = PersistenceController.shared.getLoggedInUser()!
         
-        if isBook {
+        if isBook || isPodcast {
             return user.serverUrl!.appending(path: "/api/items").appending(path: id).appending(path: "cover").appending(queryItems: [URLQueryItem(name: "token", value: user.token)])
         } else if isAuthor && imagePath != nil {
             return user.serverUrl!.appending(path: "/api/authors").appending(path: id).appending(path: "image").appending(queryItems: [URLQueryItem(name: "token", value: user.token)])
@@ -102,10 +127,16 @@ extension LibraryItem {
     var isBook: Bool {
         mediaType == "book"
     }
+    var isPodcast: Bool {
+        mediaType == "podcast"
+    }
     var isSeries: Bool {
         id.starts(with: "ser_")
     }
     var isAuthor: Bool {
         numBooks != nil
+    }
+    var hasEpisode: Bool {
+        recentEpisode != nil
     }
 }

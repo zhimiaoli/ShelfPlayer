@@ -15,7 +15,10 @@ class GlobalViewModel: ObservableObject {
     
     @Published var onlineStatus: OnlineStatus = .unknown
     
+    @Published private(set) var currentlyPlaying: LibraryItem?
+    
     // MARK: - User related functions
+    /// Delete all data related to the user and present the login screen
     public func logout() {
         try! PersistenceController.shared.deleteLoggedInUser()
         try! PersistenceController.shared.deleteAllCachedSessions()
@@ -28,6 +31,7 @@ class GlobalViewModel: ObservableObject {
         token = ""
         activeLibraryId = ""
     }
+    /// Verify the stored token and update the local media progress
     @Sendable public func authorize() async {
         do {
             try await pingServer()
@@ -53,6 +57,25 @@ class GlobalViewModel: ObservableObject {
                 self.onlineStatus = .online
             }
         }
+    }
+    
+    // MARK: - Playback related functions
+    /// Start playback of a library item and display the now paying view
+    /// - Parameters:
+    ///   - item: Item to play
+    public func playItem(item: LibraryItem) {
+        currentlyPlaying = item
+    }
+    
+    // MARK: - Library related functons
+    /// Select a active library and update the lastActiveLibraryId
+    public func selectLibrary(libraryId: String) {
+        activeLibraryId = libraryId
+        
+        let user = PersistenceController.shared.getLoggedInUser()
+        user!.lastActiveLibraryId = libraryId
+        
+        try? PersistenceController.shared.container.viewContext.save()
     }
     
     // MARK: - Private functions

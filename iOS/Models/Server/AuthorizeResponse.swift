@@ -51,7 +51,7 @@ struct MediaProgress: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         libraryItemId = try container.decode(String.self, forKey: .libraryItemId)
-        episodeId = try? container.decode(String.self, forKey: .libraryItemId)
+        episodeId = try? container.decode(String.self, forKey: .episodeId)
         
         progress = try? container.decode(Double.self, forKey: .progress)
         isFinished = try container.decode(Bool.self, forKey: .isFinished)

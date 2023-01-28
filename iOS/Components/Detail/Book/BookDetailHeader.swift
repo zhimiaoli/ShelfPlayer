@@ -10,7 +10,8 @@ import SwiftUI
 extension DetailView {
     /// Header for books containing the title, author and image of the item
     struct BookDetailHeader: View {
-        @EnvironmentObject private var viewModel: BookDetailViewModel
+        @EnvironmentObject private var viewModel: ViewModel
+        @EnvironmentObject private var globalViewModel: GlobalViewModel
         
         var body: some View {
             VStack {
@@ -45,14 +46,12 @@ extension DetailView {
                 VStack {
                     Text(viewModel.item.title)
                         .font(.system(.headline, design: .serif))
-                    if let author = viewModel.item.media?.metadata.authorName {
-                        Text(author)
-                            .font(.subheadline)
-                    }
+                    Text(viewModel.item.author)
+                        .font(.subheadline)
                     
                     HStack {
                         Button {
-                            
+                            globalViewModel.playItem(item: viewModel.item)
                         } label: {
                             Label("Listen now", systemImage: "play.fill")
                         }

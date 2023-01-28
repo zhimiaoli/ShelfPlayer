@@ -21,6 +21,11 @@ struct DebugView: View {
                 } label: {
                     Text("Logout")
                 }
+                Button {
+                    try? PersistenceController.shared.deleteAllCachedSessions()
+                } label: {
+                    Text("Clear")
+                }
                 
                 Text(PersistenceController.shared.getLoggedInUser()?.token ?? "Not logged in")
                     .textSelection(.enabled)
@@ -31,10 +36,11 @@ struct DebugView: View {
                         return true
                     }
                     
-                    return progress.libraryItemId?.contains(search) ?? false
+                    return progress.id?.contains(search) ?? false
                 }) { progress in
                     HStack {
-                        Text(progress.libraryItemId!)
+                        Text(progress.libraryItemId ?? "?")
+                        Text(progress.episodeId ?? "_")
                         Divider()
                         Text(String(progress.progress))
                             .font(.caption)

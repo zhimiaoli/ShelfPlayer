@@ -31,8 +31,10 @@ struct HomeView: View {
                             }
                         } else {
                             if colorScheme == .dark {
-                                Divider()
-                                    .padding(.horizontal)
+                                if index == 0 || rows[index - 1].id != "continue-series" {
+                                    Divider()
+                                        .padding(.horizontal)
+                                }
                             }
                             
                             ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .smaller : .normal) {
@@ -48,13 +50,25 @@ struct HomeView: View {
                         }
                     }
                 }
+                .onChange(of: globalViewModel.activeLibraryId) { _ in
+                    Task {
+                        await loadRows()
+                    }
+                }
             }
             .navigationTitle("Listen now")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    LibraryPicker()
+                }
+            }
         } else {
             FullscreenLoadingIndicator(description: "Loading")
-                .task {
-                    rows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
-                }
+                .task(loadRows)
         }
+    }
+    
+    @Sendable private func loadRows() async {
+        rows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
     }
 }

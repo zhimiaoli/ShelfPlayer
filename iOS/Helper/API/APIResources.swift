@@ -51,13 +51,27 @@ extension APIResources {
     }
 }
 
-// MARK: - /api/libraries/{id}
+// MARK: - /api/libraries/
 extension APIResources {
-    public static func libraries(id: String) -> LibrariesResource {
-        LibrariesResource(id: id)
+    public static var libraries: LibrariesResource {
+        LibrariesResource()
     }
     
+    
     public struct LibrariesResource {
+        public func get() -> APIRequest<LibrariesResponse<Library>> {
+            APIRequest(method: "GET", path: "api/libraries")
+        }
+    }
+}
+
+// MARK: - /api/libraries/{id}
+extension APIResources {
+    public static func libraries(id: String) -> LibraryResource {
+        LibraryResource(id: id)
+    }
+    
+    public struct LibraryResource {
         public var id: String
         
         public var personalized: APIRequest<[PersonalizedLibraryRow]> {
