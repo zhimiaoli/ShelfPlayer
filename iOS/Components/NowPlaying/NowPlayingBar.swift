@@ -40,7 +40,7 @@ extension NowPlayingWrapper {
                     }
                     .padding(.horizontal, 5)
                     // TODO: display when item is podcast
-                    if false {
+                    if globalViewModel.currentlyPlaying!.isPodcast {
                         Button {
                             // TODO: go forwards
                         } label: {

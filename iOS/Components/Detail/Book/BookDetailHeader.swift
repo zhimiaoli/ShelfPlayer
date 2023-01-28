@@ -12,35 +12,17 @@ extension DetailView {
     struct BookDetailHeader: View {
         @EnvironmentObject private var viewModel: ViewModel
         @EnvironmentObject private var globalViewModel: GlobalViewModel
+        @EnvironmentObject private var fullscreenViewModel: FullscrenViewViewModel
         
         var body: some View {
             VStack {
                 ItemImage(item: viewModel.item, size: 300)
                     .shadow(radius: 10)
                     .onBecomingVisible {
-                        if !viewModel.animateNavigationBarChanges {
-                            viewModel.isNavigationBarVisible = false
-                            return
-                        }
-                        
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            viewModel.isNavigationBarVisible = false
-                        }
+                        fullscreenViewModel.hideNavigationBar()
                     }
                     .onBecomingInvisible {
-                        if !viewModel.animateNavigationBarChanges {
-                            viewModel.isNavigationBarVisible = true
-                            return
-                        }
-                        
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            viewModel.isNavigationBarVisible = true
-                        }
-                    }
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            viewModel.animateNavigationBarChanges = true
-                        }
+                        fullscreenViewModel.showNavigationBar()
                     }
                 
                 VStack {
@@ -49,35 +31,16 @@ extension DetailView {
                     Text(viewModel.item.author)
                         .font(.subheadline)
                     
-                    HStack {
-                        Button {
-                            globalViewModel.playItem(item: viewModel.item)
-                        } label: {
-                            Label("Listen now", systemImage: "play.fill")
-                        }
-                        .buttonStyle(PlayNowButtonStyle(colorScheme: viewModel.backgroundIsLight ? .dark : .light))
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "arrow.down")
-                        }
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "checkmark")
-                        }
-                    }
+                    ItemButtons(item: viewModel.item, colorScheme: viewModel.backgroundIsLight ? .dark : .light)
                 }
                 .padding()
-                .buttonStyle(SecondaryButtonStyle(colorScheme: viewModel.backgroundIsLight ? .dark : .light))
                 .foregroundColor(viewModel.backgroundIsLight ? .black : .white)
                 .animation(.easeInOut, value: viewModel.backgroundIsLight)
             }
             .padding(.top, 100)
             .frame(maxWidth: .infinity, alignment: .top)
-            .background(Color(viewModel.backgroundColor))
-            .animation(.easeInOut, value: viewModel.backgroundColor)
+            .background(Color(fullscreenViewModel.backgroundColor))
+            .animation(.easeInOut, value: fullscreenViewModel.backgroundColor)
         }
     }
 }

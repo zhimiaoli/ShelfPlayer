@@ -13,3 +13,10 @@ public struct APIRequest<Response> {
     var body: Encodable?
     var query: [URLQueryItem]?
 }
+
+public struct APIRequestEmpty {
+    var method: String
+    var path: String
+    var body: Encodable?
+    var query: [URLQueryItem]?
+}

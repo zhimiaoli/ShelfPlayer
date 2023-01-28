@@ -11,67 +11,17 @@ extension DetailView {
     /// Detail view for books
     struct BookDetailInner: View {
         @StateObject var viewModel: ViewModel
-        @Binding var presentationMode: PresentationMode
+        @EnvironmentObject var fullscreenViewModel: FullscrenViewViewModel
         
         var body: some View {
-            GeometryReader { reader in
-                ScrollView(showsIndicators: false) {
-                    VStack() {
-                        BookDetailHeader()
-                        BookDetailBody()
-                            .frame(minHeight: reader.size.height - 400, alignment: .top)
-                    }.background(
-                        GeometryReader { proxy -> Color in
-                            DispatchQueue.main.async {
-                                let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
-                                viewModel.changeScrollViewBackground = offset < 0
-                            }
-                            return Color(uiColor: UIColor.systemBackground)
-                        })
-                }
-                // Navigation bar
-                .edgesIgnoringSafeArea(.top)
-                .navigationTitle(viewModel.item.title)
-                .navigationBarTitleDisplayMode(.inline)
-                .modifier(GestureSwipeRight(action: {
-                    if presentationMode.isPresented && !viewModel.isNavigationBarVisible {
-                        withAnimation {
-                            presentationMode.dismiss()
-                        }
-                    }
-                }))
-                
-                // Toolbar
-                .toolbar(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
-                .overlay(alignment: .topLeading) {
-                    if presentationMode.isPresented {
-                        // A button does not work here
-                        Image(systemName: "chevron.left.circle.fill")
-                            .foregroundColor(.accentColor)
-                            .dynamicTypeSize(.xxxLarge)
-                            .symbolRenderingMode(.hierarchical)
-                            .fontWeight(.bold)
-                            .offset(x: 15, y: 57)
-                            .ignoresSafeArea()
-                            .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
-                            .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
-                            .onTapGesture {
-                                withAnimation {
-                                    presentationMode.dismiss()
-                                }
-                            }
-                    }
-                }
-                
-                // Background color
-                .coordinateSpace(name: "scroll")
-                .background(viewModel.changeScrollViewBackground ? Color(viewModel.backgroundColor) : Color.clear)
-                .animation(.easeInOut, value: viewModel.backgroundColor)
-                
-                .task {
-                    (viewModel.backgroundColor, viewModel.backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)
-                    await viewModel.getMoreBooksFromSeries()
-                }
+            Group {
+                BookDetailHeader()
+                BookDetailBody()
+            }
+            .navigationTitle(viewModel.item.title)
+            .task {
+                (fullscreenViewModel.backgroundColor, viewModel.backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)
+                await viewModel.getMoreBooksFromSeries()
             }
             .environmentObject(viewModel)
         }
@@ -82,11 +32,6 @@ extension DetailView {
     class ViewModel: ObservableObject {
         @Published var item: LibraryItem
         
-        @Published var isNavigationBarVisible: Bool = false
-        @Published var animateNavigationBarChanges: Bool = false
-        
-        @Published var changeScrollViewBackground = false
-        @Published var backgroundColor = UIColor.secondarySystemBackground
         @Published var backgroundIsLight = UIColor.secondarySystemBackground.isLight() ?? false
         
         @Published var seriesId: String?

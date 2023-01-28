@@ -20,7 +20,7 @@ struct ItemRow: View {
             }
             
             LazyHStack {
-                ForEach(content) { item in
+                ForEach(content, id: \.identifier) { item in
                     ItemRowItem(item: item)
                         .padding(.horizontal, 4)
                 }

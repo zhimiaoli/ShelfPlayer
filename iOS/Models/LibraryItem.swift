@@ -13,7 +13,7 @@ import Foundation
  */
 
 /// Item retrived from a ABS server
-struct LibraryItem: Codable, Identifiable, Equatable {
+struct LibraryItem: Codable, Equatable {
     let id: String
     let ino: String?
     let libraryId: String?
@@ -44,24 +44,25 @@ struct LibraryItem: Codable, Identifiable, Equatable {
     let imagePath: String?
     
     static func == (lhs: LibraryItem, rhs: LibraryItem) -> Bool {
-        lhs.id == rhs.id
+        lhs.identifier == rhs.identifier
     }
-}
-struct PodcastEpisode: Codable {
-    let id: String?
-    let libraryItemId: String?
-    let index: Int?
-    let season: String?
-    let episode: String?
-    let title: String?
-    let description: String?
-    
-    let publishedAt: Double?
-    let addedAt: Double?
-    let updatedAt: Double?
 }
 
 extension LibraryItem {
+    struct PodcastEpisode: Codable {
+        let id: String?
+        let libraryItemId: String?
+        let index: Int?
+        let season: String?
+        let episode: String?
+        let title: String?
+        let description: String?
+        
+        let publishedAt: Double?
+        let addedAt: Double?
+        let updatedAt: Double?
+    }
+    
     struct LibraryItemMedia: Codable {
         let metadata: LibraryItemMetadata
         let tags: [String]?
@@ -106,7 +107,7 @@ extension LibraryItem {
     
     /// Get the title of the item
     var title: String {
-        recentEpisode?.title ?? media?.metadata.title  ?? name ?? "unknown title"
+        recentEpisode?.title ?? media?.metadata.title ?? name ?? "unknown title"
     }
     var author: String {
         media?.metadata.authorName ?? "unknown author"
@@ -138,5 +139,29 @@ extension LibraryItem {
     }
     var hasEpisode: Bool {
         recentEpisode != nil
+    }
+}
+
+
+extension LibraryItem {
+    func toggleFinishedStatus() async -> Bool {
+        if isBook || (isPodcast && hasEpisode) {
+            do {
+                let progress = PersistenceController.shared.getProgressByLibraryItem(item: self)
+                var progressId: String = id
+                
+                if hasEpisode {
+                    progressId.append("/")
+                    progressId.append(recentEpisode?.id ?? "")
+                }
+                
+                try await APIClient.authorizedShared.request(APIResources.progress(id: progressId).finished(finished: progress != 1))
+                PersistenceController.shared.updateStatusWithoutUpdate(item: self, progress: progress == 1 ? 0 : 1)
+                
+                return true
+            } catch {}
+        }
+        
+        return false
     }
 }

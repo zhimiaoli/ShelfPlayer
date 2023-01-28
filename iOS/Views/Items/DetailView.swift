@@ -17,7 +17,15 @@ struct DetailView: View {
     var body: some View {
         if let item = item {
             if item.isBook {
-                BookDetailInner(viewModel: ViewModel(item: item), presentationMode: presentationMode)
+                FullscreenView(presentationMode: presentationMode) {
+                    BookDetailInner(viewModel: ViewModel(item: item))
+                }
+            } else if item.isPodcast {
+                if item.hasEpisode {
+                    FullscreenView(presentationMode: presentationMode) {
+                        EpisodeDetailInner(item: item)
+                    }
+                }
             } else if item.isSeries {
                 GridDetailInner(item: item, scope: "series")
             } else if item.isAuthor {

@@ -60,6 +60,22 @@ extension PersistenceController {
     }
     
     public func getProgressByLibraryItem(item: LibraryItem) -> Float {
+        let entity = getEnitityByLibraryItem(item: item)
+        return Float(entity?.progress ?? 0)
+    }
+    
+    public func updateStatusWithoutUpdate(item: LibraryItem, progress: Float) {
+        let entity = getEnitityByLibraryItem(item: item)
+        
+        entity?.progress = Double(progress)
+        try? container.viewContext.save()
+    }
+    
+    private func getEnitityByLibraryItem(item: LibraryItem) -> CachedMediaProgress? {
+        if !item.isBook && !(item.isPodcast && item.hasEpisode) {
+            return nil
+        }
+        
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         if item.hasEpisode {
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -71,9 +87,9 @@ extension PersistenceController {
         }
         
         guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {
-            return 0
+            return nil
         }
         
-        return Float(first.progress)
+        return first
     }
 }

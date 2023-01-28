@@ -18,7 +18,7 @@ struct HomeView: View {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
                     ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
-                        if index == 0 {
+                        if index == 0 && row.type == "book" {
                             ItemRowContainer() {
                                 var entities = row.entities
                                 

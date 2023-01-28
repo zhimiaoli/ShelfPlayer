@@ -17,7 +17,7 @@ struct ItemGrid: View {
             ScrollView(.vertical, showsIndicators: false) {
                 if size != 0 {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                        ForEach(content) { item in
+                        ForEach(content, id: \.identifier) { item in
                             ItemRowItem(item: item, size: size, shadow: true)
                                 .padding(.vertical, 5)
                         }

@@ -20,6 +20,8 @@ extension NowPlayingWrapper {
                     ItemImage(item: globalViewModel.currentlyPlaying, size: proxy.size.width)
                         .shadow(radius: 10)
                         .padding(.vertical, 10)
+                        // this does not work
+                        // .matchedGeometryEffect(id: "image", in: namespace)
                     
                     if globalViewModel.currentlyPlaying!.isBook {
                         BookTitle()

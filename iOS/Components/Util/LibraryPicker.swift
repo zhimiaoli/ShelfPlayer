@@ -20,14 +20,16 @@ struct LibraryPicker: View {
                         globalViewModel.selectLibrary(libraryId: library.id)
                     } label: {
                         if library.mediaType == "book" {
-                            Label(library.name, image: "books.vertical.fill")
+                            Label(library.name, systemImage: "books.vertical.fill")
+                        } else if library.mediaType == "podcast" {
+                            Label(library.name, systemImage: "mic.fill")
                         } else {
                             Text(library.name)
                         }
                     }
                 }
             } label: {
-                Image(systemName: "books.vertical.circle.fill")
+                Image(systemName: "books.vertical.circle")
             }
         }
         

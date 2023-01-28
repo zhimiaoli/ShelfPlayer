@@ -32,18 +32,28 @@ class APIClient {
     }
     
     func request<T: Decodable>(_ resource: APIRequest<T>) async throws -> T {
-        var url = baseUrl.appending(path: resource.path)
-        if let query = resource.query {
+        let data = try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
+        // print(String.init(data: data, encoding: .utf8))
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+    func request(_ resource: APIRequestEmpty) async throws {
+        let _ = try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
+        // print(String.init(data: data, encoding: .utf8))
+    }
+    
+    private func _request(path: String, method: String, query: [URLQueryItem]?, body: Encodable?) async throws -> Data {
+        var url = baseUrl.appending(path: path)
+        if let query = query {
             url = url.appending(queryItems: query)
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = resource.method
-
+        request.httpMethod = method
+        
         if let token = token {
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-        if let body = resource.body {
+        if let body = body {
             do {
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
                 
@@ -55,9 +65,9 @@ class APIClient {
                 throw APIError.failedEncode
             }
         }
-
+        
         let (data, _) = try await URLSession.shared.data(for: request)
-        // print(String.init(data: data, encoding: .utf8))
-        return try JSONDecoder().decode(T.self, from: data)
+        
+        return data
     }
 }

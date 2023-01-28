@@ -109,3 +109,20 @@ extension APIResources {
         }
     }
 }
+
+// MARK: - /api/me/progress/{id}
+extension APIResources {
+    public static func progress(id: String) -> ProgressResource {
+        ProgressResource(id: id)
+    }
+    
+    public struct ProgressResource {
+        public var id: String
+        
+        public func finished(finished: Bool) -> APIRequestEmpty {
+            APIRequestEmpty(method: "PATCH", path: "api/me/progress/\(id)", body: [
+                "isFinished": finished,
+            ])
+        }
+    }
+}
