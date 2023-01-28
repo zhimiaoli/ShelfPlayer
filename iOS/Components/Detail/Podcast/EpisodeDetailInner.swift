@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftSoup
 
 extension DetailView {
     struct EpisodeDetailInner: View {
@@ -15,19 +14,45 @@ extension DetailView {
         @EnvironmentObject private var fullscreenViewModel: FullscrenViewViewModel
         @Environment(\.colorScheme) var colorScheme
         
-        @State private var description: String?
-        
         var body: some View {
             VStack {
                 VStack {
                     ItemImage(item: item, size: 165)
                         .padding(.top, 150)
+                        .onBecomingVisible {
+                            fullscreenViewModel.hideNavigationBar()
+                        }
+                        .onBecomingInvisible {
+                            fullscreenViewModel.showNavigationBar()
+                        }
                     
-                    if let publishedAt = item.recentEpisode?.publishedAt {
-                        Text(Date(milliseconds: Int64(publishedAt)).formatted(.dateTime.day().month(.wide).year()))
-                            .font(.caption)
-                            .foregroundColor(.gray)
+                    HStack {
+                        if let publishedAt = item.recentEpisode?.publishedAt {
+                            let date = Date(milliseconds: Int64(publishedAt))
+                            
+                            Group {
+                                if Calendar.current.isDateInToday(date) {
+                                    Text("Today")
+                                } else if Calendar.current.isDateInYesterday(date) {
+                                    Text("Yesterday")
+                                } else {
+                                    Text(date.formatted(.dateTime.day().month(.wide).year()))
+                                }
+                            }
+                            
+                            Text("•")
+                            
+                            // TODO: again, why?
+                            let (h, m, s) = Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.duration ?? 0))
+                            if h == "00" {
+                                Text("\(m):\(s)")
+                            } else {
+                                Text("\(h):\(m)")
+                            }
+                        }
                     }
+                    .font(.caption)
+                    .foregroundColor(.gray)
                     
                     Group {
                         Text(item.title)
@@ -53,13 +78,13 @@ extension DetailView {
                 }
                 .frame(maxWidth: .infinity)
                 .background {
+                    // It is apparently not possible to animate this
                     LinearGradient(colors: [Color(fullscreenViewModel.backgroundColor), Color(UIColor.secondarySystemBackground)], startPoint: .top, endPoint: .bottom)
                 }
                 
                 VStack {
-                    if let description = description {
-                        Text(description)
-                        Text(description)
+                    if let html = item.recentEpisode?.description {
+                        Text(TextHelper.parseHTML(html))
                     }
                 }
                 .padding()
@@ -68,17 +93,6 @@ extension DetailView {
             .navigationTitle(item.title)
             .task {
                 fullscreenViewModel.backgroundColor = await ImageHelper.getAverageColor(item: item).0.withAlphaComponent(0.7)
-            }
-            .onAppear {
-                if let html = item.recentEpisode?.description {
-                    do {
-                        let cleaned = try SwiftSoup.clean(html, Whitelist.basic())!
-                        let document: Document = try SwiftSoup.parse(cleaned)
-                        description = try document.text()
-                    } catch {
-                        description = "error while parsing description"
-                    }
-                }
             }
         }
     }

@@ -37,7 +37,7 @@ struct HomeView: View {
                                 }
                             }
                             
-                            ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .smaller : .normal) {
+                            ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .small : row.id == "continue-listening" && row.entities.count == 1 ? .large : .normal) {
                                 ItemRow(content: row.entities)
                             }
                             
@@ -74,6 +74,6 @@ struct HomeView: View {
     }
     
     @Sendable private func loadRows() async {
-        rows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
+        rows = try! await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
     }
 }

@@ -14,8 +14,11 @@ struct DetailView: View {
     
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
+    @State var failed: Bool = false
+    @State var currentItem: LibraryItem?
+    
     var body: some View {
-        if let item = item {
+        if let item = currentItem {
             if item.isBook {
                 FullscreenView(presentationMode: presentationMode) {
                     BookDetailInner(viewModel: ViewModel(item: item))
@@ -25,6 +28,13 @@ struct DetailView: View {
                     FullscreenView(presentationMode: presentationMode) {
                         EpisodeDetailInner(item: item)
                     }
+                } else if item.media?.episodes != nil {
+                    FullscreenView(presentationMode: presentationMode) {
+                        PodcastDetailInner(item: item)
+                    }
+                } else {
+                    FullscreenLoadingIndicator(description: "Retriving episodes")
+                        .task(getItem)
                 }
             } else if item.isSeries {
                 GridDetailInner(item: item, scope: "series")
@@ -32,9 +42,30 @@ struct DetailView: View {
                 GridDetailInner(item: item, scope: "authors")
             }
         } else {
-            Text("Error")
-                .bold()
-                .foregroundColor(Color.red)
+            if failed {
+                Text("Error")
+                    .bold()
+                    .foregroundColor(Color.red)
+            } else {
+                FullscreenLoadingIndicator(description: "Retriving item")
+                    .task(getItem)
+            }
+        
+        Text(String(currentItem?.media?.episodes?.count ?? -1))
+        }
+    }
+    
+    @Sendable private func getItem() async {
+        if currentItem == nil && item != nil {
+            currentItem = item
+            return
+        }
+        
+        do {
+            let retrivedItem = try await APIClient.authorizedShared.request(APIResources.items(id: id ?? item?.id ?? "").get)
+            currentItem = retrivedItem
+        } catch {
+            failed = true
         }
     }
 }

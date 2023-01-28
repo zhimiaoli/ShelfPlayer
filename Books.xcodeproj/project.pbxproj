@@ -42,6 +42,9 @@
 		3A501663298574FB00BB2C74 /* FullscreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A501662298574FB00BB2C74 /* FullscreenView.swift */; };
 		3A50166629857F3900BB2C74 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 3A50166529857F3900BB2C74 /* SwiftSoup */; };
 		3A50166A298582FD00BB2C74 /* ItemButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A501669298582FD00BB2C74 /* ItemButtons.swift */; };
+		3A50166C2985B50700BB2C74 /* PodcastDetailInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166B2985B50700BB2C74 /* PodcastDetailInner.swift */; };
+		3A50166E2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */; };
+		3A5016702985CC7100BB2C74 /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166F2985CC7100BB2C74 /* TextHelper.swift */; };
 		3A98B9F92920F78C00EE5ECE /* PingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9F82920F78C00EE5ECE /* PingResponse.swift */; };
 		3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9FE2920FDD900EE5ECE /* APIError.swift */; };
 		3A98BA012920FF5400EE5ECE /* APIResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98BA002920FF5400EE5ECE /* APIResources.swift */; };
@@ -116,6 +119,9 @@
 		3A50166129856D9F00BB2C74 /* Books-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Books-Info.plist"; sourceTree = "<group>"; };
 		3A501662298574FB00BB2C74 /* FullscreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenView.swift; sourceTree = "<group>"; };
 		3A501669298582FD00BB2C74 /* ItemButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemButtons.swift; sourceTree = "<group>"; };
+		3A50166B2985B50700BB2C74 /* PodcastDetailInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailInner.swift; sourceTree = "<group>"; };
+		3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailEpisodeList.swift; sourceTree = "<group>"; };
+		3A50166F2985CC7100BB2C74 /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		3A98B9F82920F78C00EE5ECE /* PingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingResponse.swift; sourceTree = "<group>"; };
 		3A98B9FE2920FDD900EE5ECE /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		3A98BA002920FF5400EE5ECE /* APIResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResources.swift; sourceTree = "<group>"; };
@@ -264,6 +270,8 @@
 			isa = PBXGroup;
 			children = (
 				3A50165D2985584D00BB2C74 /* EpisodeDetailInner.swift */,
+				3A50166B2985B50700BB2C74 /* PodcastDetailInner.swift */,
+				3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */,
 			);
 			path = Podcast;
 			sourceTree = "<group>";
@@ -332,10 +340,10 @@
 		3AB97F24291FB8D500E07DB5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3ADEBFEB293133880047CE12 /* Detail */,
 				3A5016542985443500BB2C74 /* Views */,
 				3A50163C2985058200BB2C74 /* NowPlaying */,
 				3A501635298442F100BB2C74 /* Login */,
-				3ADEBFEB293133880047CE12 /* Detail */,
 				3AC75B64292FE6CC0057A250 /* Util */,
 				3AC75B63292FE6AD0057A250 /* ContentRow */,
 			);
@@ -400,6 +408,7 @@
 			isa = PBXGroup;
 			children = (
 				3ADEC0062931FF860047CE12 /* ImageHelper.swift */,
+				3A50166F2985CC7100BB2C74 /* TextHelper.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -533,6 +542,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A50166E2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift in Sources */,
 				3A50163B2984506C00BB2C74 /* BookDetailBody.swift in Sources */,
 				3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */,
 				3A50166A298582FD00BB2C74 /* ItemButtons.swift in Sources */,
@@ -547,6 +557,7 @@
 				3A3F29F8292FDC6F00841C03 /* LibraryItem.swift in Sources */,
 				3ADEC0042931FF010047CE12 /* UIImage+Color.swift in Sources */,
 				3A50165E2985584D00BB2C74 /* EpisodeDetailInner.swift in Sources */,
+				3A50166C2985B50700BB2C74 /* PodcastDetailInner.swift in Sources */,
 				3AF4CB79291FA7120080451B /* Books.xcdatamodeld in Sources */,
 				3ADEBFFA2931FC800047CE12 /* View+BecomingVisible.swift in Sources */,
 				3A5016272982FB5200BB2C74 /* GridDetailInner.swift in Sources */,
@@ -571,6 +582,7 @@
 				3A3F29F0292FD56B00841C03 /* DebugView.swift in Sources */,
 				3A50163E2985059100BB2C74 /* NowPlayingWrapper.swift in Sources */,
 				3AF4CB76291FA7120080451B /* Persistence.swift in Sources */,
+				3A5016702985CC7100BB2C74 /* TextHelper.swift in Sources */,
 				3A5016422985092000BB2C74 /* NowPlayingSheet.swift in Sources */,
 				3A501640298505C300BB2C74 /* NowPlayingBar.swift in Sources */,
 				3ADEBFEF293133A40047CE12 /* DetailView.swift in Sources */,

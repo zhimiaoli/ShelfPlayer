@@ -38,7 +38,6 @@ class APIClient {
     }
     func request(_ resource: APIRequestEmpty) async throws {
         let _ = try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
-        // print(String.init(data: data, encoding: .utf8))
     }
     
     private func _request(path: String, method: String, query: [URLQueryItem]?, body: Encodable?) async throws -> Data {

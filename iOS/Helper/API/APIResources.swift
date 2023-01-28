@@ -126,3 +126,20 @@ extension APIResources {
         }
     }
 }
+
+// MARK: - /api/items/{id}
+extension APIResources {
+    public static func items(id: String) -> ItemResource {
+        ItemResource(id: id)
+    }
+    
+    public struct ItemResource {
+        public var id: String
+        
+        public var get: APIRequest<LibraryItem> {
+            return APIRequest(method: "GET", path: "api/items/\(id)", query: [
+                URLQueryItem(name: "expanded", value: "1"),
+            ])
+        }
+    }
+}

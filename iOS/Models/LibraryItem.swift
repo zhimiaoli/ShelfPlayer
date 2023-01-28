@@ -44,7 +44,11 @@ struct LibraryItem: Codable, Equatable {
     let imagePath: String?
     
     static func == (lhs: LibraryItem, rhs: LibraryItem) -> Bool {
-        lhs.identifier == rhs.identifier
+        if !lhs.isPodcast && !rhs.isPodcast {
+            return lhs.identifier == rhs.identifier
+        } else {
+            return lhs.identifier == rhs.identifier && lhs.media?.episodes?.count == rhs.media?.episodes?.count
+        }
     }
 }
 
@@ -61,6 +65,24 @@ extension LibraryItem {
         let publishedAt: Double?
         let addedAt: Double?
         let updatedAt: Double?
+        
+        let size: Double?
+        let duration: Double?
+        
+        // why?
+        var seasonData: (String?, String?) {
+            var season: String?
+            var episode: String?
+            
+            if self.season != "" {
+                season = self.season
+            }
+            if self.episode != "" {
+                episode = self.episode
+            }
+            
+            return (season, episode)
+        }
     }
     
     struct LibraryItemMedia: Codable {
@@ -76,6 +98,9 @@ extension LibraryItem {
         let numInvalidAudioFiles: Int?
         
         let duration: Double?
+        
+        // Only avaiable for Podcasts
+        let episodes: [PodcastEpisode]?
     }
     
     struct LibraryItemMetadata: Codable {

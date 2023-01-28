@@ -70,7 +70,7 @@ struct FullscreenView<Content: View>: View {
                     viewModel.animateNavigationBarChanges = true
                 }
                 
-                viewModel.mainContentMinHeight = reader.size.height - 400
+                viewModel.mainContentMinHeight = reader.size.height - 300
             }
         }
         .environmentObject(viewModel)

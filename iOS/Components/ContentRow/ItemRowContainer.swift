@@ -60,9 +60,12 @@ struct ItemRowContainer<Content: View>: View {
             .onAppear {
                 size = (reader.size.width - 60) / 2
                 
-                if appearence == .smaller {
+                if appearence == .small {
                     size /= 1.75
                     size -= 23
+                } else if appearence == .large {
+                    size *= 2
+                    size += 20
                 }
             }
             .environment(\.itemRowItemWidth, $size)
@@ -71,8 +74,9 @@ struct ItemRowContainer<Content: View>: View {
     }
     
     enum Size {
+        case large
         case normal
-        case smaller
+        case small
     }
 }
 
