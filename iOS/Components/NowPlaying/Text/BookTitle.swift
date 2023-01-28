@@ -19,7 +19,7 @@ extension NowPlayingWrapper {
                     Text("Chapter 10")
                         .font(.system(size: 21, weight: .bold, design: .serif))
                         .foregroundColor((viewModel.backgroundIsLight ? Color.black : Color.white))
-                    MarqueeText(text: "\(globalViewModel.currentlyPlaying!.title) • \(globalViewModel.currentlyPlaying!.author)", font: .boldSystemFont(ofSize: 21), leftFade: 16, rightFade: 16, startDelay: 3)
+                    MarqueeText(text: "\(globalViewModel.currentlyPlaying!.title) • \(globalViewModel.currentlyPlaying!.author)", font: .boldSystemFont(ofSize: 21), leftFade: 5, rightFade: 16, startDelay: 3)
                         .padding(.top, -12)
                         .foregroundColor((viewModel.backgroundIsLight ? Color.black : Color.white).opacity(0.7))
                 }

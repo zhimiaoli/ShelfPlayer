@@ -86,6 +86,7 @@ extension LibraryItem {
         let description: String?
         
         let authorName: String?
+        let author: String?
         let narratorName: String?
         let publisher: String?
         let seriesName: String?
@@ -110,7 +111,7 @@ extension LibraryItem {
         recentEpisode?.title ?? media?.metadata.title ?? name ?? "unknown title"
     }
     var author: String {
-        media?.metadata.authorName ?? "unknown author"
+        media?.metadata.authorName ?? media?.metadata.author ?? "unknown author"
     }
     /// Returns the cover url of the item or nil
     var cover: URL? {

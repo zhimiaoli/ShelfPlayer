@@ -23,27 +23,33 @@ extension DetailView {
                     ItemImage(item: item, size: 165)
                         .padding(.top, 150)
                     
-                    Text("9. Januar")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    
-                    Text(item.title)
-                        .padding(.top, 1)
-                        .font(.title3)
-                        .bold()
-                    
-                    NavigationLink(destination: DetailView(id: item.id)) {
-                        HStack {
-                            Text(item.media?.metadata.title ?? "unknown podcast")
-                            Image(systemName: "chevron.right.circle")
-                                .dynamicTypeSize(.xSmall)
-                        }
-                        .font(.callout)
-                        .foregroundColor(.primary)
+                    if let publishedAt = item.recentEpisode?.publishedAt {
+                        Text(Date(milliseconds: Int64(publishedAt)).formatted(.dateTime.day().month(.wide).year()))
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
                     
+                    Group {
+                        Text(item.title)
+                            .padding(.top, 1)
+                            .font(.title3)
+                            .bold()
+                        
+                        NavigationLink(destination: DetailView(id: item.id)) {
+                            HStack {
+                                Text(item.media?.metadata.title ?? "unknown podcast")
+                                Image(systemName: "chevron.right.circle")
+                                    .dynamicTypeSize(.xSmall)
+                            }
+                            .font(.callout)
+                            .foregroundColor(.primary)
+                        }
+                    }
+                    .frame(maxWidth: 275)
+                    .multilineTextAlignment(.center)
+                    
                     ItemButtons(item: item, colorScheme: colorScheme)
-                    .padding(.bottom, 25)
+                        .padding(.bottom, 25)
                 }
                 .frame(maxWidth: .infinity)
                 .background {
@@ -53,11 +59,13 @@ extension DetailView {
                 VStack {
                     if let description = description {
                         Text(description)
+                        Text(description)
                     }
                 }
                 .padding()
                 .frame(minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .top)
             }
+            .navigationTitle(item.title)
             .task {
                 fullscreenViewModel.backgroundColor = await ImageHelper.getAverageColor(item: item).0.withAlphaComponent(0.7)
             }

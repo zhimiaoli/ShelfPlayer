@@ -30,7 +30,6 @@ struct FullscreenView<Content: View>: View {
             // Navigation bar
             .edgesIgnoringSafeArea(.top)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarTitle("oof")
             
             // Toolbar
             .toolbar(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)

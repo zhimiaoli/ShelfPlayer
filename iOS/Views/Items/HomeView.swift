@@ -30,7 +30,7 @@ struct HomeView: View {
                                 }
                             }
                         } else {
-                            if colorScheme == .dark {
+                            if colorScheme == .dark && index != 0 {
                                 if index == 0 || rows[index - 1].id != "continue-series" {
                                     Divider()
                                         .padding(.horizontal)
@@ -56,6 +56,11 @@ struct HomeView: View {
                     }
                 }
             }
+            .refreshable(action: {
+                Task {
+                    await loadRows()
+                }
+            })
             .navigationTitle("Listen now")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {

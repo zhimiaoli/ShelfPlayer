@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarqueeText
 
 extension NowPlayingWrapper {
     struct NowPlayingBar: View {
@@ -16,11 +17,10 @@ extension NowPlayingWrapper {
                 ItemImage(item: globalViewModel.currentlyPlaying, size: 55)
                     .shadow(radius: 2)
                 VStack(alignment: .leading) {
-                    Text(globalViewModel.currentlyPlaying!.title)
-                        .bold()
-                    Text(globalViewModel.currentlyPlaying!.author)
-                        .font(.caption)
+                    MarqueeText(text: globalViewModel.currentlyPlaying!.title, font: UIFont.boldSystemFont(ofSize: 16), leftFade: 4, rightFade: 16, startDelay: 3)
+                    MarqueeText(text: globalViewModel.currentlyPlaying!.author, font: UIFont.systemFont(ofSize: 14), leftFade: 16, rightFade: 16, startDelay: 3)
                         .foregroundColor(.gray)
+                        .padding(.top, -4)
                 }
                 
                 Spacer()
@@ -34,7 +34,7 @@ extension NowPlayingWrapper {
                         }
                     }
                     Button {
-                        // TODO: play / puase the player
+                        // TODO: play / pause the player
                     } label: {
                         Image(systemName: "play.fill")
                     }
@@ -53,7 +53,7 @@ extension NowPlayingWrapper {
             .padding(.horizontal, 10)
             .frame(maxWidth: .infinity)
             .frame(height: 65)
-            .background(.ultraThickMaterial)
+            .background(.regularMaterial)
         }
     }
 }
