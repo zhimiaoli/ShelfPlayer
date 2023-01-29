@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ItemGridView: View {
+    let getItems: @Sendable () async throws -> [LibraryItem]?
+    
     @State private var failed: Bool = false
     @State private var items: [LibraryItem]?
-    
-    let getItems: @Sendable () async throws -> [LibraryItem]?
     
     var body: some View {
         Group {
@@ -26,6 +26,10 @@ struct ItemGridView: View {
                 Text("Error while loading items")
                     .font(.system(.caption, design: .rounded).smallCaps())
                     .foregroundColor(Color.gray)
+            }
+        }.onReceive(NSNotification.ItemGridSortOrderUpdated) { _ in
+            Task {
+                await _getItems()
             }
         }
     }

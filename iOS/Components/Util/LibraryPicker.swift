@@ -21,13 +21,17 @@ struct LibraryPicker: View {
                             globalViewModel.selectLibrary(libraryId: library.id, type: library.mediaType)
                         }
                     } label: {
-                        if library.mediaType == "book" {
-                            Label(library.name, systemImage: "books.vertical.fill")
-                        } else if library.mediaType == "podcast" {
-                            Label(library.name, systemImage: "mic.fill")
-                        } else {
-                            Text(library.name)
+                        Group {
+                            if library.mediaType == "book" {
+                                Label(library.name, systemImage: "books.vertical.fill")
+                            } else if library.mediaType == "podcast" {
+                                Label(library.name, systemImage: "mic.fill")
+                            } else {
+                                Text(library.name)
+                            }
                         }
+                        // Does not work...
+                        // .foregroundColor(globalViewModel.activeLibraryId == library.id ? .accentColor : .primary)
                     }
                 }
                 

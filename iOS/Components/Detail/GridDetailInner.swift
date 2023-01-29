@@ -9,10 +9,10 @@ import SwiftUI
 
 extension DetailView {
     struct GridDetailInner: View {
-        @EnvironmentObject private var globalViewModel: GlobalViewModel
-        
         var item: LibraryItem
         var scope: String
+        
+        @EnvironmentObject private var globalViewModel: GlobalViewModel
         
         var body: some View {
             ItemGridView(getItems: {

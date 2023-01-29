@@ -9,4 +9,6 @@ import Foundation
 
 extension NSNotification {
     static let PodcastSettingsUpdated = Notification.Name.init("io.rfk.audiobooks.podcast.settings.updated")
+    static let LibrarySettingsUpdated = Notification.Name.init("io.rfk.audiobooks.library.settings.updated")
+    static let ItemGridSortOrderUpdated = Notification.Name.init("io.rfk.audiobooks.items.sort.updated")
 }

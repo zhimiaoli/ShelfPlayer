@@ -53,8 +53,8 @@ struct DetailView: View {
                 FullscreenLoadingIndicator(description: "Retriving item")
                     .task(getItem)
             }
-        
-        Text(String(currentItem?.media?.episodes?.count ?? -1))
+            
+            Text(String(currentItem?.media?.episodes?.count ?? -1))
         }
     }
     

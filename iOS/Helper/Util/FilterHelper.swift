@@ -60,6 +60,38 @@ struct FilterHelper {
         return Bool(value) ?? fallback ?? defaultInvert
     }
     
+    // MARK: - Library filter
+    public static func setDefaultLibrarySortOrder(order: ItemSort, mediaType: String) {
+        PersistenceController.shared.setKey("library.sort.\(mediaType)", value: order.rawValue)
+    }
+    public static func getDefaultLibrarySortOrder(mediaType: String) -> ItemSort {
+        let value: String = PersistenceController.shared.getValue(key: "library.sort.\(mediaType)") ?? ""
+        return ItemSort(rawValue: value) ?? .title
+    }
+    
+    public static func getSortLabel(item: ItemSort) -> String {
+        switch item {
+        case .title:
+            return "Title"
+        case .size:
+            return "Size"
+            
+        case .author:
+            return "Author"
+        case .narrator:
+            return "Narrator"
+        case .seriesName:
+            return "Series"
+        case .publishedYear:
+            return "Year"
+        case .addedAt:
+            return "Added at"
+            
+        case .podcastAuthor:
+            return "Author"
+        }
+    }
+    
     // MARK: - sort & filter methods
     public static func filterEpisodes(_ episodes: [LibraryItem.PodcastEpisode], filter: EpisodeFilter) -> [LibraryItem.PodcastEpisode] {
         return episodes.filter { episode in
@@ -100,5 +132,17 @@ struct FilterHelper {
     }
     public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], _ sort: (EpisodeSort, Bool)) -> [LibraryItem.PodcastEpisode] {
         sortEpisodes(episodes, sortOrder: sort.0, invert: sort.1)
+    }
+    
+    public static func filterCases(_ item: ItemSort, libraryType: String) -> Bool {
+        var allowed: [ItemSort] = [.title, .size]
+        
+        if libraryType == "book" {
+            allowed = [.title, .author, .narrator, .seriesName, .publishedYear, .addedAt, .size]
+        } else if libraryType == "podcast" {
+            allowed = [.title, .podcastAuthor, .size]
+        }
+        
+        return allowed.contains(item)
     }
 }

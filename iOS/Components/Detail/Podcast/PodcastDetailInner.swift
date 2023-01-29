@@ -72,8 +72,19 @@ extension DetailView {
                                     Text("•")
                                 }
                             }
-                            if let genres = item.media?.metadata.genres {
-                                Text(genres.joined(separator: ", "))
+                            HStack(spacing: 0) {
+                                if let genres = item.media?.metadata.genres {
+                                    let last = genres[genres.count - 1]
+                                    ForEach(genres, id: \.hashValue) { genre in
+                                        NavigationLink(destination: GenreView(genre: genre)) {
+                                            Text(genre)
+                                        }
+                                        
+                                        if genre != last {
+                                            Text(", ")
+                                        }
+                                    }
+                                }
                             }
                             
                             Spacer()

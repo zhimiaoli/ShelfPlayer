@@ -78,6 +78,12 @@ extension APIResources {
             APIRequest(method: "GET", path: "api/libraries/\(id)/personalized")
         }
         
+        public func items(sort: ItemSort = .title, minified: Bool = true) -> APIRequest<FilterResponse<LibraryItem>> {
+            return APIRequest(method: "GET", path: "api/libraries/\(id)/items", query: [
+                URLQueryItem(name: "sort", value: sort.rawValue),
+                URLQueryItem(name: "minified", value: minified ? "1" : "0")
+            ])
+        }
         public func items(filter: String, limit: Int = 100, page: Int = 0, minified: Bool = true) -> APIRequest<FilterResponse<LibraryItem>> {
             return APIRequest(method: "GET", path: "api/libraries/\(id)/items", query: [
                 URLQueryItem(name: "filter", value: filter),
@@ -87,7 +93,7 @@ extension APIResources {
             ])
         }
         
-        public func series(sort: ItemSortOrder, descending: Bool = false, minified: Bool = true) -> APIRequest<FilterResponse<LibraryItem>> {
+        public func series(sort: SeriesSort, descending: Bool = false, minified: Bool = true) -> APIRequest<FilterResponse<LibraryItem>> {
             return APIRequest(method: "GET", path: "api/libraries/\(id)/series", query: [
                 URLQueryItem(name: "sort", value: sort.rawValue),
                 URLQueryItem(name: "desc", value: descending ? "1" : "0"),

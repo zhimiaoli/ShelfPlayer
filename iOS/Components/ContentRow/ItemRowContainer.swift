@@ -20,28 +20,30 @@ struct ItemRowContainer<Content: View>: View {
         GeometryReader { reader in
             VStack(alignment: .leading) {
                 if let title = title {
-                    let text = Text(title)
-                        .font(.system(.body, design: .serif))
-                        .dynamicTypeSize(.xxLarge)
-                    
                     Group {
-                        if let destinationId = destinationId {
-                            NavigationLink(destination: DetailView(id: destinationId)) {
-                                HStack {
-                                    text
-                                        .foregroundColor(.primary)
-                                    
-                                    Image(systemName: "chevron.right.circle")
-                                        .foregroundColor(.accentColor)
+                        let text = Text(title)
+                            .font(.system(.body, design: .serif))
+                            .dynamicTypeSize(.xxLarge)
+                        
+                        Group {
+                            if let destinationId = destinationId {
+                                NavigationLink(destination: DetailView(id: destinationId)) {
+                                    HStack {
+                                        text
+                                            .foregroundColor(.primary)
+                                        
+                                        Image(systemName: "chevron.right.circle")
+                                            .foregroundColor(.accentColor)
+                                    }
                                 }
+                            } else {
+                                text
                             }
-                        } else {
-                            text
                         }
+                        .bold()
+                        .padding(.horizontal, 20)
                     }
-                    .bold()
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, -10)
+                    .padding(.bottom, -7)
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack() {

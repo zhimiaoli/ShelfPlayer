@@ -14,9 +14,13 @@ struct SettingsView: View {
     @State var selectedSortOrder: EpisodeSort = FilterHelper.defaultSortOrder
     @State var sortInvert: Bool = FilterHelper.defaultInvert
     
+    @State var bookDefaultSort: ItemSort = FilterHelper.getDefaultLibrarySortOrder(mediaType: "book")
+    @State var podcastDefaultSort: ItemSort = FilterHelper.getDefaultLibrarySortOrder(mediaType: "podcast")
+    
     var body: some View {
         NavigationStack {
             Form {
+                // Podcast
                 FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)
                     .onChange(of: selectedFilter) { filter in
                         FilterHelper.setDefaultFilter(filter: filter)
@@ -28,6 +32,36 @@ struct SettingsView: View {
                         FilterHelper.setDefaultInvert(invert: invert)
                     }
                 
+                // Library
+                Section {
+                    Picker("Books", selection: $bookDefaultSort) {
+                        ForEach(ItemSort.allCases.filter { FilterHelper.filterCases($0, libraryType: "book") }, id: \.hashValue) {
+                            Text(FilterHelper.getSortLabel(item: $0))
+                            .tag($0)
+                        }
+                    }
+                    .onChange(of: bookDefaultSort) { order in
+                        FilterHelper.setDefaultLibrarySortOrder(order: order, mediaType: "book")
+                        NotificationCenter.default.post(name: NSNotification.LibrarySettingsUpdated, object: nil)
+                    }
+                    
+                    Picker("Podcasts", selection: $podcastDefaultSort) {
+                        ForEach(ItemSort.allCases.filter { FilterHelper.filterCases($0, libraryType: "podcast") }, id: \.hashValue) {
+                            Text(FilterHelper.getSortLabel(item: $0))
+                            .tag($0)
+                        }
+                    }
+                    .onChange(of: podcastDefaultSort) { order in
+                        FilterHelper.setDefaultLibrarySortOrder(order: order, mediaType: "podcast")
+                        NotificationCenter.default.post(name: NSNotification.LibrarySettingsUpdated, object: nil)
+                    }
+                } header: {
+                    Text("Libraries")
+                } footer: {
+                    Text("This filter will be applied by default")
+                }
+                
+                // Account
                 Section {
                     HStack {
                         Text("Account")
@@ -51,6 +85,24 @@ struct SettingsView: View {
                     Text("Account")
                 }
                 
+                // Database
+                Section {
+                    Button {
+                        PersistenceController.shared.flushKeyValueStorage()
+                    } label: {
+                        Label("Delete podcast settings", systemImage: "gear")
+                    }
+                    
+                    Button {
+                        try? PersistenceController.shared.deleteAllCachedSessions()
+                    } label: {
+                        Label("Delete cached progress", systemImage: "percent")
+                    }
+                } header: {
+                    Text("Database")
+                }
+                
+                // Debug
                 NavigationLink(destination: DebugView()) {
                     Label("Debug", systemImage: "hammer.fill")
                 }

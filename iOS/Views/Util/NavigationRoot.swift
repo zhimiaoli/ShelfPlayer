@@ -14,7 +14,7 @@ struct NavigationRoot: View {
     var body: some View {
         TabView {
             NowPlayingWrapper {
-                NavigationView {
+                NavigationStack {
                     HomeView()
                 }
             }
@@ -25,7 +25,9 @@ struct NavigationRoot: View {
             // switch is way to complicated
             if globalViewModel.activeLibraryType == "book" {
                 NowPlayingWrapper {
-                    Text("series")
+                    NavigationStack {
+                        SeriesView()
+                    }
                 }
                 .tabItem {
                     Label("Series", systemImage: "books.vertical.circle.fill")
@@ -33,7 +35,9 @@ struct NavigationRoot: View {
             }
             
             NowPlayingWrapper {
-                Text("library")
+                NavigationStack {
+                    LibraryView()
+                }
             }
             .tabItem {
                 Label("Library", systemImage: "bookmark.square.fill")

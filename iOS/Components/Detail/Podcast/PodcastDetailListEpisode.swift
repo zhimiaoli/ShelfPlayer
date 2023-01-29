@@ -12,7 +12,7 @@ extension DetailView {
         var episode: LibraryItem.PodcastEpisode
         
         var body: some View {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 if let publishedAt = episode.publishedAt {
                     let date = Date(milliseconds: Int64(publishedAt))
                     
@@ -43,18 +43,35 @@ extension DetailView {
                 HStack {
                     let (h, m, s) = Date.secondsToHoursMinutesSeconds(Int(episode.duration ?? 0))
                     
-                    Image(systemName: "play.circle.fill")
-                        .dynamicTypeSize(.xxLarge)
-                    if h == "00" {
-                        Text("\(m):\(s)")
-                    } else {
-                        Text("\(h):\(m)")
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "play.circle.fill")
+                        // .dynamicTypeSize(.xxLarge)
                     }
+                    
+                    Group {
+                        if h == "00" {
+                            Text("\(m):\(s)")
+                        } else {
+                            Text("\(h):\(m)")
+                        }
+                    }
+                    .font(.subheadline)
                 }
                 .bold()
-                .padding(.top, 0.5)
+                .padding(.top, 4)
                 .foregroundColor(.accentColor)
             }
         }
     }
 }
+
+/*
+struct Previews_PodcastDetailListEpisode_Previews: PreviewProvider {
+    static var previews: some View {
+        PodcastDetailListEpisode(episode: LibraryItem.PodcastEpisode(id: "test", libraryItemId: "test", index: 0, season: nil, episode: nil, title: "Episode title", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", publishedAt: 1675017968697, addedAt: 1675017968697, updatedAt: 1675017968697, size: 345345344, duration: 780000))
+            .padding()
+    }
+}
+*/
