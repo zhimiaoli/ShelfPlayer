@@ -63,6 +63,7 @@ extension DetailView {
                         NavigationLink(destination: DetailView(id: item.id)) {
                             HStack {
                                 Text(item.media?.metadata.title ?? "unknown podcast")
+                                    .lineLimit(1)
                                 Image(systemName: "chevron.right.circle")
                                     .dynamicTypeSize(.xSmall)
                             }
@@ -70,7 +71,7 @@ extension DetailView {
                             .foregroundColor(.primary)
                         }
                     }
-                    .frame(maxWidth: 275)
+                    .frame(maxWidth: 325)
                     .multilineTextAlignment(.center)
                     
                     ItemButtons(item: item, colorScheme: colorScheme)

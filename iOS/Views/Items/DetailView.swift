@@ -22,15 +22,17 @@ struct DetailView: View {
             if item.isBook {
                 FullscreenView(presentationMode: presentationMode) {
                     BookDetailInner(viewModel: ViewModel(item: item))
-                }
+                } menu: {}
             } else if item.isPodcast {
                 if item.hasEpisode {
                     FullscreenView(presentationMode: presentationMode) {
                         EpisodeDetailInner(item: item)
-                    }
+                    } menu: {}
                 } else if item.media?.episodes != nil {
                     FullscreenView(presentationMode: presentationMode) {
                         PodcastDetailInner(item: item)
+                    } menu: {
+                        PodcastSettingsSheet(item: item)
                     }
                 } else {
                     FullscreenLoadingIndicator(description: "Retriving episodes")

@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct FullscreenView<Content: View>: View {
-    @Binding var presentationMode: PresentationMode
+struct FullscreenView<Content: View, Menu: View>: View {
+    var presentationMode: Binding<PresentationMode>
     @ViewBuilder var content: Content
+    @ViewBuilder var menu: Menu
     
     @StateObject var viewModel: FullscrenViewViewModel = FullscrenViewViewModel()
     
@@ -33,29 +34,49 @@ struct FullscreenView<Content: View>: View {
             
             // Toolbar
             .toolbar(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
-            .overlay(alignment: .topLeading) {
-                if presentationMode.isPresented {
-                    // A button does not work here
-                    Image(systemName: "chevron.left.circle.fill")
-                        .foregroundColor(.accentColor)
-                        .dynamicTypeSize(.xxxLarge)
-                        .symbolRenderingMode(.hierarchical)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    menu
                         .fontWeight(.bold)
-                        .offset(x: 15, y: 57)
-                        .ignoresSafeArea()
-                        .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
-                        .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
-                        .onTapGesture {
-                            withAnimation {
-                                presentationMode.dismiss()
-                            }
-                        }
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.accentColor)
                 }
             }
+            .overlay(alignment: .topLeading) {
+                HStack {
+                    if presentationMode.wrappedValue.isPresented {
+                        // A button does not work here
+                        Image(systemName: "chevron.left.circle.fill")
+                            .onTapGesture {
+                                withAnimation {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                            .offset(y: 60)
+                            .ignoresSafeArea()
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        menu
+                    }
+                    .offset(y: 60)
+                    .ignoresSafeArea()
+                }
+                .fontWeight(.bold)
+                .symbolRenderingMode(.hierarchical)
+                .foregroundColor(.accentColor)
+                .dynamicTypeSize(.xxxLarge)
+                .padding(.horizontal, 20)
+                .backgroundStyle(.red)
+                .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
+                .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
+            }
             .modifier(GestureSwipeRight(action: {
-                if presentationMode.isPresented && !viewModel.isNavigationBarVisible {
+                if presentationMode.wrappedValue.isPresented && !viewModel.isNavigationBarVisible {
                     withAnimation {
-                        presentationMode.dismiss()
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
             }))
@@ -117,6 +138,8 @@ struct FullscreenView_Previews: PreviewProvider {
     static var previews: some View {
         FullscreenView(presentationMode: presentationMode) {
             Text("This is not usefull at all")
+        } menu: {
+            
         }
     }
 }

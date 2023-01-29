@@ -55,13 +55,27 @@ extension PersistenceController {
     public func deleteAllCachedSessions() throws {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
+        
         try container.viewContext.execute(deleteRequest)
     }
     
+    // MARK: - progress
     public func getProgressByLibraryItem(item: LibraryItem) -> Float {
         let entity = getEnitityByLibraryItem(item: item)
         return Float(entity?.progress ?? 0)
+    }
+    public func getProgressByPodcastEpisode(episode: LibraryItem.PodcastEpisode) -> Float {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "libraryItemId == %@", episode.libraryItemId ?? ""),
+            NSPredicate(format: "episodeId == %@", episode.id ?? ""),
+        ])
+        
+        guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {
+            return 0
+        }
+        
+        return Float(first.progress)
     }
     
     public func updateStatusWithoutUpdate(item: LibraryItem, progress: Float) {
@@ -71,6 +85,7 @@ extension PersistenceController {
         try? container.viewContext.save()
     }
     
+    // MARK: - private functions
     private func getEnitityByLibraryItem(item: LibraryItem) -> CachedMediaProgress? {
         if !item.isBook && !(item.isPodcast && item.hasEpisode) {
             return nil

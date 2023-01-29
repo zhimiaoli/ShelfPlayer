@@ -11,6 +11,7 @@ import SwiftUI
 struct DebugView: View {
     @EnvironmentObject private var globalViewModel: GlobalViewModel
     @FetchRequest(sortDescriptors: [SortDescriptor(\.id, order: .reverse)]) private var cachedMediaProgresses: FetchedResults<CachedMediaProgress>
+    
     @State private var search: String = ""
     
     var body: some View {

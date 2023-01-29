@@ -11,64 +11,64 @@ extension DetailView {
     struct PodcastDetailEpisodeList: View {
         var episodes: [LibraryItem.PodcastEpisode]
         
+        init(episodes: [LibraryItem.PodcastEpisode]) {
+            self.episodes = episodes
+            self.filter = episodes.count == 0 ? .all : FilterHelper.getDefaultFilter(podcastId: episodes[0].libraryItemId ?? "")
+        }
+        
+        @State var filter: EpisodeFilter
+        
+        var fallback: some View {
+            Text("No episodes")
+                .bold()
+        }
+        
         var body: some View {
             VStack {
                 if episodes.count == 0 {
-                    Text("No episodes")
-                        .bold()
+                    fallback
                 } else {
                     HStack {
-                        Text("Episodes")
-                            .font(.title3)
+                        Menu {
+                            ForEach(EpisodeFilter.allCases, id: \.rawValue) { filter in
+                                Button {
+                                    withAnimation {
+                                        self.filter = filter
+                                    }
+                                } label: {
+                                    Text(filter.rawValue)
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Text(filter.rawValue)
+                                    .font(.title2)
+                                    .foregroundColor(.primary)
+                                
+                                Image(systemName: "chevron.down")
+                            }
+                            .bold()
+                        }
                         Spacer()
                         NavigationLink(destination: Text("uwu")) {
                             Text("See all")
+                                .bold()
                         }
                     }
                     
                     LazyVStack(alignment: .leading) {
-                        ForEach(Array(episodes.prefix(15)), id: \.id) { episode in
-                            Divider()
-                            
-                            VStack(alignment: .leading) {
-                                if let publishedAt = episode.publishedAt {
-                                    let date = Date(milliseconds: Int64(publishedAt))
-                                    
-                                    Group {
-                                        if Calendar.current.isDateInToday(date) {
-                                            Text("TODAY")
-                                        } else if Calendar.current.isDateInYesterday(date) {
-                                            Text("YESTERDAY")
-                                        } else {
-                                            Text(date.formatted(.dateTime.day().month(.wide).year()))
-                                        }
-                                    }
-                                    .foregroundColor(.primary.opacity(0.7))
-                                    .font(.caption)
-                                }
-                                Text(episode.title ?? "?")
-                                    .bold()
-                                    .lineSpacing(20)
-                                
-                                Text(TextHelper.parseHTML(episode.description ?? "no description"))
-                                    .font(.subheadline)
-                                    .lineLimit(3)
-                                
-                                HStack {
-                                    let (h, m, s) = Date.secondsToHoursMinutesSeconds(Int(episode.duration ?? 0))
-                                    
-                                    Image(systemName: "play.circle.fill")
-                                        .dynamicTypeSize(.xxLarge)
-                                    if h == "00" {
-                                        Text("\(m):\(s)")
-                                    } else {
-                                        Text("\(h):\(m)")
-                                    }
-                                }
-                                .bold()
-                                .padding(.top, 0.5)
-                                .foregroundColor(.accentColor)
+                        let filtered = Array(FilterHelper.sortEpisodes(FilterHelper.filterEpisodes(episodes, filter: filter), sortOrder: .date, invert: true).prefix(15))
+                        
+                        if filtered.count > 0 {
+                            ForEach(filtered, id: \.id) { episode in
+                                Divider()
+                                PodcastDetailListEpisode(episode: episode)
                             }
+                        } else {
+                            VStack(alignment: .center) {
+                                fallback
+                            }
+                            .frame(maxWidth: .infinity)
                         }
                     }
                 }

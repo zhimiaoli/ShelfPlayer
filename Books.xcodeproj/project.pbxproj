@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		3A0D7794297F02FB004F5A7D /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D7793297F02FB004F5A7D /* String+Base64.swift */; };
 		3A0D7796297F04E3004F5A7D /* Date+Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D7795297F04E3004F5A7D /* Date+Conversions.swift */; };
+		3A22634629866BA600B7CD94 /* PodcastDetailListEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634529866BA600B7CD94 /* PodcastDetailListEpisode.swift */; };
+		3A22634829866C1800B7CD94 /* EpisodeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634729866C1800B7CD94 /* EpisodeFilter.swift */; };
+		3A22634A29866C5300B7CD94 /* Color+Primary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634929866C5300B7CD94 /* Color+Primary.swift */; };
+		3A22634C2986701700B7CD94 /* FilterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634B2986701700B7CD94 /* FilterHelper.swift */; };
+		3A22634E2986732300B7CD94 /* Persistence+KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */; };
 		3A3F29E8292D40EF00841C03 /* Date+Millis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29E7292D40EF00841C03 /* Date+Millis.swift */; };
 		3A3F29EA292FCD9200841C03 /* Persistence+MediaProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29E9292FCD9200841C03 /* Persistence+MediaProgress.swift */; };
 		3A3F29EC292FD24000841C03 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29EB292FD24000841C03 /* HomeView.swift */; };
@@ -57,6 +62,8 @@
 		3AB97F2D2920017D00E07DB5 /* LoginFlowServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB97F2C2920017D00E07DB5 /* LoginFlowServer.swift */; };
 		3AB97F2F2920032A00E07DB5 /* FullscreenLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB97F2E2920032A00E07DB5 /* FullscreenLoadingIndicator.swift */; };
 		3AB97F342920061400E07DB5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB97F332920061400E07DB5 /* APIClient.swift */; };
+		3ABE74992986798E00152332 /* PodcastSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE74982986798E00152332 /* PodcastSettingsSheet.swift */; };
+		3ABE749B2986853500152332 /* EpisodeOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE749A2986853500152332 /* EpisodeOrder.swift */; };
 		3AC75B66292FE6DD0057A250 /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B65292FE6DD0057A250 /* ProgressIndicator.swift */; };
 		3AC75B68292FE6FC0057A250 /* ItemRowContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B67292FE6FC0057A250 /* ItemRowContainer.swift */; };
 		3AC75B6A292FE72E0057A250 /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC75B69292FE72E0057A250 /* ItemRow.swift */; };
@@ -87,6 +94,11 @@
 /* Begin PBXFileReference section */
 		3A0D7793297F02FB004F5A7D /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		3A0D7795297F04E3004F5A7D /* Date+Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Conversions.swift"; sourceTree = "<group>"; };
+		3A22634529866BA600B7CD94 /* PodcastDetailListEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailListEpisode.swift; sourceTree = "<group>"; };
+		3A22634729866C1800B7CD94 /* EpisodeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeFilter.swift; sourceTree = "<group>"; };
+		3A22634929866C5300B7CD94 /* Color+Primary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Primary.swift"; sourceTree = "<group>"; };
+		3A22634B2986701700B7CD94 /* FilterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHelper.swift; sourceTree = "<group>"; };
+		3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+KeyValue.swift"; sourceTree = "<group>"; };
 		3A3F29E7292D40EF00841C03 /* Date+Millis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Millis.swift"; sourceTree = "<group>"; };
 		3A3F29E9292FCD9200841C03 /* Persistence+MediaProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+MediaProgress.swift"; sourceTree = "<group>"; };
 		3A3F29EB292FD24000841C03 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -134,6 +146,8 @@
 		3AB97F2C2920017D00E07DB5 /* LoginFlowServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFlowServer.swift; sourceTree = "<group>"; };
 		3AB97F2E2920032A00E07DB5 /* FullscreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenLoadingIndicator.swift; sourceTree = "<group>"; };
 		3AB97F332920061400E07DB5 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		3ABE74982986798E00152332 /* PodcastSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastSettingsSheet.swift; sourceTree = "<group>"; };
+		3ABE749A2986853500152332 /* EpisodeOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeOrder.swift; sourceTree = "<group>"; };
 		3AC75B65292FE6DD0057A250 /* ProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		3AC75B67292FE6FC0057A250 /* ItemRowContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowContainer.swift; sourceTree = "<group>"; };
 		3AC75B69292FE72E0057A250 /* ItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRow.swift; sourceTree = "<group>"; };
@@ -272,6 +286,8 @@
 				3A50165D2985584D00BB2C74 /* EpisodeDetailInner.swift */,
 				3A50166B2985B50700BB2C74 /* PodcastDetailInner.swift */,
 				3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */,
+				3A22634529866BA600B7CD94 /* PodcastDetailListEpisode.swift */,
+				3ABE74982986798E00152332 /* PodcastSettingsSheet.swift */,
 			);
 			path = Podcast;
 			sourceTree = "<group>";
@@ -288,6 +304,7 @@
 				3A0D7795297F04E3004F5A7D /* Date+Conversions.swift */,
 				3A50164D29851FA800BB2C74 /* MPVolumeView+Volume.swift */,
 				3A50165F2985599500BB2C74 /* View+Namespace.swift */,
+				3A22634929866C5300B7CD94 /* Color+Primary.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -366,6 +383,7 @@
 				3AF4CB75291FA7120080451B /* Persistence.swift */,
 				3AD5EAD22923D87C00D74AF1 /* PersistenceController+User.swift */,
 				3A3F29E9292FCD9200841C03 /* Persistence+MediaProgress.swift */,
+				3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -409,6 +427,7 @@
 			children = (
 				3ADEC0062931FF860047CE12 /* ImageHelper.swift */,
 				3A50166F2985CC7100BB2C74 /* TextHelper.swift */,
+				3A22634B2986701700B7CD94 /* FilterHelper.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -461,6 +480,8 @@
 				3A50162F298421A800BB2C74 /* ItemSortOrder.swift */,
 				3A501633298442E400BB2C74 /* GlobalViewModel.swift */,
 				3A5016582985447F00BB2C74 /* Library.swift */,
+				3A22634729866C1800B7CD94 /* EpisodeFilter.swift */,
+				3ABE749A2986853500152332 /* EpisodeOrder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -545,6 +566,7 @@
 				3A50166E2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift in Sources */,
 				3A50163B2984506C00BB2C74 /* BookDetailBody.swift in Sources */,
 				3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */,
+				3A22634829866C1800B7CD94 /* EpisodeFilter.swift in Sources */,
 				3A50166A298582FD00BB2C74 /* ItemButtons.swift in Sources */,
 				3AC75B6C292FE74F0057A250 /* ItemRowItem.swift in Sources */,
 				3A50162E29841EF500BB2C74 /* ItemGridView.swift in Sources */,
@@ -576,6 +598,7 @@
 				3AB97F27291FB8FF00E07DB5 /* LargeButtonStyle.swift in Sources */,
 				3A50164E29851FA800BB2C74 /* MPVolumeView+Volume.swift in Sources */,
 				3A98BA0529210F2900EE5ECE /* LoginFlowCredentials.swift in Sources */,
+				3A22634E2986732300B7CD94 /* Persistence+KeyValue.swift in Sources */,
 				3A98BA072921124B00EE5ECE /* AuthorizeResponse.swift in Sources */,
 				3ADEBFFC2931FCB30047CE12 /* BookDetailGridItem.swift in Sources */,
 				3AB97F2D2920017D00E07DB5 /* LoginFlowServer.swift in Sources */,
@@ -584,11 +607,14 @@
 				3AF4CB76291FA7120080451B /* Persistence.swift in Sources */,
 				3A5016702985CC7100BB2C74 /* TextHelper.swift in Sources */,
 				3A5016422985092000BB2C74 /* NowPlayingSheet.swift in Sources */,
+				3A22634C2986701700B7CD94 /* FilterHelper.swift in Sources */,
 				3A501640298505C300BB2C74 /* NowPlayingBar.swift in Sources */,
+				3A22634629866BA600B7CD94 /* PodcastDetailListEpisode.swift in Sources */,
 				3ADEBFEF293133A40047CE12 /* DetailView.swift in Sources */,
 				3AC75B6A292FE72E0057A250 /* ItemRow.swift in Sources */,
 				3ADEC0022931FEEC0047CE12 /* UIColor+Light.swift in Sources */,
 				3ADEC0072931FF860047CE12 /* ImageHelper.swift in Sources */,
+				3ABE74992986798E00152332 /* PodcastSettingsSheet.swift in Sources */,
 				3A98BA012920FF5400EE5ECE /* APIResources.swift in Sources */,
 				3AF4CB6F291FA70D0080451B /* ContentView.swift in Sources */,
 				3ADEBFEA292FF9370047CE12 /* ItemImage.swift in Sources */,
@@ -609,9 +635,11 @@
 				3A3F29EE292FD35300841C03 /* NavigationRoot.swift in Sources */,
 				3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */,
 				3A501630298421A800BB2C74 /* ItemSortOrder.swift in Sources */,
+				3A22634A29866C5300B7CD94 /* Color+Primary.swift in Sources */,
 				3A50164529850F1600BB2C74 /* BookTitle.swift in Sources */,
 				3A3F29EA292FCD9200841C03 /* Persistence+MediaProgress.swift in Sources */,
 				3A5016592985447F00BB2C74 /* Library.swift in Sources */,
+				3ABE749B2986853500152332 /* EpisodeOrder.swift in Sources */,
 				3ADEC00F293216C20047CE12 /* FilterResponse.swift in Sources */,
 				3ADEBFF62931FC140047CE12 /* SecondaryButtonStyle.swift in Sources */,
 			);
