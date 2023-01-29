@@ -17,7 +17,9 @@ struct LibraryPicker: View {
             Menu {
                 ForEach(libraries, id: \.id) { library in
                     Button {
-                        globalViewModel.selectLibrary(libraryId: library.id)
+                        withAnimation {
+                            globalViewModel.selectLibrary(libraryId: library.id, type: library.mediaType)
+                        }
                     } label: {
                         if library.mediaType == "book" {
                             Label(library.name, systemImage: "books.vertical.fill")
@@ -27,6 +29,12 @@ struct LibraryPicker: View {
                             Text(library.name)
                         }
                     }
+                }
+                
+                Button {
+                    globalViewModel.settingsSheetPresented.toggle()
+                } label: {
+                    Label("Settings", systemImage: "gearshape.fill")
                 }
             } label: {
                 Image(systemName: "books.vertical.circle")

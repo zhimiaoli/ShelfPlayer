@@ -87,7 +87,7 @@ extension DetailView {
                 .background(Color(fullscreenViewModel.backgroundColor))
                 .foregroundColor(backgroundIsLight ? .black : .white)
                 
-                PodcastDetailEpisodeList(episodes: item.media?.episodes ?? [])
+                PodcastDetailEpisodeList(episodes: item.media?.episodes ?? [], itemId: item.id)
                     .frame(minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .top)
             }
             .navigationTitle(item.title)

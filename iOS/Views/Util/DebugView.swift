@@ -25,7 +25,12 @@ struct DebugView: View {
                 Button {
                     try? PersistenceController.shared.deleteAllCachedSessions()
                 } label: {
-                    Text("Clear")
+                    Text("Clear progress cache")
+                }
+                Button {
+                    PersistenceController.shared.flushKeyValueStorage()
+                } label: {
+                    Text("Flush key-value storage")
                 }
                 
                 Text(PersistenceController.shared.getLoggedInUser()?.token ?? "Not logged in")
@@ -49,9 +54,6 @@ struct DebugView: View {
                 }
             }
             .searchable(text: $search)
-        }
-        .tabItem {
-            Label("Debug", systemImage: "gear.circle.fill")
         }
     }
 }

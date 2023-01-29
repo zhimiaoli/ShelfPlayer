@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Main navigation controller. Only used when the user is logged in and online
 struct NavigationRoot: View {
+    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    
     var body: some View {
         TabView {
             NowPlayingWrapper {
@@ -20,16 +22,32 @@ struct NavigationRoot: View {
                 Label("Listen now", systemImage: "book.circle.fill")
             }
             
-            DebugView()
+            // switch is way to complicated
+            if globalViewModel.activeLibraryType == "book" {
+                NowPlayingWrapper {
+                    Text("series")
+                }
+                .tabItem {
+                    Label("Series", systemImage: "books.vertical.circle.fill")
+                }
+            }
+            
+            NowPlayingWrapper {
+                Text("library")
+            }
             .tabItem {
-                Label("Debug", systemImage: "gear.circle.fill")
+                Label("Library", systemImage: "bookmark.square.fill")
+            }
+            
+            NowPlayingWrapper {
+                Text("search")
+            }
+            .tabItem {
+                Label("Search", systemImage: "magnifyingglass.circle.fill")
             }
         }
-    }
-}
-
-struct NavigationRoot_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationRoot()
+        .sheet(isPresented: $globalViewModel.settingsSheetPresented) {
+            SettingsView()
+        }
     }
 }

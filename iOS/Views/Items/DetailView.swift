@@ -34,6 +34,7 @@ struct DetailView: View {
                     } menu: {
                         PodcastSettingsSheet(item: item)
                     }
+                    .id(item.id)
                 } else {
                     FullscreenLoadingIndicator(description: "Retriving episodes")
                         .task(getItem)

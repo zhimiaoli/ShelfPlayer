@@ -10,13 +10,10 @@ import SwiftUI
 extension DetailView {
     struct PodcastDetailEpisodeList: View {
         var episodes: [LibraryItem.PodcastEpisode]
+        var itemId: String
         
-        init(episodes: [LibraryItem.PodcastEpisode]) {
-            self.episodes = episodes
-            self.filter = episodes.count == 0 ? .all : FilterHelper.getDefaultFilter(podcastId: episodes[0].libraryItemId ?? "")
-        }
-        
-        @State var filter: EpisodeFilter
+        @State var sort: (EpisodeSort, Bool) = (FilterHelper.defaultSortOrder, FilterHelper.defaultInvert)
+        @State var filter: EpisodeFilter = FilterHelper.defaultFilter
         
         var fallback: some View {
             Text("No episodes")
@@ -57,7 +54,13 @@ extension DetailView {
                     }
                     
                     LazyVStack(alignment: .leading) {
-                        let filtered = Array(FilterHelper.sortEpisodes(FilterHelper.filterEpisodes(episodes, filter: filter), sortOrder: .date, invert: true).prefix(15))
+                        let filtered = Array(
+                            FilterHelper.sortEpisodes(
+                                FilterHelper.filterEpisodes(
+                                    episodes,
+                                    filter: filter),
+                                sort
+                            ).prefix(15))
                         
                         if filtered.count > 0 {
                             ForEach(filtered, id: \.id) { episode in
@@ -74,6 +77,15 @@ extension DetailView {
                 }
             }
             .padding()
+            .onReceive(NSNotification.PodcastSettingsUpdated) { _ in
+                updateFilter()
+            }
+            .onAppear(perform: updateFilter)
+        }
+        
+        private func updateFilter() {
+            self.filter = FilterHelper.getDefaultFilter(podcastId: itemId)
+            self.sort = FilterHelper.getDefaultSortOrder(podcastId: itemId)
         }
     }
 }

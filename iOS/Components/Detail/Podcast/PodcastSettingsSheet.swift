@@ -14,10 +14,14 @@ struct PodcastSettingsSheet: View {
         self.item = item
         
         self.selectedFilter = FilterHelper.getDefaultFilter(podcastId: item.id)
+        (self.selectedSortOrder, self.sortInvert) = FilterHelper.getDefaultSortOrder(podcastId: item.id)
     }
     
     @State var sheetPresented: Bool = false
+    
     @State var selectedFilter: EpisodeFilter
+    @State var selectedSortOrder: EpisodeSort
+    @State var sortInvert: Bool
     
     var body: some View {
         Button {
@@ -27,25 +31,34 @@ struct PodcastSettingsSheet: View {
                 .sheet(isPresented: $sheetPresented) {
                     NavigationStack {
                         Form {
-                            Picker("Filter", selection: $selectedFilter) {
-                                ForEach(EpisodeFilter.allCases, id: \.rawValue) { filter in
-                                    Text(filter.rawValue).tag(filter)
+                            FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)
+                                .onChange(of: selectedFilter) { filter in
+                                    FilterHelper.setDefaultFilter(podcastId: item.identifier, filter: filter)
+                                    broadcastUpdate()
                                 }
-                            }
+                                .onChange(of: selectedSortOrder) { order in
+                                    FilterHelper.setDefaultSortOrder(podcastId: item.identifier, order: order, invert: sortInvert)
+                                    broadcastUpdate()
+                                }
+                                .onChange(of: sortInvert) { invert in
+                                    FilterHelper.setDefaultSortOrder(podcastId: item.identifier, order: selectedSortOrder, invert: invert)
+                                    broadcastUpdate()
+                                }
                         }
                         .navigationTitle(item.title)
                         .navigationBarTitleDisplayMode(.inline)
-                        .presentationDetents([.medium, .large])
-                        .presentationDragIndicator(.visible)
                     }
-                    .foregroundColor(.primary)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                    // Needed because this view originates from the custom tabbar
+                    .foregroundColor(.none)
                     .bold(false)
-                    
-                    .onChange(of: selectedFilter) { filter in
-                        FilterHelper.setDefaultFilter(podcastId: item.identifier, filter: filter)
-                    }
                 }
         }
         .ignoresSafeArea()
+    }
+    
+    private func broadcastUpdate() {
+        NotificationCenter.default.post(name: NSNotification.PodcastSettingsUpdated, object: nil)
     }
 }

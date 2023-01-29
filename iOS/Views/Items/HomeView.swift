@@ -74,6 +74,15 @@ struct HomeView: View {
     }
     
     @Sendable private func loadRows() async {
-        rows = try! await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
+        rows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
+        
+        if let rows = rows, rows.count > 0 {
+            var type = rows[0].type
+            if type == "episode" {
+                type = "podcast"
+            }
+            
+            globalViewModel.activeLibraryType = type
+        }
     }
 }

@@ -7,12 +7,15 @@
 
 import Foundation
 
-/// View model containing essential data which should be avaiable everywhere
+/// View model containing essential data which should be avOaiable everywhere
 class GlobalViewModel: ObservableObject {
     @Published var activeLibraryId: String = ""
+    @Published var activeLibraryType: String?
+    
     @Published var token: String = ""
     @Published var loggedIn: Bool = false
     
+    @Published var settingsSheetPresented: Bool = false
     @Published var onlineStatus: OnlineStatus = .unknown
     
     @Published private(set) var currentlyPlaying: LibraryItem?
@@ -69,8 +72,9 @@ class GlobalViewModel: ObservableObject {
     
     // MARK: - Library related functons
     /// Select a active library and update the lastActiveLibraryId
-    public func selectLibrary(libraryId: String) {
+    public func selectLibrary(libraryId: String, type: String? = nil) {
         activeLibraryId = libraryId
+        activeLibraryType = type
         
         let user = PersistenceController.shared.getLoggedInUser()
         user!.lastActiveLibraryId = libraryId

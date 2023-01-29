@@ -8,6 +8,59 @@
 import Foundation
 
 struct FilterHelper {
+    private(set) static var defaultFilter: EpisodeFilter = getDefaultFilter(fallback: .all)
+    private(set) static var defaultSortOrder: EpisodeSort = getDefaultSortOrder(fallback: .episode)
+    private(set) static var defaultInvert: Bool = getDefaultInvert(fallback: false)
+    
+    // MARK: - Podcast filter settings
+    public static func getDefaultFilter(podcastId: String) -> EpisodeFilter {
+        let value: String = PersistenceController.shared.getValue(key: "filter.\(podcastId)") ?? ""
+        return EpisodeFilter(rawValue: value) ?? defaultFilter
+    }
+    public static func setDefaultFilter(podcastId: String, filter: EpisodeFilter) {
+        PersistenceController.shared.setKey("filter.\(podcastId)", value: filter.rawValue)
+    }
+    
+    public static func getDefaultSortOrder(podcastId: String) -> (EpisodeSort, Bool) {
+        let value: String = PersistenceController.shared.getValue(key: "sort.\(podcastId)") ?? ""
+        let invert: String = PersistenceController.shared.getValue(key: "sort_invert.\(podcastId)") ?? defaultInvert.description
+        
+        return (EpisodeSort(rawValue: value) ?? defaultSortOrder, Bool(invert) ?? defaultInvert)
+    }
+    public static func setDefaultSortOrder(podcastId: String, order: EpisodeSort, invert: Bool) {
+        PersistenceController.shared.setKey("sort.\(podcastId)", value: order.rawValue)
+        PersistenceController.shared.setKey("sort_invert.\(podcastId)", value: invert.description)
+    }
+    
+    // MARK: - Global filter settings
+    public static func setDefaultFilter(filter: EpisodeFilter) {
+        PersistenceController.shared.setKey("filter", value: filter.rawValue)
+        defaultFilter = filter
+    }
+    public static func getDefaultFilter(fallback: EpisodeFilter? = nil) -> EpisodeFilter {
+        let value: String = PersistenceController.shared.getValue(key: "filter") ?? ""
+        return EpisodeFilter(rawValue: value) ?? fallback ?? defaultFilter
+    }
+    
+    public static func setDefaultSortOrder(order: EpisodeSort) {
+        PersistenceController.shared.setKey("sort", value: order.rawValue)
+        defaultSortOrder = order
+    }
+    public static func getDefaultSortOrder(fallback: EpisodeSort? = nil) -> EpisodeSort {
+        let value: String = PersistenceController.shared.getValue(key: "sort") ?? ""
+        return EpisodeSort(rawValue: value) ?? fallback ?? defaultSortOrder
+    }
+    
+    public static func setDefaultInvert(invert: Bool) {
+        PersistenceController.shared.setKey("sort_invert", value: invert.description)
+        defaultInvert = invert
+    }
+    public static func getDefaultInvert(fallback: Bool? = nil) -> Bool {
+        let value: String = PersistenceController.shared.getValue(key: "sort_invert") ?? fallback?.description ?? "false"
+        return Bool(value) ?? fallback ?? defaultInvert
+    }
+    
+    // MARK: - sort & filter methods
     public static func filterEpisodes(_ episodes: [LibraryItem.PodcastEpisode], filter: EpisodeFilter) -> [LibraryItem.PodcastEpisode] {
         return episodes.filter { episode in
             if filter == .all {
@@ -26,7 +79,7 @@ struct FilterHelper {
             return false
         }
     }
-    public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], sortOrder: EpisodeSort, invert: Bool = false) -> [LibraryItem.PodcastEpisode] {
+    public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], sortOrder: EpisodeSort, invert: Bool) -> [LibraryItem.PodcastEpisode] {
         return episodes.sorted {
             var result = false
             
@@ -45,12 +98,7 @@ struct FilterHelper {
             }
         }
     }
-    
-    public static func getDefaultFilter(podcastId: String) -> EpisodeFilter {
-        let value: String = PersistenceController.shared.getValue(key: "filter.\(podcastId)") ?? ""
-        return EpisodeFilter(rawValue: value) ?? .all
-    }
-    public static func setDefaultFilter(podcastId: String, filter: EpisodeFilter) {
-        PersistenceController.shared.setKey("filter.\(podcastId)", value: filter.rawValue)
+    public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], _ sort: (EpisodeSort, Bool)) -> [LibraryItem.PodcastEpisode] {
+        sortEpisodes(episodes, sortOrder: sort.0, invert: sort.1)
     }
 }
