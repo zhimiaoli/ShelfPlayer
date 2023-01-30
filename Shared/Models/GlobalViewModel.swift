@@ -67,7 +67,18 @@ class GlobalViewModel: ObservableObject {
     /// - Parameters:
     ///   - item: Item to play
     public func playItem(item: LibraryItem) {
-        currentlyPlaying = item
+        Task {
+            do {
+                let playResponse = try await APIClient.authorizedShared.request(APIResources.items(id: item.id).play(episodeId: item.recentEpisode?.id))
+                PlayerHelper.audioPlayer = AudioPlayer(itemId: item.id, episodeId: item.recentEpisode?.id, startTime: playResponse.startTime, playMethod: PlayMethod(rawValue: playResponse.playMethod) ?? .directPlay, audioTracks: playResponse.audioTracks)
+                
+                DispatchQueue.main.async {
+                    self.currentlyPlaying = item
+                }
+            } catch {
+                print(error, "Failed to start player")
+            }
+        }
     }
     
     // MARK: - Library related functons

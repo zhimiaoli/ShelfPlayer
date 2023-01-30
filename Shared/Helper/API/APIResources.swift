@@ -147,5 +147,11 @@ extension APIResources {
                 URLQueryItem(name: "expanded", value: "1"),
             ])
         }
+        
+        public func play(episodeId: String? = nil) -> APIRequest<PlayResponse> {
+            return APIRequest(method: "POST", path: "api/items/\(id)/play\(episodeId != nil ? "/\(episodeId!)" : "")", body: [
+                "mediaPlayer": "AVPlayer",
+            ])
+        }
     }
 }
