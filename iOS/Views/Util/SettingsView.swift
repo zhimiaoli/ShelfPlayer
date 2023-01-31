@@ -97,23 +97,6 @@ struct SettingsView: View {
                     Text("Account")
                 }
                 
-                // Database
-                Section {
-                    Button {
-                        PersistenceController.shared.flushKeyValueStorage()
-                    } label: {
-                        Label("Delete podcast settings", systemImage: "gear")
-                    }
-                    
-                    Button {
-                        try? PersistenceController.shared.deleteAllCachedSessions()
-                    } label: {
-                        Label("Delete cached progress", systemImage: "percent")
-                    }
-                } header: {
-                    Text("Database")
-                }
-                
                 // Debug
                 NavigationLink(destination: DebugView()) {
                     Label("Debug", systemImage: "hammer.fill")

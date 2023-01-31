@@ -165,3 +165,22 @@ extension APIResources {
         }
     }
 }
+
+// MARK: - /api/session/{id}
+extension APIResources {
+    public static func session(id: String) -> SessionResource {
+        SessionResource(id: id)
+    }
+    
+    public struct SessionResource {
+        public var id: String
+        
+        public func sync(timeListened: Double, duration: Double, currentTime: Double) -> APIRequestEmpty {
+            APIRequestEmpty(method: "POST", path: "api/session/\(id)/sync", body: [
+                "timeListened": timeListened,
+                "duration": duration,
+                "currentTime": currentTime,
+            ])
+        }
+    }
+}

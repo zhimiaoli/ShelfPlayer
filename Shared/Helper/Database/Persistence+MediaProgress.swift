@@ -91,14 +91,26 @@ extension PersistenceController {
             return nil
         }
         
+        return getEnitityById(itemId: item.id, episodeId: item.recentEpisode?.id)
+    }
+    
+    public func updateStatusWithoutUpdate(itemId: String, episodeId: String?, progress: Float) {
+        let entity = getEnitityById(itemId: itemId, episodeId: episodeId)
+        
+        entity?.progress = Double(progress)
+        try? container.viewContext.save()
+    }
+    
+    // MARK: - private functions
+    private func getEnitityById(itemId: String, episodeId: String?) -> CachedMediaProgress? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
-        if item.hasEpisode {
+        if let episodeId = episodeId {
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "libraryItemId == %@", item.id),
-                NSPredicate(format: "episodeId == %@", item.recentEpisode?.id ?? ""),
+                NSPredicate(format: "libraryItemId == %@", itemId),
+                NSPredicate(format: "episodeId == %@", episodeId),
             ])
         } else {
-            fetchRequest.predicate = NSPredicate(format: "libraryItemId == %@", item.id)
+            fetchRequest.predicate = NSPredicate(format: "libraryItemId == %@", itemId)
         }
         
         guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {

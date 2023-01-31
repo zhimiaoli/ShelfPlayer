@@ -30,6 +30,19 @@ struct PlayerHelper {
     
     private static var nowPlayingInfo = [String: Any]()
     
+    // MARK: - Session reporting
+    public static func syncSession(sessionId: String, itemId: String, episodeId: String?, timeListened: Double, duration: Double, currentTime: Double) {
+        Task.detached {
+            do {
+                try await APIClient.authorizedShared.request(APIResources.session(id: sessionId).sync(timeListened: timeListened, duration: duration, currentTime: currentTime))
+                PersistenceController.shared.updateStatusWithoutUpdate(itemId: itemId, episodeId: episodeId, progress: Float(currentTime / duration))
+            } catch {
+                print(error)
+                // TODO: offline playback reporting
+            }
+        }
+    }
+    
     // MARK: - iOS now playing widget
     public static func setNowPlayingMetadata(itemId: String) {
         Task.detached {

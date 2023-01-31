@@ -45,8 +45,7 @@ struct DebugView: View {
                     return progress.id?.contains(search) ?? false
                 }) { progress in
                     HStack {
-                        Text(progress.libraryItemId ?? "?")
-                        Text(progress.episodeId ?? "_")
+                        Text(progress.id ?? "_")
                         Divider()
                         Text(String(progress.progress))
                             .font(.caption)

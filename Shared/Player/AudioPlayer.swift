@@ -27,6 +27,9 @@ class AudioPlayer: NSObject {
     private var currentTrackIndex: Int
     private(set) var desiredPlaybackRate: Float = PlayerHelper.getDefaultPlaybackRate()
     
+    // MARK: - Playback reporting
+    private var timeListened: Double = 0
+    
     // MARK: - Initializers
     init(sessionId: String, itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
         self.sessionId = sessionId
@@ -43,6 +46,7 @@ class AudioPlayer: NSObject {
         super.init()
         
         setupRemoteControls()
+        setupAudioSession()
         setupTimeObserver()
         
         PlayerHelper.setNowPlayingMetadata(itemId: itemId)
@@ -89,6 +93,9 @@ class AudioPlayer: NSObject {
     }
     public func setPlaying(_ playing: Bool) {
         player.rate = isPlaying() ? 0 : desiredPlaybackRate
+        updateAudioSession(active: playing)
+        sync()
+        
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: NSNotification.PlayerStateChanged, object: playing)
         }
@@ -103,6 +110,13 @@ class AudioPlayer: NSObject {
                 PlayerHelper.updateNowPlayingState(duration: self.getTotalDuration(), currentTime: self.getCurrentTime(), playbackRate: self.player.rate)
             }
             self.buffering = !(self.player.currentItem?.isPlaybackLikelyToKeepUp ?? false)
+            
+            if self.isPlaying() {
+                self.timeListened += 0.25
+            }
+            if self.timeListened >= 7 {
+                self.sync()
+            }
         }
     }
     private func setupRemoteControls() {
@@ -188,8 +202,10 @@ class AudioPlayer: NSObject {
             return .commandFailed
         }
     }
+    
     @objc private func itemEnded() {
         if currentTrackIndex == audioTracks.last?.index ?? 0 {
+            sync()
             NotificationCenter.default.post(name: NSNotification.PlayerFinished, object: nil)
         } else {
             // This *could* cause problems, but it *should* be fine
@@ -250,5 +266,33 @@ class AudioPlayer: NSObject {
     
     private func getTimeUntil(trackIndex: Int) -> Double {
         audioTracks.filter { $0.index ?? 0 < trackIndex }.reduce(0) { $0 + $1.duration }
+    }
+    
+    private func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio)
+        } catch {
+            print(error, "failed to start audio session")
+        }
+    }
+    private func updateAudioSession(active: Bool) {
+        do {
+            try AVAudioSession.sharedInstance().setActive(active)
+        } catch {
+            print(error, "failed to update audio session")
+        }
+    }
+    
+    private func sync() {
+        PlayerHelper.syncSession(
+            sessionId: sessionId,
+            itemId: itemId,
+            episodeId: episodeId,
+            timeListened: timeListened,
+            duration: getTotalDuration(),
+            currentTime: getCurrentTime()
+        )
+        
+        self.timeListened = 0
     }
 }

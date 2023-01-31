@@ -54,7 +54,6 @@ struct FullscreenView<Content: View, Menu: View>: View {
                             }
                             .offset(y: 60)
                             .ignoresSafeArea()
-                            .border(.red)
                     }
                     
                     Spacer()
@@ -65,7 +64,6 @@ struct FullscreenView<Content: View, Menu: View>: View {
                     .offset(y: 60)
                     .ignoresSafeArea()
                 }
-                .border(.green)
                 .fontWeight(.bold)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundColor(.accentColor)
