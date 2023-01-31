@@ -19,9 +19,16 @@ extension DetailView {
                 BookDetailBody()
             }
             .navigationTitle(viewModel.item.title)
-            .task {
-                (fullscreenViewModel.backgroundColor, viewModel.backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)
-                await viewModel.getMoreBooksFromSeries()
+            .onAppear {
+                Task.detached {
+                    let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)
+                    await viewModel.getMoreBooksFromSeries()
+                    
+                    DispatchQueue.main.async {
+                        fullscreenViewModel.backgroundColor = backgroundColor
+                        viewModel.backgroundIsLight = backgroundIsLight
+                    }
+                }
             }
             .environmentObject(viewModel)
         }

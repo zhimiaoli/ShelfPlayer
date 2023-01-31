@@ -16,9 +16,9 @@ struct NowPlayingWrapper<Content: View>: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             content
-                .padding(.bottom, viewModel.showNowPlayingBar ? 65 : 0)
+                .padding(.bottom, globalViewModel.showNowPlayingBar ? 65 : 0)
             
-            if viewModel.showNowPlayingBar {
+            if globalViewModel.showNowPlayingBar {
                 NowPlayingBar()
                     .onTapGesture {
                         globalViewModel.nowPlayingSheetPresented.toggle()
@@ -31,12 +31,16 @@ struct NowPlayingWrapper<Content: View>: View {
             }
         }
         .onChange(of: globalViewModel.currentlyPlaying) { item in
-            viewModel.showNowPlayingBar = item != nil
-            
-            if viewModel.showNowPlayingBar {
-                Task {
-                    globalViewModel.nowPlayingSheetPresented = true
-                    (viewModel.backgroundColor, viewModel.backgroundIsLight) = await ImageHelper.getAverageColor(item: globalViewModel.currentlyPlaying!)
+            if globalViewModel.showNowPlayingBar {
+                Task.detached {
+                    let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: globalViewModel.currentlyPlaying!)
+                    
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            viewModel.backgroundColor = backgroundColor
+                            viewModel.backgroundIsLight = backgroundIsLight
+                        }
+                    }
                 }
             }
         }
@@ -46,8 +50,6 @@ struct NowPlayingWrapper<Content: View>: View {
 
 extension NowPlayingWrapper {
     class ViewModel: ObservableObject {
-        @Published var showNowPlayingBar: Bool = false
-        
         @Published var backgroundColor: UIColor = .systemBackground
         @Published var backgroundIsLight: Bool = UIColor.systemBackground.isLight() ?? false
     }

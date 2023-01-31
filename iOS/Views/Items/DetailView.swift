@@ -37,7 +37,11 @@ struct DetailView: View {
                     .id(item.id)
                 } else {
                     FullscreenLoadingIndicator(description: "Retriving episodes")
-                        .task(getItem)
+                        .onAppear {
+                            Task.detached {
+                                await getItem()
+                            }
+                        }
                 }
             } else if item.isSeries {
                 GridDetailInner(item: item, scope: "series")
@@ -51,10 +55,12 @@ struct DetailView: View {
                     .foregroundColor(Color.red)
             } else {
                 FullscreenLoadingIndicator(description: "Retriving item")
-                    .task(getItem)
+                    .onAppear {
+                        Task.detached {
+                            await getItem()
+                        }
+                    }
             }
-            
-            Text(String(currentItem?.media?.episodes?.count ?? -1))
         }
     }
     
@@ -65,8 +71,11 @@ struct DetailView: View {
         }
         
         do {
-            let retrivedItem = try await APIClient.authorizedShared.request(APIResources.items(id: id ?? item?.id ?? "").get)
-            currentItem = retrivedItem
+            if let id = id, id.starts(with: "ser_") {
+                currentItem = try await APIClient.authorizedShared.request(APIResources.series.byId(id: id))
+            } else {
+                currentItem = try await APIClient.authorizedShared.request(APIResources.items(id: id ?? item?.id ?? "").get)
+            }
         } catch {
             failed = true
         }

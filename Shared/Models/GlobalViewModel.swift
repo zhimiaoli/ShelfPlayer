@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// View model containing essential data which should be avOaiable everywhere
 class GlobalViewModel: ObservableObject {
@@ -20,6 +21,8 @@ class GlobalViewModel: ObservableObject {
     
     @Published private(set) var currentlyPlaying: LibraryItem?
     @Published private(set) var currentPlaySession: PlayResponse?
+    
+    @Published var showNowPlayingBar: Bool = false
     @Published var nowPlayingSheetPresented: Bool = false
     
     // MARK: - User related functions
@@ -74,14 +77,21 @@ class GlobalViewModel: ObservableObject {
             return
         }
         
-        Task {
+        closePlayer()
+        
+        Task.detached {
             do {
                 let playResponse = try await APIClient.authorizedShared.request(APIResources.items(id: item.id).play(episodeId: item.recentEpisode?.id))
-                PlayerHelper.audioPlayer = AudioPlayer(itemId: item.id, episodeId: item.recentEpisode?.id, startTime: playResponse.startTime, playMethod: PlayMethod(rawValue: playResponse.playMethod) ?? .directPlay, audioTracks: playResponse.audioTracks)
+                PlayerHelper.audioPlayer = AudioPlayer(sessionId: playResponse.id, itemId: item.id, episodeId: item.recentEpisode?.id, startTime: playResponse.startTime, playMethod: PlayMethod(rawValue: playResponse.playMethod) ?? .directPlay, audioTracks: playResponse.audioTracks)
                 
                 DispatchQueue.main.async {
-                    self.currentPlaySession = playResponse
-                    self.currentlyPlaying = item
+                    withAnimation {
+                        self.currentPlaySession = playResponse
+                        self.currentlyPlaying = item
+                        
+                        self.showNowPlayingBar = true
+                        self.nowPlayingSheetPresented = true
+                    }
                 }
             } catch {
                 print(error, "Failed to start player")
@@ -90,8 +100,9 @@ class GlobalViewModel: ObservableObject {
     }
     public func closePlayer() {
         self.nowPlayingSheetPresented = false
-        self.currentlyPlaying = nil
+        self.showNowPlayingBar = false
         
+        PlayerHelper.audioPlayer?.destroy()
         PlayerHelper.audioPlayer = nil
     }
     

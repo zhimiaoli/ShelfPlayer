@@ -16,6 +16,8 @@
 		3A22634E2986732300B7CD94 /* Persistence+KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */; };
 		3A3110E029885A2000D4E93E /* SeekSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110DF29885A2000D4E93E /* SeekSlider.swift */; };
 		3A3110E22988618A00D4E93E /* String+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110E12988618A00D4E93E /* String+Padding.swift */; };
+		3A3110E929898D7F00D4E93E /* NowPlayingFooterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110E829898D7F00D4E93E /* NowPlayingFooterButtons.swift */; };
+		3A3110EB2989935B00D4E93E /* NowPlayingButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110EA2989935B00D4E93E /* NowPlayingButtons.swift */; };
 		3A3F29E8292D40EF00841C03 /* Date+Millis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29E7292D40EF00841C03 /* Date+Millis.swift */; };
 		3A3F29EA292FCD9200841C03 /* Persistence+MediaProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29E9292FCD9200841C03 /* Persistence+MediaProgress.swift */; };
 		3A3F29EC292FD24000841C03 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F29EB292FD24000841C03 /* HomeView.swift */; };
@@ -113,6 +115,8 @@
 		3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+KeyValue.swift"; sourceTree = "<group>"; };
 		3A3110DF29885A2000D4E93E /* SeekSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekSlider.swift; sourceTree = "<group>"; };
 		3A3110E12988618A00D4E93E /* String+Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Padding.swift"; sourceTree = "<group>"; };
+		3A3110E829898D7F00D4E93E /* NowPlayingFooterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingFooterButtons.swift; sourceTree = "<group>"; };
+		3A3110EA2989935B00D4E93E /* NowPlayingButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingButtons.swift; sourceTree = "<group>"; };
 		3A3F29E7292D40EF00841C03 /* Date+Millis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Millis.swift"; sourceTree = "<group>"; };
 		3A3F29E9292FCD9200841C03 /* Persistence+MediaProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+MediaProgress.swift"; sourceTree = "<group>"; };
 		3A3F29EB292FD24000841C03 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -266,6 +270,8 @@
 				3A50163D2985059100BB2C74 /* NowPlayingWrapper.swift */,
 				3A50163F298505C300BB2C74 /* NowPlayingBar.swift */,
 				3A5016412985092000BB2C74 /* NowPlayingSheet.swift */,
+				3A3110E829898D7F00D4E93E /* NowPlayingFooterButtons.swift */,
+				3A3110EA2989935B00D4E93E /* NowPlayingButtons.swift */,
 			);
 			path = NowPlaying;
 			sourceTree = "<group>";
@@ -657,6 +663,7 @@
 				3A98BA0529210F2900EE5ECE /* LoginFlowCredentials.swift in Sources */,
 				3A22634E2986732300B7CD94 /* Persistence+KeyValue.swift in Sources */,
 				3A98BA072921124B00EE5ECE /* AuthorizeResponse.swift in Sources */,
+				3A3110E929898D7F00D4E93E /* NowPlayingFooterButtons.swift in Sources */,
 				3ADEBFFC2931FCB30047CE12 /* BookDetailGridItem.swift in Sources */,
 				3AB97F2D2920017D00E07DB5 /* LoginFlowServer.swift in Sources */,
 				3A3F29F0292FD56B00841C03 /* DebugView.swift in Sources */,
@@ -689,6 +696,7 @@
 				3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */,
 				3A50162C29841E8500BB2C74 /* SeriesView.swift in Sources */,
 				3A9DE5A02986FF9B00567488 /* ItemSort.swift in Sources */,
+				3A3110EB2989935B00D4E93E /* NowPlayingButtons.swift in Sources */,
 				3AF4CB6D291FA70D0080451B /* BooksApp.swift in Sources */,
 				3AD5EAD32923D87C00D74AF1 /* PersistenceController+User.swift in Sources */,
 				3A98BA032921006300EE5ECE /* APIRequest.swift in Sources */,

@@ -9,5 +9,5 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    static let primaryTransparent: Color = .primary.opacity(0.7)
+    static let primaryTransparent: Color = .primary.opacity(0.6)
 }

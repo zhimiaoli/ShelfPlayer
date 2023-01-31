@@ -85,8 +85,14 @@ extension DetailView {
                 .frame(minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .top)
             }
             .navigationTitle(item.title)
-            .task {
-                fullscreenViewModel.backgroundColor = await ImageHelper.getAverageColor(item: item).0.withAlphaComponent(0.7)
+            .onAppear {
+                Task.detached {
+                    let backgroundColor = await ImageHelper.getAverageColor(item: item).0.withAlphaComponent(0.7)
+                    
+                    DispatchQueue.main.async {
+                        fullscreenViewModel.backgroundColor = backgroundColor
+                    }
+                }
             }
         }
     }

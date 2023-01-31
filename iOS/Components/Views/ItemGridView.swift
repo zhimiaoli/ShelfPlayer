@@ -20,7 +20,11 @@ struct ItemGridView: View {
                     ItemGrid(content: items)
                 } else {
                     ProgressView()
-                        .task(_getItems)
+                        .onAppear {
+                            Task.detached {
+                                await  _getItems()
+                            }
+                        }
                 }
             } else {
                 Text("Error while loading items")
@@ -28,7 +32,7 @@ struct ItemGridView: View {
                     .foregroundColor(Color.gray)
             }
         }.onReceive(NSNotification.ItemGridSortOrderUpdated) { _ in
-            Task {
+            Task.detached {
                 await _getItems()
             }
         }

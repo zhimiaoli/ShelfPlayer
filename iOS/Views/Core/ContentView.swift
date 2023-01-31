@@ -19,7 +19,11 @@ struct ContentView: View {
                     .onAppear {
                         globalViewModel.loggedIn = PersistenceController.shared.getLoggedInUser() != nil
                     }
-                    .task(globalViewModel.authorize)
+                    .onAppear {
+                        Task.detached {
+                            await globalViewModel.authorize()
+                        }
+                    }
                 // TODO: add "go offline" button
             case .offline:
                 if globalViewModel.loggedIn {
@@ -31,6 +35,9 @@ struct ContentView: View {
                 NavigationRoot()
             }
         }
+        .onReceive(NSNotification.PlayerFinished, perform: { _ in
+            globalViewModel.closePlayer()
+        })
         .environmentObject(globalViewModel)
     }
 }

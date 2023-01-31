@@ -74,7 +74,7 @@ extension DetailView {
                             }
                             HStack(spacing: 0) {
                                 if let genres = item.media?.metadata.genres {
-                                    let last = genres[genres.count - 1]
+                                    let last = genres.last
                                     ForEach(genres, id: \.hashValue) { genre in
                                         NavigationLink(destination: GenreView(genre: genre)) {
                                             Text(genre)
@@ -103,8 +103,15 @@ extension DetailView {
             }
             .navigationTitle(item.title)
             .frame(maxWidth: .infinity)
-            .task {
-                (fullscreenViewModel.backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: item)
+            .onAppear {
+                Task.detached {
+                    let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: item)
+                    
+                    DispatchQueue.main.async {
+                        fullscreenViewModel.backgroundColor = backgroundColor
+                        self.backgroundIsLight = backgroundIsLight
+                    }
+                }
             }
         }
     }

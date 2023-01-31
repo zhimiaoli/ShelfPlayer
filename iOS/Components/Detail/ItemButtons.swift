@@ -32,10 +32,12 @@ struct ItemButtons: View {
             .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, specialBackground: false))
             
             Button {
-                Task {
+                Task.detached {
                     let result = await item.toggleFinishedStatus()
                     if result {
-                        finished.toggle()
+                        DispatchQueue.main.async {
+                            finished.toggle()
+                        }
                     }
                 }
             } label: {

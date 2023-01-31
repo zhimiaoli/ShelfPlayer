@@ -68,10 +68,10 @@ extension LoginView {
         public func pingServer() {
             currentState = .pinging
             
-            Task {
+            Task.detached {
                 do {
-                    apiClient = try APIClient(serverUrl: serverUrl, token: nil)
-                    if try await apiClient?.request(APIResources.ping.get) != nil {
+                    self.apiClient = try APIClient(serverUrl: self.serverUrl, token: nil)
+                    if try await self.apiClient?.request(APIResources.ping.get) != nil {
                         DispatchQueue.main.async {
                             self.currentState = .credentials
                         }
@@ -91,16 +91,16 @@ extension LoginView {
         public func sendCredentials() {
             currentState = .processing
             
-            Task {
+            Task.detached {
                 do {
-                    guard let loginResponse = try await apiClient?.request(APIResources.login.post(username: username, password: password)) else {
+                    guard let loginResponse = try await self.apiClient?.request(APIResources.login.post(username: self.username, password: self.password)) else {
                         throw APIError.invalidResponse
                     }
                     
                     let viewContext = PersistenceController.shared.container.viewContext
                     let user = User(context: viewContext)
                     
-                    user.serverUrl = URL(string: serverUrl)!
+                    user.serverUrl = URL(string: self.serverUrl)!
                     user.username = loginResponse.user.username
                     user.token = loginResponse.user.token
                     user.lastActiveLibraryId = loginResponse.userDefaultLibraryId

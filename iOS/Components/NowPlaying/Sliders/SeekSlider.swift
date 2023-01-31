@@ -38,8 +38,10 @@ struct SeekSlider: View {
         
         HStack {
             if !buffering {
-                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(seekTarget ?? currentTime)), forceHours: duration > 3_600))
+                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(seekTarget ?? (currentTime.isInfinite || currentTime.isNaN ? 0 : currentTime))), forceHours: duration > 3_600))
                     .font(.caption)
+                    .frame(width: 45)
+                    .padding(.leading, -5)
             } else {
                 ProgressView()
                     .scaleEffect(0.5)
@@ -59,6 +61,8 @@ struct SeekSlider: View {
             
             Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(duration)), forceHours: duration > 3_600))
                 .font(.caption)
+                .frame(width: 45)
+                .padding(.trailing, -5)
         }
         .padding(.top, seekSliderDragging ? -7 : -10)
         .animation(.easeInOut, value: seekSliderDragging)

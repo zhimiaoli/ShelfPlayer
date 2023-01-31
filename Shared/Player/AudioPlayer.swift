@@ -7,25 +7,29 @@
 
 import Foundation
 import AVKit
+import MediaPlayer
 
 class AudioPlayer: NSObject {
-    // Parameters
+    // MARK: - Parameters
+    private let sessionId: String
     private let itemId: String
     private let episodeId: String?
     
     private let playMethod: PlayMethod
     private let audioTracks: [AudioTrack]
     
-    // Player
+    // MARK: - Player variables
     private let player: AVQueuePlayer
     private let user = PersistenceController.shared.getLoggedInUser()!
     
     private(set) var buffering: Bool = true
     
     private var currentTrackIndex: Int
-    private var desiredPlaybackRate: Float = PlayerHelper.getDefaultPlaybackRate()
+    private(set) var desiredPlaybackRate: Float = PlayerHelper.getDefaultPlaybackRate()
     
-    init(itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
+    // MARK: - Initializers
+    init(sessionId: String, itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
+        self.sessionId = sessionId
         self.itemId = itemId
         self.episodeId = episodeId
         self.playMethod = playMethod
@@ -35,15 +39,22 @@ class AudioPlayer: NSObject {
         
         self.player = AVQueuePlayer()
         self.currentTrackIndex = audioTracks.filter { $0.startOffset + $0.duration > startTime }.first!.index ?? 0
-
+        
         super.init()
         
-        // player.volume = 0.0
-        
+        setupRemoteControls()
         setupTimeObserver()
+        
+        PlayerHelper.setNowPlayingMetadata(itemId: itemId)
         NotificationCenter.default.addObserver(self, selector: #selector(itemEnded), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         
         updateQueueTracks(time: startTime, forceStart: true)
+    }
+    public func destroy() {
+        player.pause()
+        player.removeAllItems()
+        
+        PlayerHelper.resetNowPlayingInfo()
     }
     
     // MARK: - Public functions
@@ -52,6 +63,9 @@ class AudioPlayer: NSObject {
     }
     public func getTotalDuration() -> Double {
         audioTracks.reduce(0) { $0 + $1.duration }
+    }
+    public func isPlaying() -> Bool {
+        player.rate > 0
     }
     
     public func seek(to time: Double) {
@@ -63,27 +77,130 @@ class AudioPlayer: NSObject {
             updateQueueTracks(time: time)
         }
     }
+    public func setPlaybackrate(_ rate: Float) {
+        desiredPlaybackRate = rate
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: NSNotification.PlayerRateChanged, object: nil)
+        }
+        
+        if isPlaying() {
+            player.rate = rate
+        }
+    }
+    public func setPlaying(_ playing: Bool) {
+        player.rate = isPlaying() ? 0 : desiredPlaybackRate
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: NSNotification.PlayerStateChanged, object: playing)
+        }
+    }
     
     // MARK: - Events
     private func setupTimeObserver() {
         player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.25, preferredTimescale: 1000), queue: nil) { _ in
+            if PlayerHelper.getUseChapterView() {
+                PlayerHelper.updateNowPlayingState(duration: self.player.currentItem?.duration.seconds ?? 0, currentTime: self.player.currentTime().seconds, playbackRate: self.player.rate)
+            } else {
+                PlayerHelper.updateNowPlayingState(duration: self.getTotalDuration(), currentTime: self.getCurrentTime(), playbackRate: self.player.rate)
+            }
             self.buffering = !(self.player.currentItem?.isPlaybackLikelyToKeepUp ?? false)
         }
     }
-    
+    private func setupRemoteControls() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            setPlaying(true)
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            setPlaying(false)
+            return .success
+        }
+        commandCenter.togglePlayPauseCommand.addTarget { [unowned self] event in
+            setPlaying(!isPlaying())
+            return .success
+        }
+        
+        commandCenter.changePlaybackPositionCommand.addTarget { [unowned self] event in
+            if let changePlaybackPositionCommandEvent = event as? MPChangePlaybackPositionCommandEvent {
+                let positionTime = changePlaybackPositionCommandEvent.positionTime
+                
+                if PlayerHelper.getUseChapterView() {
+                    let track = getTrack(includes: getCurrentTime())
+                    seek(to: track.startOffset + positionTime)
+                } else {
+                    seek(to: positionTime)
+                }
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        commandCenter.changePlaybackRateCommand.supportedPlaybackRates = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+        commandCenter.changePlaybackRateCommand.addTarget { [unowned self] event in
+            if let changePlaybackPositionCommandEvent = event as? MPChangePlaybackRateCommandEvent {
+                let playbackRate = changePlaybackPositionCommandEvent.playbackRate
+                setPlaybackrate(playbackRate)
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        
+        commandCenter.nextTrackCommand.addTarget { [unowned self] event in
+            if currentTrackIndex + 1 >= audioTracks.count {
+                return .commandFailed
+            }
+            
+            seek(to: audioTracks[currentTrackIndex + 1].startOffset)
+            return .success
+        }
+        commandCenter.previousTrackCommand.addTarget { [unowned self] event in
+            if currentTrackIndex - 1 < 0 {
+                return .commandFailed
+            }
+            
+            seek(to: audioTracks[currentTrackIndex - 1].startOffset)
+            return .success
+        }
+        
+        commandCenter.skipForwardCommand.preferredIntervals = [NSNumber(value: PlayerHelper.getForwardsSeekDuration())]
+        commandCenter.skipForwardCommand.addTarget { [unowned self] event in
+            if let changePlaybackPositionCommandEvent = event as? MPSkipIntervalCommandEvent {
+                let interval = changePlaybackPositionCommandEvent.interval
+                seek(to: getCurrentTime() + interval)
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        commandCenter.skipBackwardCommand.preferredIntervals = [NSNumber(value: PlayerHelper.getBackwardsSeekDuration())]
+        commandCenter.skipBackwardCommand.addTarget { [unowned self] event in
+            if let changePlaybackPositionCommandEvent = event as? MPSkipIntervalCommandEvent {
+                let interval = changePlaybackPositionCommandEvent.interval
+                seek(to: getCurrentTime() - interval)
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+    }
     @objc private func itemEnded() {
-        if currentTrackIndex == audioTracks[audioTracks.count - 1].index ?? 0 {
-            print("PLAYER ENDED")
+        if currentTrackIndex == audioTracks.last?.index ?? 0 {
+            NotificationCenter.default.post(name: NSNotification.PlayerFinished, object: nil)
         } else {
             // This *could* cause problems, but it *should* be fine
             currentTrackIndex += 1
-            print("Item / Track changed to index \(currentTrackIndex)")
+            NSLog("Item / Track changed to index \(currentTrackIndex)")
         }
     }
     
     // MARK: - Helper
     private func updateQueueTracks(time: Double, forceStart: Bool = false) {
-        let resume = player.rate > 0 || forceStart
+        let resume = isPlaying() || forceStart
         
         player.pause()
         player.removeAllItems()
@@ -99,7 +216,7 @@ class AudioPlayer: NSObject {
             player.seek(to: CMTime(seconds: time - item.startOffset, preferredTimescale: 1000))
         }
         if resume {
-            player.rate = desiredPlaybackRate
+            setPlaying(true)
         }
     }
     private func getItem(audioTrack: AudioTrack) -> AVPlayerItem {
@@ -128,7 +245,7 @@ class AudioPlayer: NSObject {
         }
     }
     private func getTrack(includes: Double) -> AudioTrack {
-        audioTracks.filter { $0.startOffset <= includes && $0.startOffset + $0.duration > includes }.first!
+        audioTracks.filter { $0.startOffset <= includes && $0.startOffset + $0.duration > includes }.first ?? audioTracks.last!
     }
     
     private func getTimeUntil(trackIndex: Int) -> Double {

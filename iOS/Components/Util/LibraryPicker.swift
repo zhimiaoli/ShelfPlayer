@@ -45,7 +45,12 @@ struct LibraryPicker: View {
             }
         }
         
-        Color.clear.task(getLibraries)
+        Color.clear
+            .onAppear {
+                Task.detached {
+                    await getLibraries()
+                }
+            }
     }
     
     @Sendable private func getLibraries() async {

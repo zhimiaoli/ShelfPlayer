@@ -51,13 +51,13 @@ struct HomeView: View {
                     }
                 }
                 .onChange(of: globalViewModel.activeLibraryId) { _ in
-                    Task {
+                    Task.detached {
                         await loadRows()
                     }
                 }
             }
             .refreshable(action: {
-                Task {
+                Task.detached {
                     await loadRows()
                 }
             })
@@ -70,13 +70,17 @@ struct HomeView: View {
             .onReceive(NSNotification.ItemUpdated) { _ in
                 self.rows = nil
                 
-                Task {
+                Task.detached {
                     await loadRows()
                 }
             }
         } else {
             FullscreenLoadingIndicator(description: "Loading")
-                .task(loadRows)
+                .onAppear {
+                    Task.detached {
+                        await loadRows()
+                    }
+                }
         }
     }
     

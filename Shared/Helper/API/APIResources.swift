@@ -113,6 +113,10 @@ extension APIResources {
         public func seriesByName(search: String) -> APIRequest<FilterResponse<SearchSeries>> {
             APIRequest(method: "GET", path: "api/series/search", query: [URLQueryItem(name: "q", value: search)])
         }
+        
+        public func byId(id: String) -> APIRequest<LibraryItem> {
+            APIRequest(method: "GET", path: "api/series/\(id)")
+        }
     }
 }
 

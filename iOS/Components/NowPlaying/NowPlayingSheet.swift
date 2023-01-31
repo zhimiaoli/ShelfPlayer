@@ -55,9 +55,13 @@ extension NowPlayingWrapper {
                     SeekSlider(isBook: globalViewModel.currentlyPlaying!.isBook)
                         .padding(.top, 10)
                     
-                    Spacer()
+                    NowPlayingButtons()
+                        .frame(maxHeight: .infinity)
                     
                     VolumeSlider()
+                    NowPlayingFooterButtons()
+                        .padding(.top, 20)
+                        .padding(.bottom, 10)
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -66,7 +70,6 @@ extension NowPlayingWrapper {
                 ZStack {
                     Rectangle()
                         .fill(Color(viewModel.backgroundColor).gradient)
-                        .animation(.easeInOut, value: viewModel.backgroundColor)
                     
                     Rectangle()
                         .fill(.ultraThinMaterial)
@@ -74,6 +77,7 @@ extension NowPlayingWrapper {
                 .ignoresSafeArea()
             }
             .environment(\.colorScheme, viewModel.backgroundIsLight ? .light : .dark)
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }

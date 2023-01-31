@@ -33,7 +33,7 @@ class APIClient {
     
     func request<T: Decodable>(_ resource: APIRequest<T>) async throws -> T {
         let data = try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
-        // print(String.init(data: data, encoding: .utf8))
+        // print(resource.path, String.init(data: data, encoding: .utf8))
         return try JSONDecoder().decode(T.self, from: data)
     }
     func request(_ resource: APIRequestEmpty) async throws {
