@@ -21,7 +21,9 @@ class AudioPlayer: NSObject {
     private let user = PersistenceController.shared.getLoggedInUser()!
     
     private(set) var buffering: Bool = true
+    
     private var currentTrackIndex: Int
+    private var desiredPlaybackRate: Float = PlayerHelper.getDefaultPlaybackRate()
     
     init(itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
         self.itemId = itemId
@@ -36,12 +38,12 @@ class AudioPlayer: NSObject {
 
         super.init()
         
-        player.volume = 0.0
+        // player.volume = 0.0
         
         setupTimeObserver()
         NotificationCenter.default.addObserver(self, selector: #selector(itemEnded), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         
-        updateQueueTracks(time: startTime, rateOverride: PlayerHelper.getDefaultPlaybackRate())
+        updateQueueTracks(time: startTime, forceStart: true)
     }
     
     // MARK: - Public functions
@@ -50,6 +52,16 @@ class AudioPlayer: NSObject {
     }
     public func getTotalDuration() -> Double {
         audioTracks.reduce(0) { $0 + $1.duration }
+    }
+    
+    public func seek(to time: Double) {
+        let track = getTrack(includes: time)
+        
+        if track.index ?? 0 == currentTrackIndex {
+            player.seek(to: CMTime(seconds: time - track.startOffset, preferredTimescale: 1000))
+        } else {
+            updateQueueTracks(time: time)
+        }
     }
     
     // MARK: - Events
@@ -70,11 +82,13 @@ class AudioPlayer: NSObject {
     }
     
     // MARK: - Helper
-    private func updateQueueTracks(time: Double, rateOverride: Float? = nil) {
-        let rate = rateOverride ?? player.rate
+    private func updateQueueTracks(time: Double, forceStart: Bool = false) {
+        let resume = player.rate > 0 || forceStart
         
         player.pause()
         player.removeAllItems()
+        
+        currentTrackIndex = getTrack(includes: time).index ?? 0
         
         let tracks = getActiveTracks(after: time)
         tracks.forEach {
@@ -84,7 +98,9 @@ class AudioPlayer: NSObject {
         if let item = getActiveTracks(after: time).first {
             player.seek(to: CMTime(seconds: time - item.startOffset, preferredTimescale: 1000))
         }
-        player.rate = rate
+        if resume {
+            player.rate = desiredPlaybackRate
+        }
     }
     private func getItem(audioTrack: AudioTrack) -> AVPlayerItem {
         return AVPlayerItem(url: user.serverUrl!
@@ -112,7 +128,7 @@ class AudioPlayer: NSObject {
         }
     }
     private func getTrack(includes: Double) -> AudioTrack {
-        return audioTracks.filter { $0.startOffset < includes && $0.startOffset + $0.duration > includes }.first!
+        audioTracks.filter { $0.startOffset <= includes && $0.startOffset + $0.duration > includes }.first!
     }
     
     private func getTimeUntil(trackIndex: Int) -> Double {

@@ -26,7 +26,13 @@ struct SeekSlider: View {
     
     var body: some View {
         HStack {
-            Slider(percentage: $playedPercentage, dragging: $seekSliderDragging)
+            Slider(percentage: $playedPercentage, dragging: $seekSliderDragging, onEnded: {
+                if chapter != nil {
+                    PlayerHelper.audioPlayer?.seek(to: (chapter?.start ?? 0) + seekTarget!)
+                } else {
+                    PlayerHelper.audioPlayer?.seek(to: seekTarget!)
+                }
+            })
         }
         .frame(height: 10)
         
