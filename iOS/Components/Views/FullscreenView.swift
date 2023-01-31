@@ -21,9 +21,17 @@ struct FullscreenView<Content: View, Menu: View>: View {
                     content
                 }.background(
                     GeometryReader { proxy -> Color in
+                        let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
+                        
                         DispatchQueue.main.async {
-                            let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
-                            viewModel.changeScrollViewBackground = offset < 0
+                            // This causes cpu usage to be at 100%
+                            // viewModel.changeScrollViewBackground = offset < 0
+                            
+                            if viewModel.changeScrollViewBackground && offset > 0 {
+                                viewModel.changeScrollViewBackground = false
+                            } else if !viewModel.changeScrollViewBackground && offset < 0 {
+                                viewModel.changeScrollViewBackground = true
+                            }
                         }
                         return Color(uiColor: UIColor.systemBackground)
                     })
