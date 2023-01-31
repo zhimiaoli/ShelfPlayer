@@ -41,8 +41,6 @@ extension DetailView {
                 }
                 
                 HStack {
-                    let (h, m, s) = Date.secondsToHoursMinutesSeconds(Int(episode.duration ?? 0))
-                    
                     Button {
                         
                     } label: {
@@ -51,11 +49,7 @@ extension DetailView {
                     }
                     
                     Group {
-                        if h == "00" {
-                            Text("\(m):\(s)")
-                        } else {
-                            Text("\(h):\(m)")
-                        }
+                        Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(episode.duration ?? 0))))
                     }
                     .font(.subheadline)
                 }

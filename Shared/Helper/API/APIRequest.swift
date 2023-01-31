@@ -10,13 +10,13 @@ import Foundation
 public struct APIRequest<Response> {
     var method: String
     var path: String
-    var body: Encodable?
+    var body: Any?
     var query: [URLQueryItem]?
 }
 
 public struct APIRequestEmpty {
     var method: String
     var path: String
-    var body: Encodable?
+    var body: Any?
     var query: [URLQueryItem]?
 }

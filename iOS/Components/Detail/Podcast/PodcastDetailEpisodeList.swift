@@ -10,7 +10,7 @@ import SwiftUI
 extension DetailView {
     struct PodcastDetailEpisodeList: View {
         var episodes: [LibraryItem.PodcastEpisode]
-        var itemId: String
+        var item: LibraryItem
         
         @State var sort: (EpisodeSort, Bool) = (FilterHelper.defaultSortOrder, FilterHelper.defaultInvert)
         @State var filter: EpisodeFilter = FilterHelper.defaultFilter
@@ -65,7 +65,17 @@ extension DetailView {
                         if filtered.count > 0 {
                             ForEach(filtered, id: \.id) { episode in
                                 Divider()
-                                PodcastDetailListEpisode(episode: episode)
+                                NavigationLink {
+                                    DetailView(item: {
+                                        var withPodcast = item
+                                        withPodcast.recentEpisode = episode
+                                        
+                                        return withPodcast
+                                    }())
+                                } label: {
+                                    PodcastDetailListEpisode(episode: episode)
+                                }
+                                .buttonStyle(.plain)
                             }
                         } else {
                             VStack(alignment: .center) {
@@ -80,12 +90,21 @@ extension DetailView {
             .onReceive(NSNotification.PodcastSettingsUpdated) { _ in
                 updateFilter()
             }
-            .onAppear(perform: updateFilter)
+            .onReceive(NSNotification.ItemUpdated) { _ in
+                updateFilter(reset: true)
+            }
+            .onAppear {
+                updateFilter()
+            }
         }
         
-        private func updateFilter() {
-            self.filter = FilterHelper.getDefaultFilter(podcastId: itemId)
-            self.sort = FilterHelper.getDefaultSortOrder(podcastId: itemId)
+        private func updateFilter(reset: Bool = false) {
+            if reset {
+                self.sort = (self.sort.0, !self.sort.1)
+            }
+            
+            self.filter = FilterHelper.getDefaultFilter(podcastId: item.id)
+            self.sort = FilterHelper.getDefaultSortOrder(podcastId: item.id)
         }
     }
 }

@@ -21,9 +21,9 @@ struct NowPlayingWrapper<Content: View>: View {
             if viewModel.showNowPlayingBar {
                 NowPlayingBar()
                     .onTapGesture {
-                        viewModel.nowPlayingSheetPresented.toggle()
+                        globalViewModel.nowPlayingSheetPresented.toggle()
                     }
-                    .sheet(isPresented: $viewModel.nowPlayingSheetPresented) {
+                    .sheet(isPresented: $globalViewModel.nowPlayingSheetPresented) {
                         NowPlayingSheet()
                             .presentationDragIndicator(.visible)
                             .presentationDetents([.large])
@@ -35,7 +35,7 @@ struct NowPlayingWrapper<Content: View>: View {
             
             if viewModel.showNowPlayingBar {
                 Task {
-                    viewModel.nowPlayingSheetPresented = true
+                    globalViewModel.nowPlayingSheetPresented = true
                     (viewModel.backgroundColor, viewModel.backgroundIsLight) = await ImageHelper.getAverageColor(item: globalViewModel.currentlyPlaying!)
                 }
             }
@@ -47,7 +47,6 @@ struct NowPlayingWrapper<Content: View>: View {
 extension NowPlayingWrapper {
     class ViewModel: ObservableObject {
         @Published var showNowPlayingBar: Bool = false
-        @Published var nowPlayingSheetPresented: Bool = false
         
         @Published var backgroundColor: UIColor = .systemBackground
         @Published var backgroundIsLight: Bool = UIColor.systemBackground.isLight() ?? false

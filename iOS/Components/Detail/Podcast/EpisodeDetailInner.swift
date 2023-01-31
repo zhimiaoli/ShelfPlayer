@@ -41,14 +41,7 @@ extension DetailView {
                             }
                             
                             Text("•")
-                            
-                            // TODO: again, why?
-                            let (h, m, s) = Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.duration ?? 0))
-                            if h == "00" {
-                                Text("\(m):\(s)")
-                            } else {
-                                Text("\(h):\(m)")
-                            }
+                            Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.duration ?? 0))))
                         }
                     }
                     .font(.caption)

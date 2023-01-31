@@ -69,7 +69,6 @@ struct FullscreenView<Content: View, Menu: View>: View {
                 .foregroundColor(.accentColor)
                 .dynamicTypeSize(.xxxLarge)
                 .padding(.horizontal, 20)
-                .backgroundStyle(.red)
                 .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
                 .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
             }

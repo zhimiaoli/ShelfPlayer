@@ -17,6 +17,8 @@ struct SettingsView: View {
     @State var bookDefaultSort: ItemSort = FilterHelper.getDefaultLibrarySortOrder(mediaType: "book")
     @State var podcastDefaultSort: ItemSort = FilterHelper.getDefaultLibrarySortOrder(mediaType: "podcast")
     
+    @State var useChapterView: Bool = PlayerHelper.getUseChapterView()
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -59,6 +61,16 @@ struct SettingsView: View {
                     Text("Libraries")
                 } footer: {
                     Text("This filter will be applied by default")
+                }
+                
+                Section {
+                    Toggle("Show chapter track", isOn: $useChapterView)
+                        .onChange(of: useChapterView, perform: { use in
+                            PlayerHelper.setUseChapterView(use)
+                            NotificationCenter.default.post(name: NSNotification.PlayerSettingsUpdated, object: nil)
+                        })
+                } header: {
+                    Text("Player")
                 }
                 
                 // Account

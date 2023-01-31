@@ -35,7 +35,7 @@ struct LibraryItem: Codable, Equatable {
     
     // Podcasts
     let numEpisodes: Int?
-    let recentEpisode: PodcastEpisode?
+    var recentEpisode: PodcastEpisode?
     
     // Authors
     let name: String?
@@ -183,6 +183,10 @@ extension LibraryItem {
                 
                 try await APIClient.authorizedShared.request(APIResources.progress(id: progressId).finished(finished: progress != 1))
                 PersistenceController.shared.updateStatusWithoutUpdate(item: self, progress: progress == 1 ? 0 : 1)
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.ItemUpdated, object: nil)
+                }
                 
                 return true
             } catch {}

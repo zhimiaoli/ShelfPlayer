@@ -19,4 +19,12 @@ struct PlayResponse: Codable {
     let startTime: Double
     
     let audioTracks: [AudioTrack]
+    let chapters: [Chapter]
+    
+    struct Chapter: Codable {
+        let id: Int
+        let start: Double
+        let end: Double
+        let title: String
+    }
 }

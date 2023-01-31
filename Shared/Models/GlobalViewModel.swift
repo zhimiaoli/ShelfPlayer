@@ -19,6 +19,8 @@ class GlobalViewModel: ObservableObject {
     @Published var onlineStatus: OnlineStatus = .unknown
     
     @Published private(set) var currentlyPlaying: LibraryItem?
+    @Published private(set) var currentPlaySession: PlayResponse?
+    @Published var nowPlayingSheetPresented: Bool = false
     
     // MARK: - User related functions
     /// Delete all data related to the user and present the login screen
@@ -67,18 +69,30 @@ class GlobalViewModel: ObservableObject {
     /// - Parameters:
     ///   - item: Item to play
     public func playItem(item: LibraryItem) {
+        if currentlyPlaying?.identifier == item.identifier {
+            nowPlayingSheetPresented = true
+            return
+        }
+        
         Task {
             do {
                 let playResponse = try await APIClient.authorizedShared.request(APIResources.items(id: item.id).play(episodeId: item.recentEpisode?.id))
                 PlayerHelper.audioPlayer = AudioPlayer(itemId: item.id, episodeId: item.recentEpisode?.id, startTime: playResponse.startTime, playMethod: PlayMethod(rawValue: playResponse.playMethod) ?? .directPlay, audioTracks: playResponse.audioTracks)
                 
                 DispatchQueue.main.async {
+                    self.currentPlaySession = playResponse
                     self.currentlyPlaying = item
                 }
             } catch {
                 print(error, "Failed to start player")
             }
         }
+    }
+    public func closePlayer() {
+        self.nowPlayingSheetPresented = false
+        self.currentlyPlaying = nil
+        
+        PlayerHelper.audioPlayer = nil
     }
     
     // MARK: - Library related functons

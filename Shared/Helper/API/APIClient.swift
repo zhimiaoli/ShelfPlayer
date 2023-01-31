@@ -40,7 +40,7 @@ class APIClient {
         let _ = try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
     }
     
-    private func _request(path: String, method: String, query: [URLQueryItem]?, body: Encodable?) async throws -> Data {
+    private func _request(path: String, method: String, query: [URLQueryItem]?, body: Any?) async throws -> Data {
         var url = baseUrl.appending(path: path)
         if let query = query {
             url = url.appending(queryItems: query)
@@ -55,6 +55,7 @@ class APIClient {
         if let body = body {
             do {
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+                // print(String(data: request.httpBody!, encoding: .ascii))
                 
                 if request.value(forHTTPHeaderField: "Content-Type") == nil {
                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -66,7 +67,6 @@ class APIClient {
         }
         
         let (data, _) = try await URLSession.shared.data(for: request)
-        
         return data
     }
 }

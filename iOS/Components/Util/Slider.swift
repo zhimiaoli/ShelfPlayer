@@ -8,33 +8,41 @@
 import SwiftUI
 
 struct Slider: View {
-    @Binding var percentage: Float
-
+    @Binding var percentage: Double
+    @Binding var dragging: Bool
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .foregroundColor(.gray.opacity(0.7))
+                    .foregroundColor(.gray.opacity(0.5) )
                 Rectangle()
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(dragging ? .primary : .primary.opacity(0.8))
                     .frame(width: geometry.size.width * CGFloat(self.percentage / 100))
             }
             .cornerRadius(7)
             .gesture(DragGesture(minimumDistance: 0)
-                .onChanged({ value in
-                    self.percentage = min(max(0, Float(value.location.x / geometry.size.width * 100)), 100)
-                }))
+                .onChanged { value in
+                    percentage = min(max(0, Double(value.location.x / geometry.size.width * 100)), 100)
+                    dragging = true
+                }
+                .onEnded { _ in
+                    dragging = false
+                }
+            )
         }
+        .frame(height: dragging ? 10 : 7)
+        .animation(.easeInOut, value: dragging)
     }
 }
 
 struct Slider_Previews: PreviewProvider {
-    @State static var percentage: Float = 50
+    @State static var percentage: Double = 50
+    @State static var dragging: Bool = false
     
     static var previews: some View {
         VStack {
-            Slider(percentage: $percentage)
-                .frame(height: 7)
+            Slider(percentage: $percentage, dragging: $dragging)
                 .padding(.horizontal)
             Text(String(percentage))
         }

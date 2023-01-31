@@ -67,6 +67,13 @@ struct HomeView: View {
                     LibraryPicker()
                 }
             }
+            .onReceive(NSNotification.ItemUpdated) { _ in
+                self.rows = nil
+                
+                Task {
+                    await loadRows()
+                }
+            }
         } else {
             FullscreenLoadingIndicator(description: "Loading")
                 .task(loadRows)

@@ -9,7 +9,8 @@ import SwiftUI
 import MediaPlayer
 
 struct VolumeSlider: View {
-    @State var volume: Float = MPVolumeView.getVolume() * 100
+    @State var volume: Double = Double(MPVolumeView.getVolume() * 100)
+    @State var dragging: Bool = false
     
     var body: some View {
         HStack {
@@ -17,15 +18,16 @@ struct VolumeSlider: View {
                 .onTapGesture {
                     volume = 0.0
                 }
-            Slider(percentage: $volume)
-                .frame(height: 7)
+            Slider(percentage: $volume, dragging: $dragging)
             Image(systemName: "speaker.wave.3.fill")
                 .onTapGesture {
                     volume = 100.0
                 }
         }
+        .dynamicTypeSize(dragging ? .xLarge : .medium)
+        .animation(.easeInOut, value: dragging)
         .onChange(of: volume) { volume in
-            MPVolumeView.setVolume(volume / 100)
+            MPVolumeView.setVolume(Float(volume / 100))
         }
     }
 }

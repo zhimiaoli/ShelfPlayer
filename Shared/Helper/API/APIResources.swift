@@ -151,6 +151,12 @@ extension APIResources {
         public func play(episodeId: String? = nil) -> APIRequest<PlayResponse> {
             return APIRequest(method: "POST", path: "api/items/\(id)/play\(episodeId != nil ? "/\(episodeId!)" : "")", body: [
                 "mediaPlayer": "AVPlayer",
+                "deviceInfo": [
+                    "manufacturer": "Apple",
+                    "model": "iPhone",
+                    "clientVersion": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "beta",
+                ],
+                "supportedMimeTypes": ["audio/flac", "audio/mpeg", "audio/mp4", "audio/aac", "audio/x-aiff", "audio/webm"],
             ])
         }
     }

@@ -8,7 +8,7 @@
 import Foundation
 import AVKit
 
-class AudioPlayer {
+class AudioPlayer: NSObject {
     // Parameters
     private let itemId: String
     private let episodeId: String?
@@ -18,38 +18,83 @@ class AudioPlayer {
     
     // Player
     private let player: AVQueuePlayer
-    private let realTime: Double
-    
     private let user = PersistenceController.shared.getLoggedInUser()!
+    
+    private(set) var buffering: Bool = true
+    private var currentTrackIndex: Int
     
     init(itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
         self.itemId = itemId
         self.episodeId = episodeId
-        self.realTime = startTime
         self.playMethod = playMethod
-        self.audioTracks = audioTracks
+        self.audioTracks = audioTracks.sorted {
+            $0.index ?? 0 < $1.index ?? 0
+        }
         
         self.player = AVQueuePlayer()
+        self.currentTrackIndex = audioTracks.filter { $0.startOffset + $0.duration > startTime }.first!.index ?? 0
+
+        super.init()
         
-        updateQueueTracks()
+        player.volume = 0.0
         
-        // I don't know why, but it does work, so i am not going to question it (subtract the offset not required?)
-        // Edit: i found out...
-        player.seek(to: CMTime(seconds: startTime, preferredTimescale: 1000))
-        player.play()
+        setupTimeObserver()
+        NotificationCenter.default.addObserver(self, selector: #selector(itemEnded), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        
+        updateQueueTracks(time: startTime, rateOverride: PlayerHelper.getDefaultPlaybackRate())
     }
     
-    private func updateQueueTracks() {
-        let tracks = getItemTracks(after: realTime)
-        print(tracks)
-        
-        tracks.forEach {
-            player.insert(getItem(audioTrack: $0), after: nil)
+    // MARK: - Public functions
+    public func getCurrentTime() -> Double {
+        getTimeUntil(trackIndex: currentTrackIndex) + player.currentTime().seconds
+    }
+    public func getTotalDuration() -> Double {
+        audioTracks.reduce(0) { $0 + $1.duration }
+    }
+    
+    // MARK: - Events
+    private func setupTimeObserver() {
+        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.25, preferredTimescale: 1000), queue: nil) { _ in
+            self.buffering = !(self.player.currentItem?.isPlaybackLikelyToKeepUp ?? false)
+        }
+    }
+    
+    @objc private func itemEnded() {
+        if currentTrackIndex == audioTracks[audioTracks.count - 1].index ?? 0 {
+            print("PLAYER ENDED")
+        } else {
+            // This *could* cause problems, but it *should* be fine
+            currentTrackIndex += 1
+            print("Item / Track changed to index \(currentTrackIndex)")
         }
     }
     
     // MARK: - Helper
-    private func getItemTracks(after: Double) -> [AudioTrack] {
+    private func updateQueueTracks(time: Double, rateOverride: Float? = nil) {
+        let rate = rateOverride ?? player.rate
+        
+        player.pause()
+        player.removeAllItems()
+        
+        let tracks = getActiveTracks(after: time)
+        tracks.forEach {
+            player.insert(getItem(audioTrack: $0), after: nil)
+        }
+        
+        if let item = getActiveTracks(after: time).first {
+            player.seek(to: CMTime(seconds: time - item.startOffset, preferredTimescale: 1000))
+        }
+        player.rate = rate
+    }
+    private func getItem(audioTrack: AudioTrack) -> AVPlayerItem {
+        return AVPlayerItem(url: user.serverUrl!
+            .appending(path: audioTrack.contentUrl)
+            .appending(queryItems: [
+                URLQueryItem(name: "token", value: user.token)
+            ]))
+    }
+    
+    private func getActiveTracks(after: Double) -> [AudioTrack] {
         if after == 0 {
             return audioTracks
         }
@@ -66,11 +111,11 @@ class AudioPlayer {
             return false
         }
     }
-    private func getItem(audioTrack: AudioTrack) -> AVPlayerItem {
-        return AVPlayerItem(url: user.serverUrl!
-            .appending(path: audioTrack.contentUrl.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)
-            .appending(queryItems: [
-                URLQueryItem(name: "token", value: user.token)
-            ]))
+    private func getTrack(includes: Double) -> AudioTrack {
+        return audioTracks.filter { $0.startOffset < includes && $0.startOffset + $0.duration > includes }.first!
+    }
+    
+    private func getTimeUntil(trackIndex: Int) -> Double {
+        audioTracks.filter { $0.index ?? 0 < trackIndex }.reduce(0) { $0 + $1.duration }
     }
 }
