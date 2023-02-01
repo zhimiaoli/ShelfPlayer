@@ -78,6 +78,7 @@ extension DetailView {
                                     ForEach(genres, id: \.hashValue) { genre in
                                         NavigationLink(destination: GenreView(genre: genre)) {
                                             Text(genre)
+                                                .lineLimit(1)
                                         }
                                         
                                         if genre != last {

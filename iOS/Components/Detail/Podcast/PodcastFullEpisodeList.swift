@@ -43,8 +43,9 @@ extension DetailView {
                                     }
                                 }
                             }
+                            .padding(.horizontal)
                         }
-                        .frame(height: 40)
+                        .frame(height: 30)
                     }
                     ScrollView(showsIndicators: false) {
                         LazyVStack(alignment: .leading) {

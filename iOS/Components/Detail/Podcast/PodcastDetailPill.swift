@@ -16,7 +16,7 @@ struct PodcastDetailPill: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(active ? Color.accentColor : Color.gray.opacity(0.3))
-            .foregroundColor(.white)
+            .foregroundColor(active ? .white : .primary)
             .cornerRadius(15)
             .font(.caption)
     }
