@@ -44,7 +44,9 @@ struct NavigationRoot: View {
             }
             
             NowPlayingWrapper {
-                Text("search")
+                NavigationStack {
+                    SearchView()
+                }
             }
             .tabItem {
                 Label("Search", systemImage: "magnifyingglass.circle.fill")

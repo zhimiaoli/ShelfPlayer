@@ -45,7 +45,6 @@ struct SeekSlider: View {
             } else {
                 ProgressView()
                     .scaleEffect(0.5)
-                    .frame(width: 45)
             }
             
             Spacer()
@@ -54,7 +53,7 @@ struct SeekSlider: View {
                     Text(chapter.title)
                         .lineLimit(1)
                 } else {
-                    Text(TextHelper.formatRemainingTime(seconds: Int(duration - currentTime)))
+                    Text(TextHelper.formatRemainingTime(seconds: currentTime.isInfinite || currentTime.isNaN ? 0 : Int(duration - currentTime)))
                 }
             }
             .font(.caption2)

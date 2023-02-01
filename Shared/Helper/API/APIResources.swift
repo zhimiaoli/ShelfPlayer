@@ -100,6 +100,12 @@ extension APIResources {
                 URLQueryItem(name: "minified", value: minified ? "1" : "0")
             ])
         }
+        public func search(query: String, limit: Int = 15) -> APIRequest<SearchResponse<LibraryItem>> {
+            return APIRequest(method: "GET", path: "api/libraries/\(id)/search", query: [
+                URLQueryItem(name: "q", value: query),
+                URLQueryItem(name: "limit", value: String(limit)),
+            ])
+        }
     }
 }
 

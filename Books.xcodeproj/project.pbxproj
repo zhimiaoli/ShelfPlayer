@@ -64,6 +64,10 @@
 		3A9DE59C2986F99800567488 /* GenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9DE59B2986F99800567488 /* GenreView.swift */; };
 		3A9DE59E2986FEE600567488 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9DE59D2986FEE600567488 /* LibraryView.swift */; };
 		3A9DE5A02986FF9B00567488 /* ItemSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9DE59F2986FF9B00567488 /* ItemSort.swift */; };
+		3A9FD8C2298AD3E100928DFC /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C1298AD3E100928DFC /* SearchView.swift */; };
+		3A9FD8C4298AD6D700928DFC /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C3298AD6D700928DFC /* SearchResponse.swift */; };
+		3A9FD8C6298ADD0D00928DFC /* PodcastFullEpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C5298ADD0D00928DFC /* PodcastFullEpisodeList.swift */; };
+		3A9FD8C8298AF4A500928DFC /* PodcastDetailPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C7298AF4A500928DFC /* PodcastDetailPill.swift */; };
 		3AB97F22291FB6F700E07DB5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB97F21291FB6F700E07DB5 /* LoginView.swift */; };
 		3AB97F27291FB8FF00E07DB5 /* LargeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB97F26291FB8FF00E07DB5 /* LargeButtonStyle.swift */; };
 		3AB97F29291FFC2100E07DB5 /* LoginViewInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB97F28291FFC2100E07DB5 /* LoginViewInner.swift */; };
@@ -162,6 +166,10 @@
 		3A9DE59B2986F99800567488 /* GenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreView.swift; sourceTree = "<group>"; };
 		3A9DE59D2986FEE600567488 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A9DE59F2986FF9B00567488 /* ItemSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSort.swift; sourceTree = "<group>"; };
+		3A9FD8C1298AD3E100928DFC /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		3A9FD8C3298AD6D700928DFC /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
+		3A9FD8C5298ADD0D00928DFC /* PodcastFullEpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastFullEpisodeList.swift; sourceTree = "<group>"; };
+		3A9FD8C7298AF4A500928DFC /* PodcastDetailPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailPill.swift; sourceTree = "<group>"; };
 		3AB97F21291FB6F700E07DB5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3AB97F26291FB8FF00E07DB5 /* LargeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButtonStyle.swift; sourceTree = "<group>"; };
 		3AB97F28291FFC2100E07DB5 /* LoginViewInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewInner.swift; sourceTree = "<group>"; };
@@ -238,6 +246,7 @@
 				3A50162B29841E8500BB2C74 /* SeriesView.swift */,
 				3A9DE59B2986F99800567488 /* GenreView.swift */,
 				3A9DE59D2986FEE600567488 /* LibraryView.swift */,
+				3A9FD8C1298AD3E100928DFC /* SearchView.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -313,6 +322,8 @@
 				3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */,
 				3A22634529866BA600B7CD94 /* PodcastDetailListEpisode.swift */,
 				3ABE74982986798E00152332 /* PodcastSettingsSheet.swift */,
+				3A9FD8C5298ADD0D00928DFC /* PodcastFullEpisodeList.swift */,
+				3A9FD8C7298AF4A500928DFC /* PodcastDetailPill.swift */,
 			);
 			path = Podcast;
 			sourceTree = "<group>";
@@ -346,6 +357,7 @@
 				3ADEC00E293216C20047CE12 /* FilterResponse.swift */,
 				3A50165A298545A900BB2C74 /* LibrariesResponse.swift */,
 				3ABEC5F729880FFB002666DE /* PlayResponse.swift */,
+				3A9FD8C3298AD6D700928DFC /* SearchResponse.swift */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -627,6 +639,7 @@
 				3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */,
 				3A22634829866C1800B7CD94 /* EpisodeFilter.swift in Sources */,
 				3A50166A298582FD00BB2C74 /* ItemButtons.swift in Sources */,
+				3A9FD8C8298AF4A500928DFC /* PodcastDetailPill.swift in Sources */,
 				3AC75B6C292FE74F0057A250 /* ItemRowItem.swift in Sources */,
 				3A50162E29841EF500BB2C74 /* ItemGridView.swift in Sources */,
 				3A50162A298418F600BB2C74 /* SeriesBanner.swift in Sources */,
@@ -687,6 +700,7 @@
 				3AF4CB6F291FA70D0080451B /* ContentView.swift in Sources */,
 				3ADEBFEA292FF9370047CE12 /* ItemImage.swift in Sources */,
 				3ADEC0002931FD9D0047CE12 /* BookDetailInner.swift in Sources */,
+				3A9FD8C2298AD3E100928DFC /* SearchView.swift in Sources */,
 				3A3F29F6292FDB3E00841C03 /* LibraryPersonalizedResponse.swift in Sources */,
 				3ABEC5F829880FFB002666DE /* PlayResponse.swift in Sources */,
 				3AB97F22291FB6F700E07DB5 /* LoginView.swift in Sources */,
@@ -696,6 +710,7 @@
 				3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */,
 				3A50162C29841E8500BB2C74 /* SeriesView.swift in Sources */,
 				3A9DE5A02986FF9B00567488 /* ItemSort.swift in Sources */,
+				3A9FD8C4298AD6D700928DFC /* SearchResponse.swift in Sources */,
 				3A3110EB2989935B00D4E93E /* NowPlayingButtons.swift in Sources */,
 				3AF4CB6D291FA70D0080451B /* BooksApp.swift in Sources */,
 				3AD5EAD32923D87C00D74AF1 /* PersistenceController+User.swift in Sources */,
@@ -712,6 +727,7 @@
 				3A5016592985447F00BB2C74 /* Library.swift in Sources */,
 				3ABE749B2986853500152332 /* EpisodeOrder.swift in Sources */,
 				3ADEC00F293216C20047CE12 /* FilterResponse.swift in Sources */,
+				3A9FD8C6298ADD0D00928DFC /* PodcastFullEpisodeList.swift in Sources */,
 				3ADEBFF62931FC140047CE12 /* SecondaryButtonStyle.swift in Sources */,
 				3ABEC5F629880B56002666DE /* PlayerHelper.swift in Sources */,
 			);

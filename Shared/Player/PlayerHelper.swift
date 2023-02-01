@@ -34,7 +34,7 @@ struct PlayerHelper {
     public static func syncSession(sessionId: String, itemId: String, episodeId: String?, timeListened: Double, duration: Double, currentTime: Double) {
         Task.detached {
             do {
-                try await APIClient.authorizedShared.request(APIResources.session(id: sessionId).sync(timeListened: timeListened, duration: duration, currentTime: currentTime))
+                try await APIClient.authorizedShared.request(APIResources.session(id: sessionId).sync(timeListened: timeListened, duration: duration, currentTime: currentTime.isNaN ? 0 : currentTime))
                 PersistenceController.shared.updateStatusWithoutUpdate(itemId: itemId, episodeId: episodeId, progress: Float(currentTime / duration))
             } catch {
                 print(error)

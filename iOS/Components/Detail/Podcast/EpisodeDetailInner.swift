@@ -76,13 +76,13 @@ extension DetailView {
                     LinearGradient(colors: [Color(fullscreenViewModel.backgroundColor), Color(UIColor.secondarySystemBackground)], startPoint: .top, endPoint: .bottom)
                 }
                 
-                VStack {
+                VStack(alignment: .leading) {
                     if let html = item.recentEpisode?.description {
                         Text(TextHelper.parseHTML(html))
                     }
                 }
                 .padding()
-                .frame(minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .top)
+                .frame(maxWidth: .infinity, minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .topLeading)
             }
             .navigationTitle(item.title)
             .onAppear {

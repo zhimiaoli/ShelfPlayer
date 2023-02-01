@@ -12,6 +12,8 @@ extension NowPlayingWrapper {
     struct NowPlayingBar: View {
         @EnvironmentObject private var globalViewModel: GlobalViewModel
         
+        @State private var playing: Bool = PlayerHelper.audioPlayer?.isPlaying() ?? false
+        
         var body: some View {
             HStack(alignment: .center) {
                 ItemImage(item: globalViewModel.currentlyPlaying, size: 55)
@@ -28,32 +30,42 @@ extension NowPlayingWrapper {
                 Group {
                     if globalViewModel.currentlyPlaying!.isBook {
                         Button {
-                            // TODO: go forwards
+                            PlayerHelper.audioPlayer?.seek(to: PlayerHelper.audioPlayer!.getCurrentTime() - Double(PlayerHelper.getBackwardsSeekDuration()))
                         } label: {
-                            Image(systemName: "gobackward.30")
+                            Image(systemName: "gobackward.\(PlayerHelper.getBackwardsSeekDuration())")
                         }
                     }
                     Button {
-                        // TODO: play / pause the player
+                        PlayerHelper.audioPlayer?.setPlaying(!(PlayerHelper.audioPlayer?.isPlaying() ?? false))
                     } label: {
-                        Image(systemName: "play.fill")
+                        if playing {
+                            Image(systemName: "pause.fill")
+                        } else {
+                            Image(systemName: "play.fill")
+                        }
                     }
-                    .padding(.horizontal, 5)
-                    // TODO: display when item is podcast
+                    .padding(.horizontal, 10)
                     if globalViewModel.currentlyPlaying!.isPodcast {
                         Button {
-                            // TODO: go forwards
+                            PlayerHelper.audioPlayer?.seek(to: PlayerHelper.audioPlayer!.getCurrentTime() + Double(PlayerHelper.getBackwardsSeekDuration()))
                         } label: {
-                            Image(systemName: "goforward.30")
+                            Image(systemName: "goforward.\(PlayerHelper.getBackwardsSeekDuration())")
                         }
                     }
                 }
                 .dynamicTypeSize(.xxxLarge)
             }
-            .padding(.horizontal, 10)
+            .padding(.leading, 10)
+            .padding(.trailing, 20)
             .frame(maxWidth: .infinity)
             .frame(height: 65)
             .background(.regularMaterial)
+            .onReceive(NSNotification.PlayerStateChanged, perform: { _ in
+                playing = PlayerHelper.audioPlayer?.isPlaying() ?? false
+            })
+            .contextMenu {
+                Text("oof")
+            }
         }
     }
 }

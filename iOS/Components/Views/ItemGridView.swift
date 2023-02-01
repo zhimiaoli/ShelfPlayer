@@ -41,7 +41,9 @@ struct ItemGridView: View {
     @Sendable private func _getItems() async {
         do {
             items = try await getItems()
+            failed = false
         } catch {
+            print(error)
             failed = true
         }
     }

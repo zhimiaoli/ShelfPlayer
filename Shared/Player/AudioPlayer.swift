@@ -23,6 +23,7 @@ class AudioPlayer: NSObject {
     private let user = PersistenceController.shared.getLoggedInUser()!
     
     private(set) var buffering: Bool = true
+    private var expectsToBePlaying: Bool = false
     
     private var currentTrackIndex: Int
     private(set) var desiredPlaybackRate: Float = PlayerHelper.getDefaultPlaybackRate()
@@ -55,6 +56,8 @@ class AudioPlayer: NSObject {
         updateQueueTracks(time: startTime, forceStart: true)
     }
     public func destroy() {
+        sync()
+        
         player.pause()
         player.removeAllItems()
         
@@ -92,7 +95,9 @@ class AudioPlayer: NSObject {
         }
     }
     public func setPlaying(_ playing: Bool) {
+        self.expectsToBePlaying = playing
         player.rate = isPlaying() ? 0 : desiredPlaybackRate
+        
         updateAudioSession(active: playing)
         sync()
         
@@ -108,6 +113,10 @@ class AudioPlayer: NSObject {
                 PlayerHelper.updateNowPlayingState(duration: self.player.currentItem?.duration.seconds ?? 0, currentTime: self.player.currentTime().seconds, playbackRate: self.player.rate)
             } else {
                 PlayerHelper.updateNowPlayingState(duration: self.getTotalDuration(), currentTime: self.getCurrentTime(), playbackRate: self.player.rate)
+            }
+            
+            if self.isPlaying() != self.expectsToBePlaying {
+                self.setPlaying(!self.expectsToBePlaying)
             }
             self.buffering = !(self.player.currentItem?.isPlaybackLikelyToKeepUp ?? false)
             
@@ -236,8 +245,9 @@ class AudioPlayer: NSObject {
         }
     }
     private func getItem(audioTrack: AudioTrack) -> AVPlayerItem {
+        // LEtS OnLy eNCodE soM cHarActeRS
         return AVPlayerItem(url: user.serverUrl!
-            .appending(path: audioTrack.contentUrl)
+            .appending(path: audioTrack.contentUrl.removingPercentEncoding ?? "")
             .appending(queryItems: [
                 URLQueryItem(name: "token", value: user.token)
             ]))

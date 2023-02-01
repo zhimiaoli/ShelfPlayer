@@ -33,7 +33,11 @@ extension DetailView {
                                         self.filter = filter
                                     }
                                 } label: {
-                                    Text(filter.rawValue)
+                                    if self.filter == filter {
+                                        Label(filter.rawValue, systemImage: "checkmark")
+                                    } else {
+                                        Text(filter.rawValue)
+                                    }
                                 }
                             }
                         } label: {
@@ -47,7 +51,7 @@ extension DetailView {
                             .bold()
                         }
                         Spacer()
-                        NavigationLink(destination: Text("uwu")) {
+                        NavigationLink(destination: PodcastFullEpisodeList(episodes: episodes, item: item)) {
                             Text("See all")
                                 .bold()
                         }
@@ -73,7 +77,7 @@ extension DetailView {
                                         return withPodcast
                                     }())
                                 } label: {
-                                    PodcastDetailListEpisode(episode: episode)
+                                    PodcastDetailListEpisode(episode: episode, item: item)
                                 }
                                 .buttonStyle(.plain)
                             }
