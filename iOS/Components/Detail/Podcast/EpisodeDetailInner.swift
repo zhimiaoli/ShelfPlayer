@@ -12,6 +12,7 @@ extension DetailView {
         let item: LibraryItem
         
         @EnvironmentObject private var fullscreenViewModel: FullscrenViewViewModel
+        @Environment(\.defaultMinListRowHeight) var minRowHeight
         @Environment(\.colorScheme) var colorScheme
         
         var body: some View {
@@ -40,8 +41,14 @@ extension DetailView {
                                 }
                             }
                             
+                            if let progress = PersistenceController.shared.getProgressByLibraryItem(item: item) {
+                                Text("•")
+                                ProgressIndicator(completedPercentage: progress)
+                                    .frame(height: 13)
+                            }
+                            
                             Text("•")
-                            Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.duration ?? 0))))
+                            Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))
                         }
                     }
                     .font(.caption)
@@ -76,13 +83,45 @@ extension DetailView {
                     LinearGradient(colors: [Color(fullscreenViewModel.backgroundColor), Color(UIColor.secondarySystemBackground)], startPoint: .top, endPoint: .bottom)
                 }
                 
-                VStack(alignment: .leading) {
-                    if let html = item.recentEpisode?.description {
-                        Text(TextHelper.parseHTML(html))
+                Group {
+                    VStack(alignment: .leading) {
+                        if let html = item.recentEpisode?.description {
+                            Text(TextHelper.parseHTML(html))
+                        }
                     }
+                    .padding()
+                    
+                    Text("About")
+                        .font(.title2)
+                        .bold()
+                        .padding()
+                        .padding(.bottom, -15)
+                    
+                    List {
+                        Group {
+                            ListItem(title: "Title", text: item.title)
+                                .foregroundColor(.accentColor)
+                            NavigationLink(destination: DetailView(id: item.id)) {
+                                ListItem(title: "Podcast", text: item.media?.metadata.title ?? "unknown podcast")
+                            }
+                            ListItem(title: "Author", text: item.author)
+                            ListItem(title: "Size", text: ByteCountFormatter().string(fromByteCount: Int64(item.recentEpisode?.audioFile?.metadata?.size ?? 0)))
+                            
+                            if let seasonData = item.recentEpisode?.seasonData, seasonData.0 != nil {
+                                ListItem(title: "Series", text: "Season: \(seasonData.0 ?? "?") | Episode: \(seasonData.1 ?? "?")")
+                            }
+                        }
+                        Group {
+                            ListItem(title: "Duration", text: TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))
+                            ListItem(title: "Codec", text: item.recentEpisode?.audioFile?.codec ?? "?")
+                            ListItem(title: "Channels", text: item.recentEpisode?.audioFile?.channelLayout ?? "?")
+                        }
+                    }
+                    .listStyle(.inset)
+                    .font(.callout)
+                    .frame(minHeight: minRowHeight * (item.recentEpisode?.seasonData.0 == nil ? 7 : 8), alignment: .topLeading)
                 }
-                .padding()
-                .frame(maxWidth: .infinity, minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .topLeading)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
             .navigationTitle(item.title)
             .onAppear {
@@ -93,6 +132,20 @@ extension DetailView {
                         fullscreenViewModel.backgroundColor = backgroundColor
                     }
                 }
+            }
+        }
+    }
+    
+    private struct ListItem: View {
+        let title: String
+        let text: String
+        
+        var body: some View {
+            HStack {
+                Text(title)
+                    .foregroundColor(.gray)
+                Spacer()
+                Text(text)
             }
         }
     }

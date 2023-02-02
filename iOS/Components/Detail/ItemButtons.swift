@@ -13,14 +13,14 @@ struct ItemButtons: View {
     
     @EnvironmentObject private var globalViewModel: GlobalViewModel
     
-    @State private var finished: Bool = false
+    @State private var progress: Float = 0
     
     var body: some View {
         HStack {
             Button {
                 globalViewModel.playItem(item: item)
             } label: {
-                Label("Listen now", systemImage: "play.fill")
+                Label(progress > 0 && progress < 1 ? "Resume" : "Listen now", systemImage: "play.fill")
             }
             .buttonStyle(PlayNowButtonStyle(colorScheme: colorScheme))
             
@@ -36,18 +36,18 @@ struct ItemButtons: View {
                     let result = await item.toggleFinishedStatus()
                     if result {
                         DispatchQueue.main.async {
-                            finished.toggle()
+                            progress = 0
                         }
                     }
                 }
             } label: {
                 Image(systemName: "checkmark")
             }
-            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, specialBackground: finished))
+            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, specialBackground: progress == 1))
         }
         .foregroundColor(colorScheme == .light ? .black : .white)
         .onAppear {
-            finished = PersistenceController.shared.getProgressByLibraryItem(item: item) == 1
+            progress = PersistenceController.shared.getProgressByLibraryItem(item: item)
         }
     }
 }

@@ -31,16 +31,22 @@ struct PlayerHelper {
     private static var nowPlayingInfo = [String: Any]()
     
     // MARK: - Session reporting
-    public static func syncSession(sessionId: String, itemId: String, episodeId: String?, timeListened: Double, duration: Double, currentTime: Double) {
-        Task.detached {
-            do {
-                try await APIClient.authorizedShared.request(APIResources.session(id: sessionId).sync(timeListened: timeListened, duration: duration, currentTime: currentTime.isNaN ? 0 : currentTime))
-                PersistenceController.shared.updateStatusWithoutUpdate(itemId: itemId, episodeId: episodeId, progress: Float(currentTime / duration))
-            } catch {
-                print(error)
-                // TODO: offline playback reporting
+    public static func syncSession(sessionId: String?, itemId: String, episodeId: String?, timeListened: Double, duration: Double, currentTime: Double) {
+        if let sessionId = sessionId {
+            Task.detached {
+                do {
+                    try await APIClient.authorizedShared.request(APIResources.session(id: sessionId).sync(timeListened: timeListened, duration: duration, currentTime: currentTime.isNaN ? 0 : currentTime))
+                    PersistenceController.shared.updateStatusWithoutUpdate(itemId: itemId, episodeId: episodeId, progress: Float(currentTime / duration))
+                } catch {
+                    cacheSync(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
+                }
             }
+        } else {
+            cacheSync(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
         }
+    }
+    private static func cacheSync(itemId: String, episodeId: String?, currentTime: Double) {
+        PersistenceController.shared.updateStatus(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
     }
     
     // MARK: - iOS now playing widget

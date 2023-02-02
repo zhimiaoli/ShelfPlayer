@@ -12,8 +12,10 @@ extension DetailView {
         let item: LibraryItem
         
         @EnvironmentObject private var fullscreenViewModel: FullscrenViewViewModel
+        @EnvironmentObject private var globalViewModel: GlobalViewModel
         
         @State private var backgroundIsLight: Bool = UIColor.systemBackground.isLight() ?? false
+        @State private var latestEpisode: LibraryItem.PodcastEpisode?
         
         var body: some View {
             VStack {
@@ -40,9 +42,21 @@ extension DetailView {
                     .frame(maxWidth: 250)
                     
                     Button {
-                        // TODO: play item
+                        if let latestEpisode = latestEpisode {
+                            globalViewModel.playItem(item: {
+                                var withEpisode = item
+                                withEpisode.recentEpisode = latestEpisode
+                                
+                                return withEpisode
+                            }())
+                        }
                     } label: {
-                        Label("Play latest episode", systemImage: "play.fill")
+                        if let latestItem = latestEpisode {
+                            let progress = PersistenceController.shared.getProgressByPodcastEpisode(episode: latestItem)
+                            Label("\(progress > 0 && progress < 1 ? "Resume" : "Play") latest episode", systemImage: "play.fill")
+                        } else {
+                            Text("Loading...")
+                        }
                     }
                     .buttonStyle(PlayNowButtonStyle(colorScheme: backgroundIsLight ? .dark : .light))
                     
@@ -99,7 +113,7 @@ extension DetailView {
                 .background(Color(fullscreenViewModel.backgroundColor))
                 .foregroundColor(backgroundIsLight ? .black : .white)
                 
-                PodcastDetailEpisodeList(episodes: item.media?.episodes ?? [], item: item)
+                PodcastDetailEpisodeList(episodes: item.media?.episodes ?? [], item: item, latestEpisode: $latestEpisode)
                     .frame(minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .top)
             }
             .navigationTitle(item.title)

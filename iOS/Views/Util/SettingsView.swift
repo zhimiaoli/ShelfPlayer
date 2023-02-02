@@ -18,6 +18,7 @@ struct SettingsView: View {
     @State var podcastDefaultSort: ItemSort = FilterHelper.getDefaultLibrarySortOrder(mediaType: "podcast")
     
     @State var useChapterView: Bool = PlayerHelper.getUseChapterView()
+    @State var allowDownloadsOverMobile: Bool = DownloadHelper.getAllowDownloadsOverMobile()
     
     var body: some View {
         NavigationStack {
@@ -71,6 +72,18 @@ struct SettingsView: View {
                         })
                 } header: {
                     Text("Player")
+                }
+                
+                Section {
+                    Toggle("Mobile downloads", isOn: $allowDownloadsOverMobile)
+                        .onChange(of: allowDownloadsOverMobile, perform: { allow in
+                            DownloadHelper.setAllowDownloadsOverMobile(allow)
+                        })
+                    NavigationLink(destination: Text("add me")) {
+                        Text("Manage")
+                    }
+                } header: {
+                    Text("Downloads")
                 }
                 
                 // Account

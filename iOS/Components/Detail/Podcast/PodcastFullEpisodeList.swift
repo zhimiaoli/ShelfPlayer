@@ -28,10 +28,10 @@ extension DetailView {
                 if episodes.count == 0 {
                     fallback
                 } else {
-                    if seasons.count > 0 {
+                    if seasons.count > 1 {
                         ScrollView(.horizontal, showsIndicators: false) {
                             LazyHStack {
-                                ForEach(seasons, id: \.hashValue) { season in
+                                ForEach(seasons.sorted(by: { $0 < $1 }), id: \.hashValue) { season in
                                     Button {
                                         if activeSeason == season {
                                             activeSeason = nil
@@ -58,7 +58,7 @@ extension DetailView {
                             }
                             if filtered.count > 0 {
                                 ForEach(Array(filtered.enumerated()), id: \.offset) { index, episode in
-                                    if (seasons.count == 0 && index != 0) || index > 0 {
+                                    if (seasons.count < 1 && index != 0) || index > 0 {
                                         Divider()
                                     }
                                     NavigationLink {

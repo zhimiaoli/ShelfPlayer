@@ -143,6 +143,38 @@ extension APIResources {
     }
 }
 
+// MARK: - /api/me/sync-local-progress
+extension APIResources {
+    public static var me: MeResource {
+        MeResource()
+    }
+    
+    public struct MeResource {
+        public func syncLocalProgress(_ progress: CachedMediaProgress) -> APIRequestEmpty {
+            APIRequestEmpty(method: "POST", path: "api/me/sync-local-progress", body: [
+                "numServerProgressUpdates": 1,
+                "localMediaProgress": [convertToDict(mediaProgress: progress)]
+            ])
+        }
+        
+        private func convertToDict(mediaProgress: CachedMediaProgress) -> [String: Any] {
+            return [
+                "id": mediaProgress.id ?? "_",
+                "libraryItemId": mediaProgress.libraryItemId ?? "_",
+                "episodeId": mediaProgress.episodeId ?? "_",
+                "duration": mediaProgress.duration,
+                "progress": mediaProgress.progress,
+                "currentTime": mediaProgress.currentTime,
+                "isFinished": mediaProgress.isFinished,
+                "hideFromContinueListening": mediaProgress.hideFromContinueListening,
+                "lastUpdate": Double(mediaProgress.lastUpdate?.millisecondsSince1970 ?? 0),
+                "startedAt": Double(mediaProgress.startedAt?.millisecondsSince1970 ?? 0),
+                "finishedAt": Double(mediaProgress.finishedAt?.millisecondsSince1970 ?? 0),
+            ]
+        }
+    }
+}
+
 // MARK: - /api/items/{id}
 extension APIResources {
     public static func items(id: String) -> ItemResource {

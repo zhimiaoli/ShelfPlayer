@@ -69,6 +69,8 @@ extension LibraryItem {
         let size: Double?
         let duration: Double?
         
+        let audioFile: PodcastAudioFile?
+        
         // why?
         var seasonData: (String?, String?) {
             var season: String?
@@ -82,6 +84,20 @@ extension LibraryItem {
             }
             
             return (season, episode)
+        }
+        var length: Double {
+            duration ?? audioFile?.duration ?? 0
+        }
+        
+        struct PodcastAudioFile: Codable {
+            let duration: Double?
+            let codec: String?
+            let channelLayout: String?
+            
+            let metadata: PodcastMetadata?
+        }
+        struct PodcastMetadata: Codable {
+            let size: Double?
         }
     }
     

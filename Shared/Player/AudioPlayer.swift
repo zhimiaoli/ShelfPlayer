@@ -11,7 +11,7 @@ import MediaPlayer
 
 class AudioPlayer: NSObject {
     // MARK: - Parameters
-    private let sessionId: String
+    private let sessionId: String?
     private let itemId: String
     private let episodeId: String?
     
@@ -32,7 +32,7 @@ class AudioPlayer: NSObject {
     private var timeListened: Double = 0
     
     // MARK: - Initializers
-    init(sessionId: String, itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
+    init(sessionId: String?, itemId: String, episodeId: String? = nil, startTime: Double, playMethod: PlayMethod, audioTracks: [AudioTrack]) {
         self.sessionId = sessionId
         self.itemId = itemId
         self.episodeId = episodeId

@@ -53,6 +53,8 @@
 		3A50166C2985B50700BB2C74 /* PodcastDetailInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166B2985B50700BB2C74 /* PodcastDetailInner.swift */; };
 		3A50166E2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */; };
 		3A5016702985CC7100BB2C74 /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166F2985CC7100BB2C74 /* TextHelper.swift */; };
+		3A734257298C20E900CFEC3B /* DownloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A734256298C20E900CFEC3B /* DownloadHelper.swift */; };
+		3A734259298C26D700CFEC3B /* Persistence+LocalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A734258298C26D700CFEC3B /* Persistence+LocalItem.swift */; };
 		3A98B9F92920F78C00EE5ECE /* PingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9F82920F78C00EE5ECE /* PingResponse.swift */; };
 		3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9FE2920FDD900EE5ECE /* APIError.swift */; };
 		3A98BA012920FF5400EE5ECE /* APIResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98BA002920FF5400EE5ECE /* APIResources.swift */; };
@@ -155,6 +157,8 @@
 		3A50166B2985B50700BB2C74 /* PodcastDetailInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailInner.swift; sourceTree = "<group>"; };
 		3A50166D2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailEpisodeList.swift; sourceTree = "<group>"; };
 		3A50166F2985CC7100BB2C74 /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
+		3A734256298C20E900CFEC3B /* DownloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadHelper.swift; sourceTree = "<group>"; };
+		3A734258298C26D700CFEC3B /* Persistence+LocalItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+LocalItem.swift"; sourceTree = "<group>"; };
 		3A98B9F82920F78C00EE5ECE /* PingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingResponse.swift; sourceTree = "<group>"; };
 		3A98B9FE2920FDD900EE5ECE /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		3A98BA002920FF5400EE5ECE /* APIResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResources.swift; sourceTree = "<group>"; };
@@ -347,6 +351,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		3A734255298C20DD00CFEC3B /* Offline */ = {
+			isa = PBXGroup;
+			children = (
+				3A734256298C20E900CFEC3B /* DownloadHelper.swift */,
+			);
+			path = Offline;
+			sourceTree = "<group>";
+		};
 		3A98B9F62920F77100EE5ECE /* Server */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,7 +379,6 @@
 			children = (
 				3ADEC0052931FF770047CE12 /* Util */,
 				3A98B9FB2920FB0600EE5ECE /* API */,
-				3AB97F32292005F400E07DB5 /* Database */,
 				3A55BE8329212F0300CDDEDC /* Extensions */,
 			);
 			path = Helper;
@@ -424,6 +435,7 @@
 				3AD5EAD22923D87C00D74AF1 /* PersistenceController+User.swift */,
 				3A3F29E9292FCD9200841C03 /* Persistence+MediaProgress.swift */,
 				3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */,
+				3A734258298C26D700CFEC3B /* Persistence+LocalItem.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -431,7 +443,9 @@
 		3ABEC5EC2988081D002666DE /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				3A734255298C20DD00CFEC3B /* Offline */,
 				3ABEC5ED29880831002666DE /* Player */,
+				3AB97F32292005F400E07DB5 /* Database */,
 				3A98B9FA2920FB0000EE5ECE /* Helper */,
 				3AF4CB80291FAB5E0080451B /* Models */,
 			);
@@ -646,6 +660,8 @@
 				3A3F29F4292FD7DF00841C03 /* View+Recive.swift in Sources */,
 				3A5016602985599500BB2C74 /* View+Namespace.swift in Sources */,
 				3A0D7796297F04E3004F5A7D /* Date+Conversions.swift in Sources */,
+				3A734259298C26D700CFEC3B /* Persistence+LocalItem.swift in Sources */,
+				3A734257298C20E900CFEC3B /* DownloadHelper.swift in Sources */,
 				3A50165B298545A900BB2C74 /* LibrariesResponse.swift in Sources */,
 				3A3110E22988618A00D4E93E /* String+Padding.swift in Sources */,
 				3AB97F342920061400E07DB5 /* APIClient.swift in Sources */,

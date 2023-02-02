@@ -23,7 +23,7 @@ struct ABSUser: Codable {
     var permissions: UserPermissions
 }
 struct ServerSettings: Codable {
-    var version: String
+    var version: String?
 }
 struct UserPermissions: Codable {
     var download: Bool
@@ -47,6 +47,19 @@ struct MediaProgress: Codable {
     var startedAt: Double?
     var finishedAt: Double?
     
+    init(id: String, libraryItemId: String, episodeId: String? = nil, duration: Double? = nil, progress: Double? = nil, currentTime: Double? = nil, isFinished: Bool, hideFromContinueListening: Bool, lastUpdate: Double? = nil, startedAt: Double? = nil, finishedAt: Double? = nil) {
+        self.id = id
+        self.libraryItemId = libraryItemId
+        self.episodeId = episodeId
+        self.duration = duration
+        self.progress = progress
+        self.currentTime = currentTime
+        self.isFinished = isFinished
+        self.hideFromContinueListening = hideFromContinueListening
+        self.lastUpdate = lastUpdate
+        self.startedAt = startedAt
+        self.finishedAt = finishedAt
+    }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)

@@ -15,6 +15,8 @@ extension DetailView {
         @State var sort: (EpisodeSort, Bool) = (FilterHelper.defaultSortOrder, FilterHelper.defaultInvert)
         @State var filter: EpisodeFilter = FilterHelper.defaultFilter
         
+        @Binding var latestEpisode: LibraryItem.PodcastEpisode?
+        
         var fallback: some View {
             Text("No episodes")
                 .bold()
@@ -32,6 +34,8 @@ extension DetailView {
                                     withAnimation {
                                         self.filter = filter
                                     }
+                                    
+                                    updateLatestEpisode()
                                 } label: {
                                     if self.filter == filter {
                                         Label(filter.rawValue, systemImage: "checkmark")
@@ -109,6 +113,13 @@ extension DetailView {
             
             self.filter = FilterHelper.getDefaultFilter(podcastId: item.id)
             self.sort = FilterHelper.getDefaultSortOrder(podcastId: item.id)
+            
+            updateLatestEpisode()
+        }
+        private func updateLatestEpisode() {
+            Task.detached {
+                latestEpisode = FilterHelper.sortEpisodes(FilterHelper.filterEpisodes(episodes, filter: filter), sort).first
+            }
         }
     }
 }

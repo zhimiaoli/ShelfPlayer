@@ -53,9 +53,9 @@ struct LoginView: View {
 extension LoginView {
     /// View model used for the login flow
     class LoginViewModel: ObservableObject {
-        @Published var serverUrl: String = "https://audiobooks.rfk.io"
-        @Published var username: String = "rasmus"
-        @Published var password: String = "wexvuq-1Takte-cuhxej"
+        @Published var serverUrl: String = ""
+        @Published var username: String = ""
+        @Published var password: String = ""
         
         @Published var loginSheetPresented: Bool = false
         @Published var currentState: LoginFlowState = .server

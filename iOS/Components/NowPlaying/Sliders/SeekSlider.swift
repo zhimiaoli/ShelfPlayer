@@ -38,7 +38,7 @@ struct SeekSlider: View {
         
         HStack {
             if !buffering {
-                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(seekTarget ?? (currentTime.isInfinite || currentTime.isNaN ? 0 : currentTime))), forceHours: duration > 3_600))
+                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(seekTarget ?? (currentTime.isInfinite || currentTime.isNaN ? 0 : currentTime))), forceHours: currentTime > 60 && duration > 3_600))
                     .font(.caption)
                     .frame(width: 45)
                     .padding(.leading, -5)
