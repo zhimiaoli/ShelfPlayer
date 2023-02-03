@@ -11,19 +11,8 @@ import CoreData
 extension PersistenceController {
     // MARK: - Bulk operations
     public func updateMediaProgressDatabase(_ updated: [MediaProgress]) {
-        getUpdatedEntities().forEach { updatedProgress in
-            Task {
-                do {
-                    NSLog("Found updated progress \(updatedProgress.id ?? "?")")
-                    try await APIClient.authorizedShared.request(APIResources.me.syncLocalProgress(updatedProgress))
-                    
-                    updatedProgress.localUpdate = false
-                    try container.viewContext.save()
-                } catch {
-                    print(error)
-                }
-            }
-        }
+        syncEntities()
+        
         updated.forEach { mediaProgress in
             let cachedMediaProgress = {
                 let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
@@ -70,6 +59,7 @@ extension PersistenceController {
         
         try container.viewContext.execute(deleteRequest)
     }
+    
     public func getUpdatedEntities() -> [CachedMediaProgress] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         fetchRequest.predicate = NSPredicate(format: "localUpdate == YES")
@@ -79,6 +69,23 @@ extension PersistenceController {
         }
         
         return []
+    }
+    public func syncEntities() {
+        getUpdatedEntities().forEach { updatedProgress in
+            Task {
+                do {
+                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite) {
+                        NSLog("Found updated progress \(updatedProgress.id ?? "?")")
+                        try await APIClient.authorizedShared.request(APIResources.me.syncLocalProgress(updatedProgress))
+                        
+                        updatedProgress.localUpdate = false
+                        try container.viewContext.save()
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
     }
     
     // MARK: - Progress

@@ -212,6 +212,7 @@
 		3ADEC00829320BEB0047CE12 /* SearchSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSeries.swift; sourceTree = "<group>"; };
 		3ADEC00A29320C6C0047CE12 /* BookDetailSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailSeries.swift; sourceTree = "<group>"; };
 		3ADEC00E293216C20047CE12 /* FilterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterResponse.swift; sourceTree = "<group>"; };
+		3AF393CE298D9617000F2EF0 /* Ideas.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Ideas.md; sourceTree = "<group>"; };
 		3AF4CB69291FA70D0080451B /* Books.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Books.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AF4CB6C291FA70D0080451B /* BooksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksApp.swift; sourceTree = "<group>"; };
 		3AF4CB6E291FA70D0080451B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -533,6 +534,7 @@
 		3AF4CB60291FA70D0080451B = {
 			isa = PBXGroup;
 			children = (
+				3AF393CE298D9617000F2EF0 /* Ideas.md */,
 				3A50166129856D9F00BB2C74 /* Books-Info.plist */,
 				3ABEC5EC2988081D002666DE /* Shared */,
 				3AF4CB6B291FA70D0080451B /* iOS */,

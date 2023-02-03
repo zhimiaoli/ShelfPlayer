@@ -50,7 +50,7 @@ class AudioPlayer: NSObject {
         setupAudioSession()
         setupTimeObserver()
         
-        PlayerHelper.setNowPlayingMetadata(itemId: itemId)
+        PlayerHelper.setNowPlayingMetadata(itemId: itemId, episodeId: episodeId)
         NotificationCenter.default.addObserver(self, selector: #selector(itemEnded), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         
         updateQueueTracks(time: startTime, forceStart: true)
@@ -245,12 +245,16 @@ class AudioPlayer: NSObject {
         }
     }
     private func getItem(audioTrack: AudioTrack) -> AVPlayerItem {
-        // LEtS OnLy eNCodE soM cHarActeRS
-        return AVPlayerItem(url: user.serverUrl!
-            .appending(path: audioTrack.contentUrl.removingPercentEncoding ?? "")
-            .appending(queryItems: [
-                URLQueryItem(name: "token", value: user.token)
-            ]))
+        if playMethod == .local {
+            return AVPlayerItem(url: URL(string: "file://\(audioTrack.contentUrl)")!)
+        } else {
+            // LEtS OnLy eNCodE soM cHarActeRS
+            return AVPlayerItem(url: user.serverUrl!
+                .appending(path: audioTrack.contentUrl.removingPercentEncoding ?? "")
+                .appending(queryItems: [
+                    URLQueryItem(name: "token", value: user.token)
+                ]))
+        }
     }
     
     private func getActiveTracks(after: Double) -> [AudioTrack] {

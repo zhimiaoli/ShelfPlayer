@@ -12,7 +12,7 @@ class DownloadManager: NSObject, ObservableObject {
     static var shared = DownloadManager()
     
     private var urlSession: URLSession!
-    private var documentsURL: URL!
+    public var documentsURL: URL!
 
     override private init() {
         super.init()
@@ -23,9 +23,9 @@ class DownloadManager: NSObject, ObservableObject {
         documentsURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
 
-    func startDownload(url: URL, ext: String, itemId: String, episodeId: String?, index: Int) {
+    func startDownload(url: URL, ext: String, duration: Double, itemId: String, episodeId: String?, index: Int) {
         let task = urlSession.downloadTask(with: url)
-        PersistenceController.shared.createDownload(itemId: itemId, episodeId: episodeId, ext: ext, index: index, identifier: task.taskIdentifier)
+        PersistenceController.shared.createDownloadTrack(itemId: itemId, episodeId: episodeId, duration: duration, ext: ext, index: index, identifier: task.taskIdentifier)
         
         task.resume()
     }
@@ -36,7 +36,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         print("download progress", downloadTask.taskIdentifier, downloadTask.progress.fractionCompleted)
     }
     func urlSession(_: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        guard let (id, index, itemId, episodeid, ext) = PersistenceController.shared.getDownloadByIdentifier(downloadTask.taskIdentifier) else {
+        guard let (id, index, itemId, episodeid, ext) = PersistenceController.shared.getDownloadTrackByIdentifier(downloadTask.taskIdentifier) else {
             NSLog("unknown download finished", downloadTask.taskIdentifier)
             return
         }
@@ -55,17 +55,34 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             PersistenceController.shared.setLocalConflict(itemId: itemId, episodeId: episodeid)
         }
         
-        PersistenceController.shared.deleteDownloadByIdentifier(downloadTask.taskIdentifier)
+        PersistenceController.shared.markTrackAsDownloaded(downloadTask.taskIdentifier)
     }
     func urlSession(_: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {
             print("download error", String(describing: error))
             
-            if let download = PersistenceController.shared.getDownloadByIdentifier(task.taskIdentifier) {
+            if let download = PersistenceController.shared.getDownloadTrackByIdentifier(task.taskIdentifier) {
                 PersistenceController.shared.setLocalConflict(itemId: download.2, episodeId: download.3)
             }
-            
-            PersistenceController.shared.deleteDownloadByIdentifier(task.taskIdentifier)
         }
+    }
+}
+
+extension DownloadManager {
+    public func downloadCover(coverUrl: URL, id: String) {
+        let task = URLSession.shared.downloadTask(with: URLRequest(url: coverUrl)) { localURL, response, error in
+            do {
+                if let localURL = localURL, error == nil {
+                    let directoryURL = self.documentsURL.appending(path: id)
+                    try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+                    
+                    let savedURL = directoryURL.appending(path: "cover.png")
+                    try FileManager.default.moveItem(at: localURL, to: savedURL)
+                }
+            } catch {
+                NSLog("Failed to download cover")
+            }
+        }
+        task.resume()
     }
 }

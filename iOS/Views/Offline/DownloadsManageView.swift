@@ -16,46 +16,34 @@ struct DownloadsManageView: View {
         List {
             ForEach(items) { localItem in
                 Button {
-                    var item = LibraryItem(
-                        id: localItem.itemId ?? "_",
-                        ino: nil,
-                        libraryId: nil,
-                        folderId: nil,
-                        path: nil,
-                        mediaType: nil,
-                        type: localItem.episodeId == nil ? "book" : "podcast",
-                        addedAt: Double(Date().millisecondsSince1970 / 1000),
-                        updatedAt: nil,
-                        isMissing: false,
-                        isInvalid: false,
-                        size: nil,
-                        books: nil,
-                        numEpisodes: nil,
-                        name: localItem.title,
-                        description: localItem.descriptionText,
-                        numBooks: nil,
-                        imagePath: nil
-                    )
-                    
-                    if localItem.episodeId != nil {
-                        let epeisode = LibraryItem.PodcastEpisode(id: localItem.episodeId, libraryItemId: localItem.itemId, index: nil, season: nil, episode: nil, title: localItem.episodeTitle, description: localItem.episodeDescription, publishedAt: nil, addedAt: nil, updatedAt: nil, size: nil, duration: localItem.duration, audioFile: nil, audioTrack: nil)
-                        
-                        item.recentEpisode = epeisode
-                    }
-                    
-                    let tracks: [AudioTrack] = DownloadHelper.getLocalFiles(id: DownloadHelper.getIdentifier(itemId: localItem.itemId ?? "_", episodeId: localItem.episodeId))?.enumerated().map { index, element in
-                        // TODO: fuck
-                        AudioTrack(index: index, startOffset: 0, duration: 100, contentUrl: element.path(), metadata: nil)
-                    } ?? []
-                    
-                    globalViewModel.playLocalItem(item: item, tracks: tracks)
+                    globalViewModel.playLocalItem(localItem)
                 } label: {
                     HStack {
                         Text(localItem.title ?? "?")
-                        Text(String(localItem.hasConflict))
+                        if localItem.hasConflict {
+                            Text("(conflict)")
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+                .swipeActions {
+                    Button(role: .destructive) {
+                        DownloadHelper.deleteDowload(itemId: localItem.itemId!, episodeId: localItem.episodeId)
+                    } label: {
+                        Label("Delete", systemImage: "trash.fill")
                     }
                 }
             }
+            
+            if globalViewModel.onlineStatus == .offline {
+                Button {
+                    globalViewModel.onlineStatus = .unknown
+                } label: {
+                    Text("Go online")
+                }
+                .foregroundColor(.accentColor)
+            }
         }
+        .foregroundColor(.primary)
     }
 }

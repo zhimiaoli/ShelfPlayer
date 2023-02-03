@@ -42,18 +42,18 @@ struct DebugView: View {
                         let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                         let fileManager = FileManager.default
                         
-                        try! fileManager.contentsOfDirectory(atPath: url.path()).forEach {
-                            try! FileManager.default.removeItem(atPath: $0)
+                        try! fileManager.contentsOfDirectory(atPath: url.path()).forEach { path in
+                            try! FileManager.default.removeItem(at: url.appending(path: path))
                         }
                     } label: {
                         Text("Delete documents folder")
                     }
                 }
                 
-                Text("Download cache")
+                Text("Downloaded tracks")
                     .foregroundColor(.red)
                 
-                ForEach(PersistenceController.shared.getDownloadCache()) { download in
+                ForEach(PersistenceController.shared.getDownloadedTracks()) { download in
                     HStack {
                         Text(download.forItem ?? "_")
                         Text(download.index.description)

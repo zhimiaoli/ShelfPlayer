@@ -14,63 +14,66 @@ import Foundation
 
 /// Item retrived from a ABS server
 struct LibraryItem: Codable, Equatable {
-    let id: String
-    let ino: String?
-    let libraryId: String?
-    let folderId: String?
-    let path: String?
-    let mediaType: String?
-    let type: String?
+    var id: String
+    var ino: String?
+    var libraryId: String?
+    var folderId: String?
+    var path: String?
+    var mediaType: String?
+    var type: String?
     
-    let addedAt: Double
-    let updatedAt: Double?
+    var addedAt: Double?
+    var updatedAt: Double?
     
-    let isMissing: Bool?
-    let isInvalid: Bool?
+    var isMissing: Bool?
+    var isInvalid: Bool?
     
-    let size: Double?
+    var size: Double?
     
     var media: LibraryItemMedia?
-    let books: [LibraryItem]?
+    var books: [LibraryItem]?
+    
+    // Local
+    var isLocal: Bool? = false
+    var localAuthor: String?
     
     // Podcasts
-    let numEpisodes: Int?
+    var numEpisodes: Int?
     var recentEpisode: PodcastEpisode?
     
     // Authors
-    let name: String?
-    let description: String?
-    let numBooks: Int?
-    let imagePath: String?
-    
-    static func == (lhs: LibraryItem, rhs: LibraryItem) -> Bool {
-        if !lhs.isPodcast && !rhs.isPodcast {
-            return lhs.identifier == rhs.identifier
-        } else {
-            return lhs.identifier == rhs.identifier && lhs.media?.episodes?.count == rhs.media?.episodes?.count
-        }
-    }
+    var name: String?
+    var description: String?
+    var numBooks: Int?
+    var imagePath: String?
 }
 
 extension LibraryItem {
     struct PodcastEpisode: Codable {
-        let id: String?
-        let libraryItemId: String?
-        let index: Int?
-        let season: String?
-        let episode: String?
-        let title: String?
-        let description: String?
+        var id: String?
+        var libraryItemId: String?
+        var index: Int?
+        var season: String?
+        var episode: String?
+        var title: String?
+        var description: String?
         
-        let publishedAt: Double?
-        let addedAt: Double?
-        let updatedAt: Double?
+        var publishedAt: Double?
+        var addedAt: Double?
+        var updatedAt: Double?
         
-        let size: Double?
-        let duration: Double?
+        var size: Double?
+        var duration: Double?
         
-        let audioFile: PodcastAudioFile?
-        let audioTrack: AudioTrack?
+        var audioFile: PodcastAudioFile?
+        var audioTrack: AudioTrack?
+        
+        init(id: String?, libraryItemId: String?, title: String?, description: String?) {
+            self.id = id
+            self.libraryItemId = libraryItemId
+            self.title = title
+            self.description = description
+        }
         
         // why?
         var seasonData: (String?, String?) {
@@ -145,6 +148,27 @@ extension LibraryItem {
 }
 
 extension LibraryItem {
+    init(id: String, type: String?, name: String?, author: String?, description: String?, isLocal: Bool = false) {
+        self.id = id
+        self.type = type
+        self.mediaType = type
+        self.name = name
+        self.localAuthor = author
+        self.description = description
+        
+        self.isLocal = isLocal
+    }
+    
+    static func == (lhs: LibraryItem, rhs: LibraryItem) -> Bool {
+        if !lhs.isPodcast && !rhs.isPodcast {
+            return lhs.identifier == rhs.identifier
+        } else {
+            return lhs.identifier == rhs.identifier && lhs.media?.episodes?.count == rhs.media?.episodes?.count
+        }
+    }
+}
+
+extension LibraryItem {
     /// Get the unique identifier of the item
     var identifier: String {
         recentEpisode?.id ?? id
@@ -155,10 +179,14 @@ extension LibraryItem {
         recentEpisode?.title ?? media?.metadata.title ?? name ?? "unknown title"
     }
     var author: String {
-        media?.metadata.authorName ?? media?.metadata.author ?? "unknown author"
+        localAuthor ?? media?.metadata.authorName ?? media?.metadata.author ?? "unknown author"
     }
     /// Returns the cover url of the item or nil
     var cover: URL? {
+        if isLocal ?? false {
+            return DownloadHelper.getCover(itemId: id, episodeId: recentEpisode?.id)
+        }
+        
         let user = PersistenceController.shared.getLoggedInUser()!
         
         if isBook || isPodcast {
@@ -186,7 +214,6 @@ extension LibraryItem {
         recentEpisode != nil
     }
 }
-
 
 extension LibraryItem {
     func toggleFinishedStatus() async -> Bool {

@@ -161,7 +161,7 @@ extension APIResources {
             return [
                 "id": mediaProgress.id ?? "_",
                 "libraryItemId": mediaProgress.libraryItemId ?? "_",
-                "episodeId": mediaProgress.episodeId ?? "_",
+                "episodeId": mediaProgress.episodeId ?? "",
                 "duration": mediaProgress.duration,
                 "progress": mediaProgress.progress,
                 "currentTime": mediaProgress.currentTime,

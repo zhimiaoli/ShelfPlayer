@@ -65,8 +65,8 @@ extension DetailView {
                             Divider()
                         }
                     }
-                    if let addedAt = Int64(viewModel.item.addedAt) {
-                        ItemDetailGridItem(title: "Added", summary: Date(milliseconds: addedAt).formatted(.dateTime.day().month()), description: Date(milliseconds: addedAt).formatted(.dateTime.year()))
+                    if let addedAt = viewModel.item.addedAt {
+                        ItemDetailGridItem(title: "Added", summary: Date(milliseconds: Int64(addedAt)).formatted(.dateTime.day().month()), description: Date(milliseconds: Int64(addedAt)).formatted(.dateTime.year()))
                     }
                 }
             }

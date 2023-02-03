@@ -15,19 +15,19 @@ struct ContentView: View {
         Group {
             switch globalViewModel.onlineStatus {
             case .unknown:
-                FullscreenLoadingIndicator(description: "Authorizing")
-                    .onAppear {
-                        globalViewModel.loggedIn = PersistenceController.shared.getLoggedInUser() != nil
+                FullscreenLoadingIndicator(description: "Authorizing", showGoOfflineButton: true)
+                .onAppear {
+                    globalViewModel.loggedIn = PersistenceController.shared.getLoggedInUser() != nil
+                    
+                    Task.detached {
+                        // await globalViewModel.authorize()
                     }
-                    .onAppear {
-                        Task.detached {
-                            await globalViewModel.authorize()
-                        }
-                    }
-                // TODO: add "go offline" button
+                }
             case .offline:
                 if globalViewModel.loggedIn {
-                    Text("This is not implemented yet...")
+                    NowPlayingWrapper {
+                        DownloadsManageView()
+                    }
                 } else {
                     LoginView()
                 }
@@ -35,9 +35,9 @@ struct ContentView: View {
                 NavigationRoot()
             }
         }
+        .environmentObject(globalViewModel)
         .onReceive(NSNotification.PlayerFinished, perform: { _ in
             globalViewModel.closePlayer()
         })
-        .environmentObject(globalViewModel)
     }
 }

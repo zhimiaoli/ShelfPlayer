@@ -47,10 +47,11 @@ struct PlayerHelper {
     }
     private static func cacheSync(itemId: String, episodeId: String?, currentTime: Double) {
         PersistenceController.shared.updateStatus(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
+        PersistenceController.shared.syncEntities()
     }
     
     // MARK: - iOS now playing widget
-    public static func setNowPlayingMetadata(itemId: String) {
+    public static func setNowPlayingMetadata(itemId: String, episodeId: String?) {
         Task.detached {
             nowPlayingInfo = [:]
             
@@ -62,6 +63,20 @@ struct PlayerHelper {
                     nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = series
                 }
                 if let coverUrl = item.cover {
+                    getData(from: coverUrl) { image in
+                        let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ -> UIImage in image })
+                        nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+                        
+                        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                    }
+                } else {
+                    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                }
+            } else if let item = PersistenceController.shared.getLocalItem(itemId: itemId, episodeId: episodeId) {
+                nowPlayingInfo[MPMediaItemPropertyTitle] = item.title
+                nowPlayingInfo[MPMediaItemPropertyArtist] = item.author
+                
+                if let coverUrl = DownloadHelper.getCover(itemId: itemId, episodeId: episodeId) {
                     getData(from: coverUrl) { image in
                         let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ -> UIImage in image })
                         nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork

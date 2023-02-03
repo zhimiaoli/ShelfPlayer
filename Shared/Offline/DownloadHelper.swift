@@ -43,24 +43,24 @@ struct DownloadHelper {
             return false
         }
         
-        var tracks = [(URL, String)]()
+        var tracks = [(URL, String, Double)]()
         if item.isPodcast {
             if let track = item.recentEpisode?.audioTrack {
-                if var url = PersistenceController.shared.getLoggedInUser()?.serverUrl?.appending(path: track.contentUrl) {
+                if var url = PersistenceController.shared.getLoggedInUser()?.serverUrl?.appending(path: track.contentUrl.removingPercentEncoding!) {
                     url.append(queryItems: [
                         URLQueryItem(name: "token", value: PersistenceController.shared.getLoggedInUser()?.token)
                     ])
-                    tracks.append((url, track.metadata?.ext ?? "mp3"))
+                    tracks.append((url, track.metadata?.ext ?? "mp3", track.duration))
                 }
             }
         } else if item.isBook {
             if let audioTracks = item.media?.tracks {
                 audioTracks.sorted(by: { $0.index ?? 0 < $1.index ?? 0 }).forEach { track in
-                    if var url = PersistenceController.shared.getLoggedInUser()?.serverUrl?.appending(path: track.contentUrl) {
+                    if var url = PersistenceController.shared.getLoggedInUser()?.serverUrl?.appending(path: track.contentUrl.removingPercentEncoding!) {
                         url.append(queryItems: [
                             URLQueryItem(name: "token", value: PersistenceController.shared.getLoggedInUser()?.token)
                         ])
-                        tracks.append((url, track.metadata?.ext ?? "mp3"))
+                        tracks.append((url, track.metadata?.ext ?? "mp3", track.duration))
                     }
                 }
             }
@@ -93,11 +93,22 @@ struct DownloadHelper {
         
         try! PersistenceController.shared.container.viewContext.save()
         
+        if let cover = item.cover {
+            DownloadManager.shared.downloadCover(coverUrl: cover, id: getIdentifier(itemId: item.id, episodeId: item.recentEpisode?.id))
+        }
         tracks.enumerated().forEach { index, turple in
-            DownloadManager.shared.startDownload(url: turple.0, ext: turple.1, itemId: item.id, episodeId: item.recentEpisode?.id, index: index)
+            DownloadManager.shared.startDownload(url: turple.0, ext: turple.1, duration: turple.2, itemId: item.id, episodeId: item.recentEpisode?.id, index: index)
         }
         
         return true
+    }
+    public static func deleteDowload(itemId: String, episodeId: String?) {
+        let id = getIdentifier(itemId: itemId, episodeId: episodeId)
+        let folder = DownloadManager.shared.documentsURL.appending(path: id)
+        
+        try? FileManager.default.removeItem(at: folder)
+        PersistenceController.shared.deleteTracks(id: id)
+        PersistenceController.shared.deleteLocalItem(itemId: itemId, episodeId: episodeId)
     }
     
     public static func getLocalFiles(id: String) -> [URL]? {
@@ -107,16 +118,30 @@ struct DownloadHelper {
             let url = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: id)
             
             try FileManager.default.contentsOfDirectory(atPath: url.path()).forEach { path in
-                urls.append(url.appending(path: path))
+                if path.contains("file") {
+                    urls.append(url.appending(path: path))
+                }
             }
             
             return urls
         } catch {
-            print(error)
             return nil
         }
     }
     public static func getIdentifier(itemId: String, episodeId: String?) -> String {
         "\(itemId)--\(episodeId ?? "book")"
+    }
+    public static func getCover(itemId: String, episodeId: String?) -> URL? {
+        DownloadManager.shared.documentsURL.appending(path: DownloadHelper.getIdentifier(itemId: itemId, episodeId: episodeId)).appending(path: "cover.png")
+    }
+    
+    public static func getTimeUtil(_ util: Int, tracks: [DownloadTrack]) -> Double {
+        tracks.enumerated().reduce(0, { previous, track in
+            if track.offset < util {
+                return previous + track.element.duration
+            }
+            
+            return previous
+        })
     }
 }

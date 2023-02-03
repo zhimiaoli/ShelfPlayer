@@ -9,12 +9,25 @@ import SwiftUI
 
 struct FullscreenLoadingIndicator: View {
     var description: String
+    var showGoOfflineButton: Bool = false
+    
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         VStack {
             Text(description)
                 .foregroundColor(.gray)
             ProgressView()
+            
+            if showGoOfflineButton {
+                Button {
+                    globalViewModel.onlineStatus = .offline
+                } label: {
+                    Text("Go offline")
+                }
+                .buttonStyle(LargeButtonStyle())
+                .padding()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

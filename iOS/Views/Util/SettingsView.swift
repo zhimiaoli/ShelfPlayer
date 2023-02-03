@@ -23,11 +23,6 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // Debug
-                NavigationLink(destination: DebugView()) {
-                    Label("Debug", systemImage: "hammer.fill")
-                }
-                
                 // Podcast
                 FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)
                     .onChange(of: selectedFilter) { filter in
@@ -45,7 +40,7 @@ struct SettingsView: View {
                     Picker("Books", selection: $bookDefaultSort) {
                         ForEach(ItemSort.allCases.filter { FilterHelper.filterCases($0, libraryType: "book") }, id: \.hashValue) {
                             Text(FilterHelper.getSortLabel(item: $0))
-                            .tag($0)
+                                .tag($0)
                         }
                     }
                     .onChange(of: bookDefaultSort) { order in
@@ -56,7 +51,7 @@ struct SettingsView: View {
                     Picker("Podcasts", selection: $podcastDefaultSort) {
                         ForEach(ItemSort.allCases.filter { FilterHelper.filterCases($0, libraryType: "podcast") }, id: \.hashValue) {
                             Text(FilterHelper.getSortLabel(item: $0))
-                            .tag($0)
+                                .tag($0)
                         }
                     }
                     .onChange(of: podcastDefaultSort) { order in
@@ -67,6 +62,12 @@ struct SettingsView: View {
                     Text("Libraries")
                 } footer: {
                     Text("This filter will be applied by default")
+                }
+                
+                Button {
+                    globalViewModel.onlineStatus = .offline
+                } label: {
+                    Text("Go offline")
                 }
                 
                 Section {
@@ -113,6 +114,11 @@ struct SettingsView: View {
                     }
                 } header: {
                     Text("Account")
+                }
+                
+                // Debug
+                NavigationLink(destination: DebugView()) {
+                    Label("Debug", systemImage: "hammer.fill")
                 }
             }
             .navigationTitle("Settings")
