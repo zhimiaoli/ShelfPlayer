@@ -25,7 +25,9 @@ struct ItemButtons: View {
             .buttonStyle(PlayNowButtonStyle(colorScheme: colorScheme))
             
             Button {
-                
+                Task.detached {
+                    await DownloadHelper.downloadItem(item: item)
+                }
             } label: {
                 Image(systemName: "arrow.down")
             }
@@ -36,7 +38,7 @@ struct ItemButtons: View {
                     let result = await item.toggleFinishedStatus()
                     if result {
                         DispatchQueue.main.async {
-                            progress = 0
+                            progress = progress == 1 ? 0 : 1
                         }
                     }
                 }

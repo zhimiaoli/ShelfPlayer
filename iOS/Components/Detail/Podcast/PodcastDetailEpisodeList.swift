@@ -15,6 +15,7 @@ extension DetailView {
         @State var sort: (EpisodeSort, Bool) = (FilterHelper.defaultSortOrder, FilterHelper.defaultInvert)
         @State var filter: EpisodeFilter = FilterHelper.defaultFilter
         
+        @State var filteredEpisodes = [LibraryItem.PodcastEpisode]()
         @Binding var latestEpisode: LibraryItem.PodcastEpisode?
         
         var fallback: some View {
@@ -35,7 +36,7 @@ extension DetailView {
                                         self.filter = filter
                                     }
                                     
-                                    updateLatestEpisode()
+                                    updateEpisodes()
                                 } label: {
                                     if self.filter == filter {
                                         Label(filter.rawValue, systemImage: "checkmark")
@@ -62,16 +63,8 @@ extension DetailView {
                     }
                     
                     LazyVStack(alignment: .leading) {
-                        let filtered = Array(
-                            FilterHelper.sortEpisodes(
-                                FilterHelper.filterEpisodes(
-                                    episodes,
-                                    filter: filter),
-                                sort
-                            ).prefix(15))
-                        
-                        if filtered.count > 0 {
-                            ForEach(filtered, id: \.id) { episode in
+                        if filteredEpisodes.count > 0 {
+                            ForEach(filteredEpisodes, id: \.id) { episode in
                                 Divider()
                                 NavigationLink {
                                     DetailView(item: {
@@ -103,6 +96,7 @@ extension DetailView {
             }
             .onAppear {
                 updateFilter()
+                updateEpisodes()
             }
         }
         
@@ -114,9 +108,17 @@ extension DetailView {
             self.filter = FilterHelper.getDefaultFilter(podcastId: item.id)
             self.sort = FilterHelper.getDefaultSortOrder(podcastId: item.id)
             
-            updateLatestEpisode()
+            updateEpisodes()
         }
-        private func updateLatestEpisode() {
+        private func updateEpisodes() {
+            filteredEpisodes = Array(
+                FilterHelper.sortEpisodes(
+                    FilterHelper.filterEpisodes(
+                        episodes,
+                        filter: filter),
+                    sort
+                ).prefix(15))
+            
             Task.detached {
                 latestEpisode = FilterHelper.sortEpisodes(FilterHelper.filterEpisodes(episodes, filter: filter), sort).first
             }

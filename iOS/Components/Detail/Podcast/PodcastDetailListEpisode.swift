@@ -55,8 +55,13 @@ extension DetailView {
                         .dynamicTypeSize(.xLarge)
                     
                     Group {
-                        if let entity = PersistenceController.shared.getEntityByPodcastEpisode(episode: episode), entity.progress > 0 && entity.progress < 1 {
-                            Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(entity.duration - entity.currentTime)))) + Text(" remaining")
+                        if let entity = PersistenceController.shared.getEntityByPodcastEpisode(episode: episode), entity.progress > 0 {
+                            if entity.progress < 1 {
+                                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(entity.duration - entity.currentTime)))) + Text(" remaining")
+                            } else {
+                                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(entity.duration - entity.currentTime))))
+                                    .foregroundColor(.primaryTransparent)
+                            }
                         } else {
                             Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(episode.duration ?? 0))))
                         }

@@ -120,7 +120,7 @@ struct FilterHelper {
             } else if sortOrder == .episode {
                 result = $0.index ?? 0 < $1.index ?? 0
             } else if sortOrder == .title {
-                result = $0.title ?? "" < $1.title ?? ""
+                result = ($0.title ?? "").localizedStandardCompare($1.title ?? "") == .orderedAscending
             }
             
             if invert {

@@ -17,21 +17,64 @@ struct DebugView: View {
     var body: some View {
         NavigationView {
             List {
-                Button {
-                    globalViewModel.logout()
-                } label: {
-                    Text("Logout")
+                Group {
+                    Button {
+                        globalViewModel.logout()
+                    } label: {
+                        Text("Logout")
+                    }
+                    Button {
+                        try? PersistenceController.shared.deleteAllCachedSessions()
+                    } label: {
+                        Text("Clear progress cache")
+                    }
+                    Button {
+                        PersistenceController.shared.flushKeyValueStorage()
+                    } label: {
+                        Text("Flush key-value storage")
+                    }
+                    Button {
+                        PersistenceController.shared.removeAllLocalItems()
+                    } label: {
+                        Text("Clear local items")
+                    }
+                    Button {
+                        let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                        let fileManager = FileManager.default
+                        
+                        try! fileManager.contentsOfDirectory(atPath: url.path()).forEach {
+                            try! FileManager.default.removeItem(atPath: $0)
+                        }
+                    } label: {
+                        Text("Delete documents folder")
+                    }
                 }
-                Button {
-                    try? PersistenceController.shared.deleteAllCachedSessions()
-                } label: {
-                    Text("Clear progress cache")
+                
+                Text("Download cache")
+                    .foregroundColor(.red)
+                
+                ForEach(PersistenceController.shared.getDownloadCache()) { download in
+                    HStack {
+                        Text(download.forItem ?? "_")
+                        Text(download.index.description)
+                        Text(download.ext ?? "?")
+                        Text(download.identifier.description)
+                    }
                 }
-                Button {
-                    PersistenceController.shared.flushKeyValueStorage()
-                } label: {
-                    Text("Flush key-value storage")
+                
+                Text("Local Items")
+                    .foregroundColor(.red)
+                
+                ForEach(PersistenceController.shared.getLocalItems()) { item in
+                    HStack {
+                        Text(item.itemId ?? "_")
+                        Text(item.episodeId ?? "_")
+                        Text(item.title ?? "_")
+                    }
                 }
+                
+                Text("Cached progress")
+                    .foregroundColor(.red)
                 
                 Text(PersistenceController.shared.getLoggedInUser()?.token ?? "Not logged in")
                     .textSelection(.enabled)
@@ -54,11 +97,5 @@ struct DebugView: View {
             }
             .searchable(text: $search)
         }
-    }
-}
-
-struct DebugView_Previews: PreviewProvider {
-    static var previews: some View {
-        DebugView()
     }
 }

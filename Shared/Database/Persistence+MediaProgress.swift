@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 extension PersistenceController {
-    // Bulk operations
+    // MARK: - Bulk operations
     public func updateMediaProgressDatabase(_ updated: [MediaProgress]) {
         getUpdatedEntities().forEach { updatedProgress in
             Task {
@@ -37,9 +37,8 @@ extension PersistenceController {
             }()
             
             if cachedMediaProgress.lastUpdate?.millisecondsSince1970 ?? 0 > Int64(mediaProgress.lastUpdate ?? 0) {
-                NSLog("This better be updated", mediaProgress.id)
-                
                 cachedMediaProgress.duration = mediaProgress.duration ?? 0
+                try? PersistenceController.shared.container.viewContext.save()
             } else if cachedMediaProgress.lastUpdate?.millisecondsSince1970 ?? 0 != Int64(mediaProgress.lastUpdate ?? 0) {
                 cachedMediaProgress.id = mediaProgress.id
                 cachedMediaProgress.libraryItemId = mediaProgress.libraryItemId
@@ -61,11 +60,7 @@ extension PersistenceController {
                     cachedMediaProgress.startedAt = Date(milliseconds: Int64(startedAt))
                 }
                 
-                do {
-                    try PersistenceController.shared.container.viewContext.save()
-                } catch {
-                    print("Failed to cache media progress", error)
-                }
+                try? PersistenceController.shared.container.viewContext.save()
             }
         }
     }
@@ -75,19 +70,29 @@ extension PersistenceController {
         
         try container.viewContext.execute(deleteRequest)
     }
+    public func getUpdatedEntities() -> [CachedMediaProgress] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
+        fetchRequest.predicate = NSPredicate(format: "localUpdate == YES")
+        
+        if let entities = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest) as? [CachedMediaProgress] {
+            return entities
+        }
+        
+        return []
+    }
     
     // MARK: - Progress
-    public func getProgressByLibraryItem(item: LibraryItem) -> Float {
+    public func getProgressByLibraryItem(item: LibraryItem, required: Bool = false) -> Float {
         let entity = getEnitityByLibraryItem(item: item)
         return Float(entity?.progress ?? 0)
     }
-    public func getProgressByPodcastEpisode(episode: LibraryItem.PodcastEpisode) -> Float {
+    public func getProgressByPodcastEpisode(episode: LibraryItem.PodcastEpisode, required: Bool = false) -> Float {
         let entity = getEntityByPodcastEpisode(episode: episode)
         return Float(entity?.progress ?? 0)
     }
     
     public func updateStatus(itemId: String, episodeId: String?, currentTime: Double) {
-        let entity = getEnitityById(itemId: itemId, episodeId: episodeId)
+        let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
         entity?.currentTime = currentTime
         entity?.isFinished = currentTime >= entity?.duration ?? 0
@@ -99,7 +104,7 @@ extension PersistenceController {
         try? container.viewContext.save()
     }
     public func updateStatusWithoutUpdate(item: LibraryItem, progress: Float) {
-        let entity = getEnitityByLibraryItem(item: item)
+        let entity = getEnitityByLibraryItem(item: item, required: true)
         
         entity?.progress = Double(progress)
         entity?.isFinished = progress == 1
@@ -108,7 +113,7 @@ extension PersistenceController {
         try? container.viewContext.save()
     }
     public func updateStatusWithoutUpdate(itemId: String, episodeId: String?, progress: Float) {
-        let entity = getEnitityById(itemId: itemId, episodeId: episodeId)
+        let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
         entity?.progress = Double(progress)
         entity?.isFinished = progress == 1
@@ -118,14 +123,14 @@ extension PersistenceController {
     }
     
     // MARK: - Getter
-    public func getEnitityByLibraryItem(item: LibraryItem) -> CachedMediaProgress? {
+    public func getEnitityByLibraryItem(item: LibraryItem, required: Bool = false) -> CachedMediaProgress? {
         if !item.isBook && !(item.isPodcast && item.hasEpisode) {
             return nil
         }
         
-        return getEnitityById(itemId: item.id, episodeId: item.recentEpisode?.id)
+        return getEnitityById(itemId: item.id, episodeId: item.recentEpisode?.id, required: required)
     }
-    public func getEntityByPodcastEpisode(episode: LibraryItem.PodcastEpisode) -> CachedMediaProgress? {
+    public func getEntityByPodcastEpisode(episode: LibraryItem.PodcastEpisode, required: Bool = false) -> CachedMediaProgress? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "libraryItemId == %@", episode.libraryItemId ?? ""),
@@ -133,6 +138,10 @@ extension PersistenceController {
         ])
         
         guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {
+            if !required {
+                return nil
+            }
+            
             let mediaProgress = CachedMediaProgress(context: container.viewContext)
             
             mediaProgress.id = "\(episode.libraryItemId ?? "_")-\(episode.id ?? "_")"
@@ -145,25 +154,13 @@ extension PersistenceController {
             mediaProgress.progress = 0
             mediaProgress.duration = episode.duration ?? 0
             
+            try? PersistenceController.shared.container.viewContext.save()
             return mediaProgress
         }
         
         return first
     }
-    
-    public func getUpdatedEntities() -> [CachedMediaProgress] {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
-        fetchRequest.predicate = NSPredicate(format: "localUpdate == YES")
-        
-        if let entities = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest) as? [CachedMediaProgress] {
-            return entities
-        }
-        
-        return []
-    }
-    
-    // MARK: - Private functions
-    private func getEnitityById(itemId: String, episodeId: String?) -> CachedMediaProgress? {
+    public func getEnitityById(itemId: String, episodeId: String?, required: Bool = false) -> CachedMediaProgress? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         if let episodeId = episodeId {
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -175,6 +172,10 @@ extension PersistenceController {
         }
         
         guard let objects = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest), let first = objects.first as? CachedMediaProgress else {
+            if !required {
+                return nil
+            }
+            
             let mediaProgress = CachedMediaProgress(context: container.viewContext)
             
             if let episodeId = episodeId {
@@ -191,6 +192,7 @@ extension PersistenceController {
             mediaProgress.progress = 0
             mediaProgress.duration = 0
             
+            try? PersistenceController.shared.container.viewContext.save()
             return mediaProgress
         }
         

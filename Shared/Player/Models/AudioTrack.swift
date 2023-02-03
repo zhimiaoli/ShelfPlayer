@@ -13,10 +13,13 @@ struct AudioTrack: Codable {
     let duration: Double
     let contentUrl: String
     
+    let metadata: AudioTrackMetadata?
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.index = try container.decodeIfPresent(Int.self, forKey: .index)
         self.contentUrl = try container.decode(String.self, forKey: .contentUrl)
+        self.metadata = try container.decode(AudioTrackMetadata.self, forKey: .metadata)
         
         do {
             self.startOffset = try container.decode(Double.self, forKey: .startOffset)
@@ -36,5 +39,17 @@ struct AudioTrack: Codable {
                 self.duration = 0
             }
         }
+    }
+    
+    init(index: Int?, startOffset: Double, duration: Double, contentUrl: String, metadata: AudioTrackMetadata?) {
+        self.index = index
+        self.startOffset = startOffset
+        self.duration = duration
+        self.contentUrl = contentUrl
+        self.metadata = metadata
+    }
+    
+    struct AudioTrackMetadata: Codable {
+        let ext: String?
     }
 }

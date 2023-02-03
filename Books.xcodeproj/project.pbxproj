@@ -55,6 +55,8 @@
 		3A5016702985CC7100BB2C74 /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A50166F2985CC7100BB2C74 /* TextHelper.swift */; };
 		3A734257298C20E900CFEC3B /* DownloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A734256298C20E900CFEC3B /* DownloadHelper.swift */; };
 		3A734259298C26D700CFEC3B /* Persistence+LocalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A734258298C26D700CFEC3B /* Persistence+LocalItem.swift */; };
+		3A73425C298D560D00CFEC3B /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73425B298D560D00CFEC3B /* DownloadManager.swift */; };
+		3A73425E298D6C0300CFEC3B /* DownloadsManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73425D298D6C0300CFEC3B /* DownloadsManageView.swift */; };
 		3A98B9F92920F78C00EE5ECE /* PingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9F82920F78C00EE5ECE /* PingResponse.swift */; };
 		3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98B9FE2920FDD900EE5ECE /* APIError.swift */; };
 		3A98BA012920FF5400EE5ECE /* APIResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98BA002920FF5400EE5ECE /* APIResources.swift */; };
@@ -159,6 +161,8 @@
 		3A50166F2985CC7100BB2C74 /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		3A734256298C20E900CFEC3B /* DownloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadHelper.swift; sourceTree = "<group>"; };
 		3A734258298C26D700CFEC3B /* Persistence+LocalItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+LocalItem.swift"; sourceTree = "<group>"; };
+		3A73425B298D560D00CFEC3B /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
+		3A73425D298D6C0300CFEC3B /* DownloadsManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsManageView.swift; sourceTree = "<group>"; };
 		3A98B9F82920F78C00EE5ECE /* PingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingResponse.swift; sourceTree = "<group>"; };
 		3A98B9FE2920FDD900EE5ECE /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		3A98BA002920FF5400EE5ECE /* APIResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResources.swift; sourceTree = "<group>"; };
@@ -355,6 +359,15 @@
 			isa = PBXGroup;
 			children = (
 				3A734256298C20E900CFEC3B /* DownloadHelper.swift */,
+				3A73425B298D560D00CFEC3B /* DownloadManager.swift */,
+			);
+			path = Offline;
+			sourceTree = "<group>";
+		};
+		3A73425A298D507800CFEC3B /* Offline */ = {
+			isa = PBXGroup;
+			children = (
+				3A73425D298D6C0300CFEC3B /* DownloadsManageView.swift */,
 			);
 			path = Offline;
 			sourceTree = "<group>";
@@ -398,6 +411,7 @@
 		3AB97F1F291FB6E100E07DB5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3A73425A298D507800CFEC3B /* Offline */,
 				3A501632298442A200BB2C74 /* Util */,
 				3A5016312984428B00BB2C74 /* Items */,
 				3AF4CB7F291FAA9D0080451B /* Core */,
@@ -651,6 +665,7 @@
 				3A50166E2985BF5500BB2C74 /* PodcastDetailEpisodeList.swift in Sources */,
 				3A50163B2984506C00BB2C74 /* BookDetailBody.swift in Sources */,
 				3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */,
+				3A73425E298D6C0300CFEC3B /* DownloadsManageView.swift in Sources */,
 				3A22634829866C1800B7CD94 /* EpisodeFilter.swift in Sources */,
 				3A50166A298582FD00BB2C74 /* ItemButtons.swift in Sources */,
 				3A9FD8C8298AF4A500928DFC /* PodcastDetailPill.swift in Sources */,
@@ -738,6 +753,7 @@
 				3ABEC5F129880A3B002666DE /* AudioTrack.swift in Sources */,
 				3A98B9FF2920FDD900EE5ECE /* APIError.swift in Sources */,
 				3A501630298421A800BB2C74 /* SeriesSort.swift in Sources */,
+				3A73425C298D560D00CFEC3B /* DownloadManager.swift in Sources */,
 				3A22634A29866C5300B7CD94 /* Color+Primary.swift in Sources */,
 				3A3F29EA292FCD9200841C03 /* Persistence+MediaProgress.swift in Sources */,
 				3A5016592985447F00BB2C74 /* Library.swift in Sources */,

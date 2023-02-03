@@ -39,17 +39,25 @@ struct NowPlayingFooterButtons: View {
             })
             Spacer()
             
-            Menu {
-                ForEach(globalViewModel.currentPlaySession!.chapters, id: \.id) { chapter in
-                    Button {
-                        PlayerHelper.audioPlayer?.seek(to: chapter.start)
+            Group {
+                if let chapters = globalViewModel.currentPlaySession?.chapters, chapters.count > 1 {
+                    Menu {
+                        ForEach(chapters, id: \.id) { chapter in
+                            Button {
+                                PlayerHelper.audioPlayer?.seek(to: chapter.start)
+                            } label: {
+                                Text(chapter.title)
+                            }
+                        }
                     } label: {
-                        Text(chapter.title)
+                        Image(systemName: "bookmark.fill")
+                            .symbolRenderingMode(.monochrome)
                     }
+                } else {
+                    Image(systemName: "bookmark.fill")
+                        .symbolRenderingMode(.monochrome)
+                        .foregroundColor(.gray)
                 }
-            } label: {
-                Image(systemName: "bookmark.fill")
-                    .symbolRenderingMode(.monochrome)
             }
             .frame(width: 75)
             Spacer()

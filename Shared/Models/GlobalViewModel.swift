@@ -98,6 +98,29 @@ class GlobalViewModel: ObservableObject {
             }
         }
     }
+    public func playLocalItem(item: LibraryItem, tracks: [AudioTrack]) {
+        if currentlyPlaying?.identifier == item.identifier {
+            nowPlayingSheetPresented = true
+            return
+        }
+        
+        closePlayer()
+        
+        Task.detached {
+            // TODO: start time
+            let entity = PersistenceController.shared.getEnitityByLibraryItem(item: item, required: true)
+            PlayerHelper.audioPlayer = AudioPlayer(sessionId: nil, itemId: item.id, episodeId: item.recentEpisode?.id, startTime: entity?.currentTime ?? 0, playMethod: .local, audioTracks: tracks)
+            
+            DispatchQueue.main.async {
+                withAnimation {
+                    self.currentlyPlaying = item
+                    
+                    self.showNowPlayingBar = true
+                    self.nowPlayingSheetPresented = true
+                }
+            }
+        }
+    }
     public func closePlayer() {
         self.nowPlayingSheetPresented = false
         self.showNowPlayingBar = false

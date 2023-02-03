@@ -31,7 +31,7 @@ extension DetailView {
                     if seasons.count > 1 {
                         ScrollView(.horizontal, showsIndicators: false) {
                             LazyHStack {
-                                ForEach(seasons.sorted(by: { $0 < $1 }), id: \.hashValue) { season in
+                                ForEach(seasons.sorted(by: { $0.localizedStandardCompare($1) == .orderedAscending }), id: \.hashValue) { season in
                                     Button {
                                         if activeSeason == season {
                                             activeSeason = nil

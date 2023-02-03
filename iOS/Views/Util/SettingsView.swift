@@ -23,6 +23,11 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // Debug
+                NavigationLink(destination: DebugView()) {
+                    Label("Debug", systemImage: "hammer.fill")
+                }
+                
                 // Podcast
                 FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)
                     .onChange(of: selectedFilter) { filter in
@@ -79,7 +84,7 @@ struct SettingsView: View {
                         .onChange(of: allowDownloadsOverMobile, perform: { allow in
                             DownloadHelper.setAllowDownloadsOverMobile(allow)
                         })
-                    NavigationLink(destination: Text("add me")) {
+                    NavigationLink(destination: DownloadsManageView()) {
                         Text("Manage")
                     }
                 } header: {
@@ -108,11 +113,6 @@ struct SettingsView: View {
                     }
                 } header: {
                     Text("Account")
-                }
-                
-                // Debug
-                NavigationLink(destination: DebugView()) {
-                    Label("Debug", systemImage: "hammer.fill")
                 }
             }
             .navigationTitle("Settings")

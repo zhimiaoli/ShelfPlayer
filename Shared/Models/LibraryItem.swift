@@ -30,7 +30,7 @@ struct LibraryItem: Codable, Equatable {
     
     let size: Double?
     
-    let media: LibraryItemMedia?
+    var media: LibraryItemMedia?
     let books: [LibraryItem]?
     
     // Podcasts
@@ -70,6 +70,7 @@ extension LibraryItem {
         let duration: Double?
         
         let audioFile: PodcastAudioFile?
+        let audioTrack: AudioTrack?
         
         // why?
         var seasonData: (String?, String?) {
@@ -115,10 +116,12 @@ extension LibraryItem {
         
         let duration: Double?
         
+        // Only avaiable for Books
+        let tracks: [AudioTrack]?
+        
         // Only avaiable for Podcasts
-        let episodes: [PodcastEpisode]?
+        var episodes: [PodcastEpisode]?
     }
-    
     struct LibraryItemMetadata: Codable {
         let title: String?
         let titleIgnorePrefix: String?
