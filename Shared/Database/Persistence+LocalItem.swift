@@ -128,7 +128,7 @@ extension PersistenceController {
         entitiy.author = item.author
     }
     public func deleteLocalItem(itemId: String, episodeId: String?) {
-        var fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "LocalItem")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "LocalItem")
         if let episodeId = episodeId {
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 NSPredicate(format: "itemId == %@", itemId),
@@ -138,13 +138,19 @@ extension PersistenceController {
             fetchRequest.predicate = NSPredicate(format: "itemId == %@", itemId)
         }
         
-        var deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         let _ = try? container.viewContext.execute(deleteRequest)
     }
     public func setLocalConflict(itemId: String, episodeId: String?) {
         let item = getLocalItem(itemId: itemId, episodeId: episodeId)
         
         item?.hasConflict = true
+        try? container.viewContext.save()
+    }
+    public func setDownloadStatus(itemId: String, episodeId: String?, downloaded: Bool) {
+        let item = getLocalItem(itemId: itemId, episodeId: episodeId)
+        
+        item?.isDownloaded = downloaded
         try? container.viewContext.save()
     }
     

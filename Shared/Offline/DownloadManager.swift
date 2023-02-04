@@ -11,23 +11,34 @@ import Foundation
 class DownloadManager: NSObject, ObservableObject {
     static var shared = DownloadManager()
     
-    private var urlSession: URLSession!
     public var documentsURL: URL!
-
+    private var urlSession: URLSession!
+    
+    public var downloading = [String: Int]()
+    
     override private init() {
         super.init()
-
+        
         let config = URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
         urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
         
         documentsURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
-
+    
     func startDownload(url: URL, ext: String, duration: Double, itemId: String, episodeId: String?, index: Int) {
         let task = urlSession.downloadTask(with: url)
         PersistenceController.shared.createDownloadTrack(itemId: itemId, episodeId: episodeId, duration: duration, ext: ext, index: index, identifier: task.taskIdentifier)
         
+        
+        let id = DownloadHelper.getIdentifier(itemId: itemId, episodeId: episodeId)
+        if downloading[id] == nil {
+            downloading[id] = 0
+        }
+        
         task.resume()
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: NSNotification.ItemDownloadStatusChanged, object: nil)
+        }
     }
 }
 
@@ -41,7 +52,16 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             return
         }
         
-        NSLog("download finished \(id) \(index)")
+        downloading[id]! += 1
+        
+        let localItem = PersistenceController.shared.getLocalItem(itemId: itemId, episodeId: episodeid)!
+        NSLog("download finished \(id) \(index) (\(downloading[id]!)/\(localItem.numFiles))")
+        
+        if downloading[id]! == localItem.numFiles {
+            downloading[id] = nil
+            localItem.isDownloaded = true
+            try? PersistenceController.shared.container.viewContext.save()
+        }
         
         do {
             let directoryURL = documentsURL.appending(path: id)
@@ -56,6 +76,9 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         }
         
         PersistenceController.shared.markTrackAsDownloaded(downloadTask.taskIdentifier)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: NSNotification.ItemDownloadStatusChanged, object: nil)
+        }
     }
     func urlSession(_: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {

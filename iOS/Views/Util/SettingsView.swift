@@ -64,12 +64,6 @@ struct SettingsView: View {
                     Text("This filter will be applied by default")
                 }
                 
-                Button {
-                    globalViewModel.onlineStatus = .offline
-                } label: {
-                    Text("Go offline")
-                }
-                
                 Section {
                     Toggle("Show chapter track", isOn: $useChapterView)
                         .onChange(of: useChapterView, perform: { use in
@@ -87,6 +81,11 @@ struct SettingsView: View {
                         })
                     NavigationLink(destination: DownloadsManageView()) {
                         Text("Manage")
+                    }
+                    Button {
+                        globalViewModel.onlineStatus = .offline
+                    } label: {
+                        Text("Go offline")
                     }
                 } header: {
                     Text("Downloads")

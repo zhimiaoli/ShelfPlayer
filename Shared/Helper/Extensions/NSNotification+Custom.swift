@@ -18,4 +18,6 @@ extension NSNotification {
     
     static let LibrarySettingsUpdated = Notification.Name.init("io.rfk.audiobooks.library.settings.updated")
     static let ItemGridSortOrderUpdated = Notification.Name.init("io.rfk.audiobooks.items.sort.updated")
+    
+    static let ItemDownloadStatusChanged = Notification.Name.init("io.rfk.audiobooks.downloads.updated")
 }

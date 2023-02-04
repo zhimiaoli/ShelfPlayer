@@ -87,8 +87,9 @@ struct DownloadHelper {
         localItem.episodeDescription = item.recentEpisode?.description
         
         localItem.hasConflict = false
-        localItem.downloaded = false
         localItem.duration = localItem.duration
+        
+        localItem.isDownloaded = false
         localItem.numFiles = Int16(tracks.count)
         
         try! PersistenceController.shared.container.viewContext.save()
@@ -102,7 +103,7 @@ struct DownloadHelper {
         
         return true
     }
-    public static func deleteDowload(itemId: String, episodeId: String?) {
+    public static func deleteDownload(itemId: String, episodeId: String?) {
         let id = getIdentifier(itemId: itemId, episodeId: episodeId)
         let folder = DownloadManager.shared.documentsURL.appending(path: id)
         

@@ -13,12 +13,20 @@ struct ItemButtons: View {
     
     @EnvironmentObject private var globalViewModel: GlobalViewModel
     
+    @State private var downloaded = false
+    @State private var downloading = false
     @State private var progress: Float = 0
     
     var body: some View {
         HStack {
             Button {
-                globalViewModel.playItem(item: item)
+                if downloaded {
+                    if let localItem = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
+                        globalViewModel.playLocalItem(localItem)
+                    }
+                } else {
+                    globalViewModel.playItem(item: item)
+                }
             } label: {
                 Label(progress > 0 && progress < 1 ? "Resume" : "Listen now", systemImage: "play.fill")
             }
@@ -46,10 +54,22 @@ struct ItemButtons: View {
                 Image(systemName: "checkmark")
             }
             .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, specialBackground: progress == 1))
+            
+            Text(downloading ? "d" : "nd")
+            Text(downloaded ? "D" : "ND")
         }
         .foregroundColor(colorScheme == .light ? .black : .white)
         .onAppear {
             progress = PersistenceController.shared.getProgressByLibraryItem(item: item)
+            updateDownloadedStatus()
         }
+        .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in
+            updateDownloadedStatus()
+        })
+    }
+    
+    private func updateDownloadedStatus() {
+        downloaded = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id)?.isDownloaded ?? false
+        downloading = DownloadManager.shared.downloading.index(forKey: DownloadHelper.getIdentifier(itemId: item.id, episodeId: item.recentEpisode?.id)) != nil
     }
 }

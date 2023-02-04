@@ -20,6 +20,10 @@ struct DownloadsManageView: View {
                 } label: {
                     HStack {
                         Text(localItem.title ?? "?")
+                        if !localItem.isDownloaded {
+                            Text("(downloading...)")
+                                .foregroundColor(.gray)
+                        }
                         if localItem.hasConflict {
                             Text("(conflict)")
                                 .foregroundColor(.red)
@@ -28,7 +32,7 @@ struct DownloadsManageView: View {
                 }
                 .swipeActions {
                     Button(role: .destructive) {
-                        DownloadHelper.deleteDowload(itemId: localItem.itemId!, episodeId: localItem.episodeId)
+                        DownloadHelper.deleteDownload(itemId: localItem.itemId!, episodeId: localItem.episodeId)
                     } label: {
                         Label("Delete", systemImage: "trash.fill")
                     }

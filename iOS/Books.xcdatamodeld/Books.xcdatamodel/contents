@@ -31,12 +31,12 @@
     <entity name="LocalItem" representedClassName="LocalItem" syncable="YES" codeGenerationType="class">
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="descriptionText" optional="YES" attributeType="String"/>
-        <attribute name="downloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="episodeDescription" optional="YES" attributeType="String"/>
         <attribute name="episodeId" optional="YES" attributeType="String"/>
         <attribute name="episodeTitle" optional="YES" attributeType="String"/>
         <attribute name="hasConflict" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="itemId" attributeType="String"/>
         <attribute name="numFiles" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>

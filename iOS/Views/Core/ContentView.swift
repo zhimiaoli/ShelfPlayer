@@ -20,7 +20,7 @@ struct ContentView: View {
                     globalViewModel.loggedIn = PersistenceController.shared.getLoggedInUser() != nil
                     
                     Task.detached {
-                        // await globalViewModel.authorize()
+                        await globalViewModel.authorize()
                     }
                 }
             case .offline:
