@@ -12,15 +12,19 @@ struct ItemButtons: View {
     var colorScheme: ColorScheme
     
     @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @Environment(\.scenePhase) var scenePhase
     
-    @State private var downloaded = false
-    @State private var downloading = false
+    @State private var isDownloaded = false
+    @State private var isDownloading = false
+    @State private var hasConflict = false
     @State private var progress: Float = 0
+    
+    @State private var deleteDownloadAlertPresented: Bool = false
     
     var body: some View {
         HStack {
             Button {
-                if downloaded {
+                if isDownloaded {
                     if let localItem = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
                         globalViewModel.playLocalItem(localItem)
                     }
@@ -33,13 +37,24 @@ struct ItemButtons: View {
             .buttonStyle(PlayNowButtonStyle(colorScheme: colorScheme))
             
             Button {
-                Task.detached {
-                    await DownloadHelper.downloadItem(item: item)
+                if isDownloaded {
+                    deleteDownloadAlertPresented.toggle()
+                } else {
+                    hasConflict = false
+                    
+                    Task.detached {
+                        await DownloadHelper.downloadItem(item: item)
+                    }
                 }
             } label: {
-                Image(systemName: "arrow.down")
+                if isDownloading {
+                    ProgressView()
+                        .tint(colorScheme == .light ? .black : .white)
+                } else {
+                    Image(systemName: "arrow.down")
+                }
             }
-            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, specialBackground: false))
+            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, backgroundColor: hasConflict ? .red : isDownloaded ? .accentColor : nil))
             
             Button {
                 Task.detached {
@@ -53,12 +68,25 @@ struct ItemButtons: View {
             } label: {
                 Image(systemName: "checkmark")
             }
-            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, specialBackground: progress == 1))
-            
-            Text(downloading ? "d" : "nd")
-            Text(downloaded ? "D" : "ND")
+            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, backgroundColor: progress == 1 ? .accentColor : nil))
         }
         .foregroundColor(colorScheme == .light ? .black : .white)
+        .alert("Delete download", isPresented: $deleteDownloadAlertPresented, actions: {
+            Button(role: .destructive) {
+                DownloadHelper.deleteDownload(itemId: item.id, episodeId: item.recentEpisode?.id)
+                
+                isDownloaded = false
+                hasConflict = false
+                isDownloading = false
+            } label: {
+                Text("Delete")
+            }
+            Button(role: .cancel) {} label: {
+                Text("Cancel")
+            }
+        }, message: {
+            Text("Are you sure you want to delete this download?")
+        })
         .onAppear {
             progress = PersistenceController.shared.getProgressByLibraryItem(item: item)
             updateDownloadedStatus()
@@ -66,10 +94,19 @@ struct ItemButtons: View {
         .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in
             updateDownloadedStatus()
         })
+        .onChange(of: scenePhase) { phase in
+            if phase == .active {
+                updateDownloadedStatus()
+            }
+        }
     }
     
     private func updateDownloadedStatus() {
-        downloaded = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id)?.isDownloaded ?? false
-        downloading = DownloadManager.shared.downloading.index(forKey: DownloadHelper.getIdentifier(itemId: item.id, episodeId: item.recentEpisode?.id)) != nil
+        if let entity = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
+            hasConflict = entity.hasConflict
+            isDownloaded = entity.isDownloaded
+        }
+        
+        isDownloading = DownloadManager.shared.downloading.index(forKey: DownloadHelper.getIdentifier(itemId: item.id, episodeId: item.recentEpisode?.id)) != nil
     }
 }

@@ -162,7 +162,7 @@ extension DetailView {
                     }
                     
                     // i haven't found a podcast where a episode has no season, so i will not implement this
-                    // print(episode.season == nil || episode.season == "")
+                    // if episode.season == nil || episode.season == ""
                 }
             }
         }

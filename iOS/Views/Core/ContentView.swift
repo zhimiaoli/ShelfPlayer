@@ -15,7 +15,7 @@ struct ContentView: View {
         Group {
             switch globalViewModel.onlineStatus {
             case .unknown:
-                FullscreenLoadingIndicator(description: "Authorizing", showGoOfflineButton: true)
+                FullscreenLoadingIndicator(description: "Authorizing", showGoOfflineButton: globalViewModel.loggedIn)
                 .onAppear {
                     globalViewModel.loggedIn = PersistenceController.shared.getLoggedInUser() != nil
                     
@@ -25,8 +25,10 @@ struct ContentView: View {
                 }
             case .offline:
                 if globalViewModel.loggedIn {
-                    NowPlayingWrapper {
-                        DownloadsManageView()
+                    NavigationStack {
+                        NowPlayingWrapper {
+                            DownloadsManageView()
+                        }
                     }
                 } else {
                     LoginView()
@@ -38,6 +40,9 @@ struct ContentView: View {
         .environmentObject(globalViewModel)
         .onReceive(NSNotification.PlayerFinished, perform: { _ in
             globalViewModel.closePlayer()
+        })
+        .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in
+            globalViewModel.isItemStillAvaiable()
         })
     }
 }

@@ -71,10 +71,25 @@ extension PersistenceController {
             
             if let result = try container.viewContext.fetch(request).first as? DownloadTrack {
                 result.isDownloaded = true
+                result.identifier = -1
                 try? container.viewContext.save()
             }
         } catch {
-            print(error)
+            NSLog("Failed to mark entity as downloaded")
+        }
+    }
+    public func removeTrackIdentifier(_ identifier: Int) {
+        do {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DownloadTrack")
+            request.predicate = NSPredicate(format: "identifier == %i", identifier)
+            request.fetchLimit = 1
+            
+            if let result = try container.viewContext.fetch(request).first as? DownloadTrack {
+                result.identifier = -1
+                try? container.viewContext.save()
+            }
+        } catch {
+            NSLog("Failed to remove track identifier")
         }
     }
     public func deleteTracks(id: String) {
@@ -89,6 +104,9 @@ extension PersistenceController {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "LocalItem")
         
         if let entities = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest) as? [LocalItem] {
+            entities.forEach { entity in
+                entity.verify()
+            }
             return entities
         }
         
@@ -108,6 +126,7 @@ extension PersistenceController {
         }
         
         if let entities = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest) as? [LocalItem], let first = entities.first {
+            first.verify()
             return first
         }
         

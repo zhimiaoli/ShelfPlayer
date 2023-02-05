@@ -38,15 +38,15 @@ struct PlayerHelper {
                     try await APIClient.authorizedShared.request(APIResources.session(id: sessionId).sync(timeListened: timeListened, duration: duration, currentTime: currentTime.isNaN ? 0 : currentTime))
                     PersistenceController.shared.updateStatusWithoutUpdate(itemId: itemId, episodeId: episodeId, progress: Float(currentTime / duration))
                 } catch {
-                    cacheSync(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
+                    cacheSync(itemId: itemId, episodeId: episodeId, currentTime: currentTime, duration: duration)
                 }
             }
         } else {
-            cacheSync(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
+            cacheSync(itemId: itemId, episodeId: episodeId, currentTime: currentTime, duration: duration)
         }
     }
-    private static func cacheSync(itemId: String, episodeId: String?, currentTime: Double) {
-        PersistenceController.shared.updateStatus(itemId: itemId, episodeId: episodeId, currentTime: currentTime)
+    private static func cacheSync(itemId: String, episodeId: String?, currentTime: Double, duration: Double) {
+        PersistenceController.shared.updateStatus(itemId: itemId, episodeId: episodeId, currentTime: currentTime, duration: duration)
         PersistenceController.shared.syncEntities()
     }
     

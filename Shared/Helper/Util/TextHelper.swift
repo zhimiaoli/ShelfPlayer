@@ -20,7 +20,7 @@ struct TextHelper {
     }
     
     public static func formatTime(tourple: (String, String, String), forceHours: Bool = false) -> String {
-        if tourple.0 == "0" && !forceHours {
+        if tourple.0 == "00" && !forceHours {
             return "\(tourple.1):\(tourple.2)"
         } else {
             return "\(tourple.0):\(tourple.1)"

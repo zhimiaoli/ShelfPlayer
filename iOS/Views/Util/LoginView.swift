@@ -21,6 +21,8 @@ struct LoginView: View {
                             if let user = PersistenceController.shared.getLoggedInUser() {
                                 globalViewModel.activeLibraryId = user.lastActiveLibraryId!
                                 globalViewModel.token = user.token!
+                                
+                                APIClient.updateAuthorizedClient()
                                 globalViewModel.loggedIn = true
                                 globalViewModel.onlineStatus = .online
                             } else {

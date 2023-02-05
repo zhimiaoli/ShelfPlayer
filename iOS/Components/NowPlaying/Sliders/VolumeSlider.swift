@@ -9,8 +9,8 @@ import SwiftUI
 import MediaPlayer
 
 struct VolumeSlider: View {
-    @State var volume: Double = Double(MPVolumeView.getVolume() * 100)
-    @State var dragging: Bool = false
+    @State var volume: Double = 0
+    @State var isDragging: Bool = false
     
     var body: some View {
         HStack {
@@ -18,17 +18,24 @@ struct VolumeSlider: View {
                 .onTapGesture {
                     volume = 0.0
                 }
-            Slider(percentage: $volume, dragging: $dragging)
+            Slider(percentage: $volume, dragging: $isDragging)
             Image(systemName: "speaker.wave.3.fill")
                 .onTapGesture {
                     volume = 100.0
                 }
         }
-        .dynamicTypeSize(dragging ? .xLarge : .medium)
-        .animation(.easeInOut, value: dragging)
+        .dynamicTypeSize(isDragging ? .xLarge : .medium)
+        .animation(.easeInOut, value: isDragging)
         .onChange(of: volume) { volume in
-            MPVolumeView.setVolume(Float(volume / 100))
+            if isDragging {
+                MPVolumeView.setVolume(Float(volume / 100))
+            }
         }
+        .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
+            if !isDragging {
+                volume = Double(value) * 100
+            }
+        })
     }
 }
 

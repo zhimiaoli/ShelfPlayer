@@ -82,6 +82,7 @@ extension PersistenceController {
                         try container.viewContext.save()
                     }
                 } catch {
+                    NSLog("Failed to sync entities")
                     print(error)
                 }
             }
@@ -98,12 +99,13 @@ extension PersistenceController {
         return Float(entity?.progress ?? 0)
     }
     
-    public func updateStatus(itemId: String, episodeId: String?, currentTime: Double) {
+    public func updateStatus(itemId: String, episodeId: String?, currentTime: Double, duration: Double) {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
         entity?.currentTime = currentTime
-        entity?.isFinished = currentTime >= entity?.duration ?? 0
-        entity?.progress = currentTime / (entity?.duration ?? 0)
+        entity?.duration = currentTime
+        entity?.isFinished = currentTime >= duration
+        entity?.progress = currentTime / duration
         
         entity?.lastUpdate = Date()
         entity?.localUpdate = true

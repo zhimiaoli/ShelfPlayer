@@ -34,7 +34,7 @@ struct LibraryItem: Codable, Equatable {
     var books: [LibraryItem]?
     
     // Local
-    var isLocal: Bool? = false
+    var isLocal: Bool?
     var localAuthor: String?
     
     // Podcasts
@@ -94,56 +94,67 @@ extension LibraryItem {
         }
         
         struct PodcastAudioFile: Codable {
-            let duration: Double?
-            let codec: String?
-            let channelLayout: String?
+            var duration: Double?
+            var codec: String?
+            var channelLayout: String?
             
-            let metadata: PodcastMetadata?
+            var metadata: PodcastMetadata?
         }
         struct PodcastMetadata: Codable {
-            let size: Double?
+            var size: Double?
         }
     }
     
     struct LibraryItemMedia: Codable {
-        let metadata: LibraryItemMetadata
-        let tags: [String]?
-        let coverPath: String?
+        var metadata: LibraryItemMetadata
+        var tags: [String]?
+        var coverPath: String?
         
         // Only aviable for Books
-        let numTracks: Int?
-        let numAudioFiles: Int?
-        let numChapters: Int?
-        let numMissingParts: Int?
-        let numInvalidAudioFiles: Int?
+        var numTracks: Int?
+        var numAudioFiles: Int?
+        var numChapters: Int?
+        var numMissingParts: Int?
+        var numInvalidAudioFiles: Int?
         
-        let duration: Double?
+        var duration: Double?
         
         // Only avaiable for Books
-        let tracks: [AudioTrack]?
+        var tracks: [AudioTrack]?
         
         // Only avaiable for Podcasts
         var episodes: [PodcastEpisode]?
+        
+        init(metdata: LibraryItemMetadata) {
+            self.metadata = metdata
+        }
     }
     struct LibraryItemMetadata: Codable {
-        let title: String?
-        let titleIgnorePrefix: String?
+        var title: String?
+        var titleIgnorePrefix: String?
         
-        let subtitle: String?
-        let description: String?
+        var subtitle: String?
+        var description: String?
         
-        let authorName: String?
-        let author: String?
-        let narratorName: String?
-        let publisher: String?
-        let seriesName: String?
+        var authorName: String?
+        var author: String?
+        var narratorName: String?
+        var publisher: String?
+        var seriesName: String?
         
-        let genres: [String]
-        let publishedYear: String?
+        var genres: [String]
+        var publishedYear: String?
         
-        let isbn: String?
-        let language: String?
-        let explicit: Bool
+        var isbn: String?
+        var language: String?
+        var explicit: Bool
+        
+        init(description: String?) {
+            genres = []
+            explicit = false
+            
+            self.description = description
+        }
     }
 }
 
@@ -235,7 +246,16 @@ extension LibraryItem {
                 }
                 
                 return true
-            } catch {}
+            } catch {
+                let duration = media?.duration ?? recentEpisode?.duration ?? 1
+                PersistenceController.shared.updateStatus(itemId: id, episodeId: recentEpisode?.id, currentTime: duration, duration: duration)
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.ItemUpdated, object: nil)
+                }
+                
+                return true
+            }
         }
         
         return false

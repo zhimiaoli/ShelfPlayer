@@ -26,7 +26,7 @@ struct FullscreenLoadingIndicator: View {
                     Text("Go offline")
                 }
                 .buttonStyle(LargeButtonStyle())
-                .padding()
+                .padding(.top, 25)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

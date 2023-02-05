@@ -43,6 +43,16 @@ struct DownloadHelper {
             return false
         }
         
+        if let localItem = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
+            NSLog("tried to download existing local item \(localItem.hasConflict)")
+            
+            if !localItem.hasConflict {
+                return false
+            } else {
+                deleteDownload(itemId: item.id, episodeId: item.recentEpisode?.id)
+            }
+        }
+        
         var tracks = [(URL, String, Double)]()
         if item.isPodcast {
             if let track = item.recentEpisode?.audioTrack {
@@ -70,17 +80,12 @@ struct DownloadHelper {
             return false
         }
         
-        if let localItem = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
-            NSLog("tried to download existing local item \(localItem.hasConflict)")
-            return false
-        }
-        
         let localItem = LocalItem(context: PersistenceController.shared.container.viewContext)
         
         localItem.itemId = item.id
         localItem.title = item.media?.metadata.title ?? "unknown title"
         localItem.author = item.author
-        localItem.descriptionText = item.description
+        localItem.descriptionText = item.media?.metadata.description
         
         localItem.episodeId = item.recentEpisode?.id
         localItem.episodeTitle = item.recentEpisode?.title
@@ -110,6 +115,10 @@ struct DownloadHelper {
         try? FileManager.default.removeItem(at: folder)
         PersistenceController.shared.deleteTracks(id: id)
         PersistenceController.shared.deleteLocalItem(itemId: itemId, episodeId: episodeId)
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: NSNotification.ItemDownloadStatusChanged, object: nil)
+        }
     }
     
     public static func getLocalFiles(id: String) -> [URL]? {
@@ -129,6 +138,25 @@ struct DownloadHelper {
             return nil
         }
     }
+    public static func getDownloadedItems() -> (books: [LocalItem],  podcasts: [String: [LocalItem]]) {
+        let items = PersistenceController.shared.getLocalItems()
+        var podcasts = [String: [LocalItem]]()
+        
+        let podcastItems = items.filter { $0.episodeId != nil }
+        let books = items.filter { $0.episodeId == nil }
+        
+        podcastItems.forEach { item in
+            let title = item.title ?? "Unknown podcast"
+            if podcasts[title] == nil {
+                podcasts[title] = []
+            }
+            
+            podcasts[title]?.append(item)
+        }
+        
+        return (books: books, podcasts: podcasts)
+    }
+    
     public static func getIdentifier(itemId: String, episodeId: String?) -> String {
         "\(itemId)--\(episodeId ?? "book")"
     }

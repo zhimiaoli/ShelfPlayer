@@ -8,34 +8,43 @@
 import SwiftUI
 
 struct DownloadsManageView: View {
+    var detailed: Bool = true
+    
     @EnvironmentObject private var globalViewModel: GlobalViewModel
     
-    @State var items = PersistenceController.shared.getLocalItems()
+    @State var books = [LocalItem]()
+    @State var podcasts = [String: [LocalItem]]()
     
     var body: some View {
         List {
-            ForEach(items) { localItem in
-                Button {
-                    globalViewModel.playLocalItem(localItem)
-                } label: {
-                    HStack {
-                        Text(localItem.title ?? "?")
-                        if !localItem.isDownloaded {
-                            Text("(downloading...)")
-                                .foregroundColor(.gray)
-                        }
-                        if localItem.hasConflict {
-                            Text("(conflict)")
-                                .foregroundColor(.red)
-                        }
+            Section {
+                if books.count == 0 {
+                    Text("no downloaded books")
+                        .font(.system(.caption, design: .rounded).smallCaps())
+                }
+                
+                ForEach(books) { localItem in
+                    if detailed {
+                        LargeOfflineItem(item: localItem)
+                    } else {
+                        SmallOfflineItem(item: localItem)
                     }
                 }
-                .swipeActions {
-                    Button(role: .destructive) {
-                        DownloadHelper.deleteDownload(itemId: localItem.itemId!, episodeId: localItem.episodeId)
-                    } label: {
-                        Label("Delete", systemImage: "trash.fill")
+            } header: {
+                Text("Books")
+            }
+            
+            ForEach(podcasts.sorted(by: { $0.key.localizedStandardCompare($1.key) == .orderedAscending }), id: \.key) { podcast in
+                Section {
+                    ForEach(podcast.value) { localItem in
+                        if detailed {
+                            LargeOfflineItem(item: localItem)
+                        } else {
+                            SmallOfflineItem(item: localItem)
+                        }
                     }
+                } header: {
+                    Text(podcast.key)
                 }
             }
             
@@ -49,5 +58,18 @@ struct DownloadsManageView: View {
             }
         }
         .foregroundColor(.primary)
+        .onAppear {
+            updateItems()
+        }
+        .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in
+            updateItems()
+        })
+    }
+    
+    private func updateItems() {
+        let items = DownloadHelper.getDownloadedItems()
+        
+        books = items.books
+        podcasts = items.podcasts
     }
 }

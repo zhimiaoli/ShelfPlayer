@@ -99,25 +99,17 @@ class GlobalViewModel: ObservableObject {
         }
     }
     public func playLocalItem(_ localItem: LocalItem) {
-        var item = LibraryItem(
-            id: localItem.itemId!,
-            type: localItem.episodeId == nil ? "book" : "podcast",
-            name: localItem.title,
-            author: localItem.author,
-            description: localItem.descriptionText,
-            isLocal: true
-        )
+        if localItem.hasConflict || !localItem.isDownloaded {
+            return
+        }
+        
+        let item = localItem.convertToItem()
         
         if currentlyPlaying?.identifier == item.identifier {
             nowPlayingSheetPresented = true
             return
         }
         closePlayer()
-        
-        if localItem.episodeId != nil {
-            let epeisode = LibraryItem.PodcastEpisode(id: localItem.episodeId, libraryItemId: localItem.itemId, title: localItem.episodeTitle, description: localItem.episodeDescription)
-            item.recentEpisode = epeisode
-        }
         
         let downloadedTracks = PersistenceController.shared.getDownloadedTracks(id: DownloadHelper.getIdentifier(itemId: item.id, episodeId: item.recentEpisode?.id))
         let tracks: [AudioTrack] = DownloadHelper.getLocalFiles(id: DownloadHelper.getIdentifier(itemId: localItem.itemId!, episodeId: localItem.episodeId))?.sorted(by: { $0.absoluteString.localizedStandardCompare($1.absoluteString) == .orderedAscending }).enumerated().map { index, element in
@@ -132,6 +124,16 @@ class GlobalViewModel: ObservableObject {
             
             self.showNowPlayingBar = true
             self.nowPlayingSheetPresented = true
+        }
+    }
+    
+    public func isItemStillAvaiable() {
+        if currentlyPlaying == nil || currentPlaySession != nil {
+            return
+        }
+        
+        if PersistenceController.shared.getLocalItem(itemId: currentlyPlaying!.id, episodeId: currentlyPlaying!.recentEpisode?.id) == nil {
+            closePlayer()
         }
     }
     public func closePlayer() {

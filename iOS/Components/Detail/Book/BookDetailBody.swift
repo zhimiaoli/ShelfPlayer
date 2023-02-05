@@ -21,14 +21,18 @@ extension DetailView {
                             .padding(.bottom, 7)
                         Text(description)
                         
+                        if !(viewModel.item.isLocal ?? false) {
+                            Divider()
+                                .padding(.vertical, 20)
+                        }
+                    }
+                    
+                    if !(viewModel.item.isLocal ?? false) {
+                        BookDetailGrid()
+                        
                         Divider()
                             .padding(.vertical, 20)
                     }
-                    
-                    BookDetailGrid()
-                    
-                    Divider()
-                        .padding(.vertical, 20)
                 }
                 .padding(.horizontal)
                 .padding(.top)
