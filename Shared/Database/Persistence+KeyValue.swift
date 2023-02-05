@@ -19,7 +19,7 @@ extension PersistenceController {
         keyValue.key = key
         keyValue.value = value
         
-        try? container.viewContext.save()
+        try! container.viewContext.save()
     }
     
     func deleteKey(_ key: String) {
@@ -27,14 +27,14 @@ extension PersistenceController {
         fetchRequest.predicate = NSPredicate(format: "key == %@", key)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
-        let _ = try? container.viewContext.execute(deleteRequest)
+        let _ = try! container.viewContext.execute(deleteRequest)
     }
     
     func flushKeyValueStorage() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "KeyValue")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
-        let _ = try? container.viewContext.execute(deleteRequest)
+        let _ = try! container.viewContext.execute(deleteRequest)
     }
     
     // MARK: - private functions

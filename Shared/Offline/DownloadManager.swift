@@ -73,7 +73,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         if downloading[id] ?? 0 == localItem.numFiles {
             downloading[id] = nil
             localItem.isDownloaded = true
-            try? PersistenceController.shared.container.viewContext.save()
+            try! PersistenceController.shared.container.viewContext.save()
         }
         
         DispatchQueue.main.async {

@@ -151,6 +151,8 @@ extension APIResources {
     
     public struct MeResource {
         public func syncLocalProgress(_ progress: CachedMediaProgress) -> APIRequestEmpty {
+            print(convertToDict(mediaProgress: progress))
+            
             return APIRequestEmpty(method: "POST", path: "api/me/sync-local-progress", body: [
                 "numServerProgressUpdates": 1,
                 "localMediaProgress": [convertToDict(mediaProgress: progress)]
@@ -214,7 +216,9 @@ extension APIResources {
         public var id: String
         
         public func sync(timeListened: Double, duration: Double, currentTime: Double) -> APIRequestEmpty {
-            APIRequestEmpty(method: "POST", path: "api/session/\(id)/sync", body: [
+            print(timeListened, duration, currentTime)
+            
+            return APIRequestEmpty(method: "POST", path: "api/session/\(id)/sync", body: [
                 "timeListened": timeListened,
                 "duration": duration,
                 "currentTime": currentTime,

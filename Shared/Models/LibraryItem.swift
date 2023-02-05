@@ -248,7 +248,7 @@ extension LibraryItem {
                 return true
             } catch {
                 let duration = media?.duration ?? recentEpisode?.duration ?? 1
-                PersistenceController.shared.updateStatus(itemId: id, episodeId: recentEpisode?.id, currentTime: duration, duration: duration)
+                let _ = PersistenceController.shared.updateStatus(itemId: id, episodeId: recentEpisode?.id, currentTime: duration, duration: duration)
                 
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: NSNotification.ItemUpdated, object: nil)

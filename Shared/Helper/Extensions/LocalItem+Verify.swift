@@ -14,11 +14,11 @@ extension LocalItem {
         
         if files.count != numFiles && ((!isDownloaded && DownloadManager.shared.downloading[id] == nil) || isDownloaded) {
             hasConflict = true
-            try? PersistenceController.shared.container.viewContext.save()
+            try! PersistenceController.shared.container.viewContext.save()
         } else if files.count == numFiles {
             hasConflict = false
             isDownloaded = true
-            try? PersistenceController.shared.container.viewContext.save()
+            try! PersistenceController.shared.container.viewContext.save()
         }
     }
 }

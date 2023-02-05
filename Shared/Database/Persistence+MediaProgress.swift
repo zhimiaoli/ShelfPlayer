@@ -27,7 +27,7 @@ extension PersistenceController {
             
             if cachedMediaProgress.lastUpdate?.millisecondsSince1970 ?? 0 > Int64(mediaProgress.lastUpdate ?? 0) {
                 cachedMediaProgress.duration = mediaProgress.duration ?? 0
-                try? PersistenceController.shared.container.viewContext.save()
+                try! PersistenceController.shared.container.viewContext.save()
             } else if cachedMediaProgress.lastUpdate?.millisecondsSince1970 ?? 0 != Int64(mediaProgress.lastUpdate ?? 0) {
                 cachedMediaProgress.id = mediaProgress.id
                 cachedMediaProgress.libraryItemId = mediaProgress.libraryItemId
@@ -49,7 +49,7 @@ extension PersistenceController {
                     cachedMediaProgress.startedAt = Date(milliseconds: Int64(startedAt))
                 }
                 
-                try? PersistenceController.shared.container.viewContext.save()
+                try! PersistenceController.shared.container.viewContext.save()
             }
         }
     }
@@ -99,18 +99,20 @@ extension PersistenceController {
         return Float(entity?.progress ?? 0)
     }
     
-    public func updateStatus(itemId: String, episodeId: String?, currentTime: Double, duration: Double) {
+    public func updateStatus(itemId: String, episodeId: String?, currentTime: Double, duration: Double) -> CachedMediaProgress {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
-        entity?.currentTime = currentTime
-        entity?.duration = duration
-        entity?.isFinished = currentTime >= duration
-        entity?.progress = currentTime / duration
+        entity!.currentTime = currentTime
+        entity!.duration = duration
+        entity!.isFinished = currentTime >= duration
+        entity!.progress = currentTime / duration
         
-        entity?.lastUpdate = Date()
-        entity?.localUpdate = true
+        entity!.lastUpdate = Date()
+        entity!.localUpdate = true
         
-        try? container.viewContext.save()
+        try! container.viewContext.save()
+        
+        return entity!
     }
     public func updateStatusWithoutUpdate(item: LibraryItem, progress: Float) {
         let entity = getEnitityByLibraryItem(item: item, required: true)
@@ -119,17 +121,17 @@ extension PersistenceController {
         entity?.isFinished = progress == 1
         entity?.currentTime = (entity?.duration ?? 0) * Double(progress)
         
-        try? container.viewContext.save()
+        try! container.viewContext.save()
     }
     public func updateStatusWithoutUpdate(itemId: String, episodeId: String?, currentTime: Double, progress: Float, duration: Double) {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
-        entity?.currentTime = currentTime
-        entity?.progress = Double(progress)
-        entity?.duration = duration
-        entity?.isFinished = progress == 1
+        entity!.currentTime = currentTime
+        entity!.progress = Double(progress)
+        entity!.duration = duration
+        entity!.isFinished = progress == 1
         
-        try? container.viewContext.save()
+        try! container.viewContext.save()
     }
     
     // MARK: - Getter
@@ -164,7 +166,7 @@ extension PersistenceController {
             mediaProgress.progress = 0
             mediaProgress.duration = episode.duration ?? 0
             
-            try? PersistenceController.shared.container.viewContext.save()
+            try! PersistenceController.shared.container.viewContext.save()
             return mediaProgress
         }
         
@@ -202,7 +204,7 @@ extension PersistenceController {
             mediaProgress.progress = 0
             mediaProgress.duration = 0
             
-            try? PersistenceController.shared.container.viewContext.save()
+            try! PersistenceController.shared.container.viewContext.save()
             return mediaProgress
         }
         

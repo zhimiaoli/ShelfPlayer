@@ -46,8 +46,12 @@ struct PlayerHelper {
         }
     }
     private static func cacheSync(itemId: String, episodeId: String?, currentTime: Double, duration: Double) {
-        PersistenceController.shared.updateStatus(itemId: itemId, episodeId: episodeId, currentTime: currentTime, duration: duration)
-        PersistenceController.shared.syncEntities()
+        let progress = PersistenceController.shared.updateStatus(itemId: itemId, episodeId: episodeId, currentTime: currentTime, duration: duration)
+        let millisSinceLastSync = Date() - (progress.lastUpdate ?? Date())
+        
+        if millisSinceLastSync > 60_000 {
+            PersistenceController.shared.syncEntities()
+        }
     }
     
     // MARK: - iOS now playing widget

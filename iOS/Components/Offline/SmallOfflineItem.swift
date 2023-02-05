@@ -18,11 +18,14 @@ struct SmallOfflineItem: View {
         } label: {
             HStack {
                 Text(item.episodeTitle ?? item.title ?? "?")
+                
+                Spacer()
+                
                 if item.hasConflict {
-                    Text("(conflict)")
+                    Text("conflict")
                         .foregroundColor(.red)
                 } else if !item.isDownloaded {
-                    Text("(downloading...)")
+                    Text("downloading...")
                         .foregroundColor(.gray)
                 }
             }

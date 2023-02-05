@@ -119,7 +119,7 @@ struct DownloadHelper {
         let id = getIdentifier(itemId: itemId, episodeId: episodeId)
         let folder = DownloadManager.shared.documentsURL.appending(path: id)
         
-        try? FileManager.default.removeItem(at: folder)
+        try! FileManager.default.removeItem(at: folder)
         PersistenceController.shared.deleteTracks(id: id)
         PersistenceController.shared.deleteLocalItem(itemId: itemId, episodeId: episodeId)
         
@@ -145,10 +145,16 @@ struct DownloadHelper {
             return nil
         }
     }
-    public static func getDownloadedItems() -> (books: [LocalItem],  podcasts: [String: [LocalItem]]) {
-        let items = PersistenceController.shared.getLocalItems()
-        var podcasts = [String: [LocalItem]]()
+    public static func getDownloadedItems(onlyPlayable: Bool) -> (books: [LocalItem],  podcasts: [String: [LocalItem]]) {
+        var items = PersistenceController.shared.getLocalItems()
         
+        if onlyPlayable {
+            items = items.filter {
+                !$0.hasConflict && $0.isDownloaded
+            }
+        }
+        
+        var podcasts = [String: [LocalItem]]()
         let podcastItems = items.filter { $0.episodeId != nil }
         let books = items.filter { $0.episodeId == nil }
         

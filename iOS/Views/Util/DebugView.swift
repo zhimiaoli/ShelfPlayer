@@ -24,7 +24,7 @@ struct DebugView: View {
                         Text("Logout")
                     }
                     Button {
-                        try? PersistenceController.shared.deleteAllCachedSessions()
+                        try! PersistenceController.shared.deleteAllCachedSessions()
                     } label: {
                         Text("Clear progress cache")
                     }

@@ -153,7 +153,7 @@ class GlobalViewModel: ObservableObject {
         let user = PersistenceController.shared.getLoggedInUser()
         user!.lastActiveLibraryId = libraryId
         
-        try? PersistenceController.shared.container.viewContext.save()
+        try! PersistenceController.shared.container.viewContext.save()
     }
     
     // MARK: - Private functions

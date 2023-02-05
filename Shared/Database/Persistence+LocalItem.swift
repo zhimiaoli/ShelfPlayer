@@ -21,7 +21,7 @@ extension PersistenceController {
         download.duration = duration
         download.isDownloaded = false
         
-        try? PersistenceController.shared.container.viewContext.save()
+        try! PersistenceController.shared.container.viewContext.save()
     }
     
     public func getDownloadedTracks() -> [DownloadTrack] {
@@ -72,7 +72,7 @@ extension PersistenceController {
             if let result = try container.viewContext.fetch(request).first as? DownloadTrack {
                 result.isDownloaded = true
                 result.identifier = -1
-                try? container.viewContext.save()
+                try! container.viewContext.save()
             }
         } catch {
             NSLog("Failed to mark entity as downloaded")
@@ -86,7 +86,7 @@ extension PersistenceController {
             
             if let result = try container.viewContext.fetch(request).first as? DownloadTrack {
                 result.identifier = -1
-                try? container.viewContext.save()
+                try! container.viewContext.save()
             }
         } catch {
             NSLog("Failed to remove track identifier")
@@ -97,7 +97,7 @@ extension PersistenceController {
         fetchRequest.predicate = NSPredicate(format: "forItem == %@", id)
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        let _ = try? container.viewContext.execute(deleteRequest)
+        let _ = try! container.viewContext.execute(deleteRequest)
     }
     
     public func getLocalItems() -> [LocalItem] {
@@ -158,30 +158,30 @@ extension PersistenceController {
         }
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        let _ = try? container.viewContext.execute(deleteRequest)
+        let _ = try! container.viewContext.execute(deleteRequest)
     }
     public func setLocalConflict(itemId: String, episodeId: String?) {
         let item = getLocalItem(itemId: itemId, episodeId: episodeId)
         
         item?.hasConflict = true
-        try? container.viewContext.save()
+        try! container.viewContext.save()
     }
     public func setDownloadStatus(itemId: String, episodeId: String?, downloaded: Bool) {
         let item = getLocalItem(itemId: itemId, episodeId: episodeId)
         
         item?.isDownloaded = downloaded
-        try? container.viewContext.save()
+        try! container.viewContext.save()
     }
     
     public func removeAllLocalItems() {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "LocalItem")
         var deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
-        let _ = try? container.viewContext.execute(deleteRequest)
+        let _ = try! container.viewContext.execute(deleteRequest)
         
         fetchRequest = NSFetchRequest(entityName: "DownloadTrack")
         deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
-        let _ = try? container.viewContext.execute(deleteRequest)
+        let _ = try! container.viewContext.execute(deleteRequest)
     }
 }

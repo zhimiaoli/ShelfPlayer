@@ -56,11 +56,9 @@ class AudioPlayer: NSObject {
         updateQueueTracks(time: startTime, forceStart: true)
     }
     public func destroy() {
-        sync()
+        setPlaying(false)
         
-        player.pause()
         player.removeAllItems()
-        
         PlayerHelper.resetNowPlayingInfo()
     }
     

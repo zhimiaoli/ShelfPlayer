@@ -116,6 +116,7 @@
 		3AF4CB71291FA7120080451B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AF4CB70291FA7120080451B /* Assets.xcassets */; };
 		3AF4CB76291FA7120080451B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF4CB75291FA7120080451B /* Persistence.swift */; };
 		3AF4CB79291FA7120080451B /* Books.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AF4CB77291FA7120080451B /* Books.xcdatamodeld */; };
+		3AF6175129900E4800789BBE /* Date+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6175029900E4700789BBE /* Date+Delta.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -223,13 +224,13 @@
 		3ADEC00829320BEB0047CE12 /* SearchSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSeries.swift; sourceTree = "<group>"; };
 		3ADEC00A29320C6C0047CE12 /* BookDetailSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailSeries.swift; sourceTree = "<group>"; };
 		3ADEC00E293216C20047CE12 /* FilterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterResponse.swift; sourceTree = "<group>"; };
-		3AF393CE298D9617000F2EF0 /* Ideas.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Ideas.md; sourceTree = "<group>"; };
 		3AF4CB69291FA70D0080451B /* Books.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Books.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AF4CB6C291FA70D0080451B /* BooksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksApp.swift; sourceTree = "<group>"; };
 		3AF4CB6E291FA70D0080451B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3AF4CB70291FA7120080451B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AF4CB75291FA7120080451B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		3AF4CB78291FA7120080451B /* Books.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Books.xcdatamodel; sourceTree = "<group>"; };
+		3AF6175029900E4700789BBE /* Date+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Delta.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -366,6 +367,7 @@
 				3A3110E12988618A00D4E93E /* String+Padding.swift */,
 				3A36DF6F298FAB3A00C67B8B /* LocalItem+Verify.swift */,
 				3AC7E043298FC3FB00BA35A1 /* LocalItem+Item.swift */,
+				3AF6175029900E4700789BBE /* Date+Delta.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -473,11 +475,12 @@
 		3ABEC5EC2988081D002666DE /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				3A734255298C20DD00CFEC3B /* Offline */,
-				3ABEC5ED29880831002666DE /* Player */,
-				3AB97F32292005F400E07DB5 /* Database */,
-				3A98B9FA2920FB0000EE5ECE /* Helper */,
 				3AF4CB80291FAB5E0080451B /* Models */,
+				3A98B9FA2920FB0000EE5ECE /* Helper */,
+				3AB97F32292005F400E07DB5 /* Database */,
+				3ABEC5ED29880831002666DE /* Player */,
+				3A734255298C20DD00CFEC3B /* Offline */,
+				3AF4CB77291FA7120080451B /* Books.xcdatamodeld */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -559,7 +562,6 @@
 			isa = PBXGroup;
 			children = (
 				3AC7E046298FD2CB00BA35A1 /* README.md */,
-				3AF393CE298D9617000F2EF0 /* Ideas.md */,
 				3A50166129856D9F00BB2C74 /* Books-Info.plist */,
 				3ABEC5EC2988081D002666DE /* Shared */,
 				3AF4CB6B291FA70D0080451B /* iOS */,
@@ -582,7 +584,6 @@
 				3AB97F1F291FB6E100E07DB5 /* Views */,
 				3AB97F24291FB8D500E07DB5 /* Components */,
 				3AF4CB70291FA7120080451B /* Assets.xcassets */,
-				3AF4CB77291FA7120080451B /* Books.xcdatamodeld */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -768,6 +769,7 @@
 				3AB97F22291FB6F700E07DB5 /* LoginView.swift in Sources */,
 				3AB97F29291FFC2100E07DB5 /* LoginViewInner.swift in Sources */,
 				3AC75B66292FE6DD0057A250 /* ProgressIndicator.swift in Sources */,
+				3AF6175129900E4800789BBE /* Date+Delta.swift in Sources */,
 				3AC7E042298FC20000BA35A1 /* OfflineItemImage.swift in Sources */,
 				3ADEBFF82931FC5E0047CE12 /* GestureSwipeRight.swift in Sources */,
 				3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */,
