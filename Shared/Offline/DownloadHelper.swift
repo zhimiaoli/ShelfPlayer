@@ -15,6 +15,13 @@ struct DownloadHelper {
         let value: String = PersistenceController.shared.getValue(key: "downloads.mobile") ?? "false"
         return Bool(value) ?? false
     }
+    public static func setDeleteDownloadsWhenFinished(_ delete: Bool) {
+        PersistenceController.shared.setKey("downloads.delete", value: delete.description)
+    }
+    public static func getDeleteDownloadsWhenFinished() -> Bool {
+        let value: String = PersistenceController.shared.getValue(key: "downloads.delete") ?? "true"
+        return Bool(value) ?? true
+    }
     
     public static func downloadItem(item libraryItem: LibraryItem) async -> Bool {
         var item: LibraryItem?

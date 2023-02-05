@@ -19,6 +19,7 @@ struct SettingsView: View {
     
     @State var useChapterView: Bool = PlayerHelper.getUseChapterView()
     @State var allowDownloadsOverMobile: Bool = DownloadHelper.getAllowDownloadsOverMobile()
+    @State var deleteDownloadsWhenFinished: Bool = DownloadHelper.getDeleteDownloadsWhenFinished()
     
     var body: some View {
         NavigationStack {
@@ -79,7 +80,11 @@ struct SettingsView: View {
                         .onChange(of: allowDownloadsOverMobile, perform: { allow in
                             DownloadHelper.setAllowDownloadsOverMobile(allow)
                         })
-                    NavigationLink(destination: DownloadsManageView()) {
+                    Toggle("Delete downloads when finished", isOn: $deleteDownloadsWhenFinished)
+                        .onChange(of: deleteDownloadsWhenFinished, perform: { delete in
+                            DownloadHelper.setDeleteDownloadsWhenFinished(delete)
+                        })
+                    NavigationLink(destination: DownloadsManageView(detailed: false)) {
                         Text("Manage")
                     }
                     Button {

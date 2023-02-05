@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DownloadsManageView: View {
-    var detailed: Bool = true
+    var detailed: Bool
     
     @EnvironmentObject private var globalViewModel: GlobalViewModel
     

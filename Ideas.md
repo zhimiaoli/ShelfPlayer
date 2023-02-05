@@ -8,3 +8,5 @@
 - put globalViewModel somewhere better (usable outside swiftui) 
 - extend coredata models
 - isLocal computed property ?? false
+- auto download episodes
+- notifications

@@ -27,7 +27,7 @@ struct ContentView: View {
                 if globalViewModel.loggedIn {
                     NavigationStack {
                         NowPlayingWrapper {
-                            DownloadsManageView()
+                            DownloadsManageView(detailed: true)
                         }
                     }
                 } else {
@@ -39,6 +39,10 @@ struct ContentView: View {
         }
         .environmentObject(globalViewModel)
         .onReceive(NSNotification.PlayerFinished, perform: { _ in
+            if DownloadHelper.getDeleteDownloadsWhenFinished() {
+                DownloadHelper.deleteDownload(itemId: globalViewModel.currentlyPlaying!.id, episodeId: globalViewModel.currentlyPlaying?.recentEpisode?.id)
+            }
+            
             globalViewModel.closePlayer()
         })
         .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in

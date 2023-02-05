@@ -117,7 +117,7 @@ class GlobalViewModel: ObservableObject {
         } ?? []
         
         let entity = PersistenceController.shared.getEnitityByLibraryItem(item: item, required: true)!
-        PlayerHelper.audioPlayer = AudioPlayer(sessionId: nil, itemId: item.id, episodeId: item.recentEpisode?.id, startTime: entity.progress == 1 ? 0 : entity.currentTime, playMethod: .local, audioTracks: tracks)
+        PlayerHelper.audioPlayer = AudioPlayer(sessionId: nil, itemId: item.id, episodeId: item.recentEpisode?.id, startTime: entity.progress >= 1 ? 0 : entity.currentTime, playMethod: .local, audioTracks: tracks)
         
         withAnimation {
             self.currentlyPlaying = item
