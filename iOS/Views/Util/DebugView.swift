@@ -24,6 +24,11 @@ struct DebugView: View {
                         Text("Logout")
                     }
                     Button {
+                        PersistenceController.shared.syncEntities()
+                    } label: {
+                        Text("sync to server")
+                    }
+                    Button {
                         try! PersistenceController.shared.deleteAllCachedSessions()
                     } label: {
                         Text("Clear progress cache")

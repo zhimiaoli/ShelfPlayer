@@ -31,7 +31,6 @@ class DownloadManager: NSObject {
         PersistenceController.shared.createDownloadTrack(itemId: itemId, episodeId: episodeId, duration: duration, ext: ext, index: index, identifier: task.taskIdentifier)
         
         let id = DownloadHelper.getIdentifier(itemId: itemId, episodeId: episodeId)
-        print(id)
         if downloading[id] == nil {
             downloading[id] = 0
         }

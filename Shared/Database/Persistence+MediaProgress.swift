@@ -74,7 +74,7 @@ extension PersistenceController {
         getUpdatedEntities().forEach { updatedProgress in
             Task {
                 do {
-                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite) {
+                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite || updatedProgress.currentTime == 0 || updatedProgress.progress == 0) {
                         NSLog("Found updated progress \(updatedProgress.id ?? "?") \(updatedProgress.progress) \(updatedProgress.duration)")
                         try await APIClient.authorizedShared.request(APIResources.me.syncLocalProgress(updatedProgress))
                         
@@ -99,7 +99,7 @@ extension PersistenceController {
         return Float(entity?.progress ?? 0)
     }
     
-    public func updateStatus(itemId: String, episodeId: String?, currentTime: Double, duration: Double) -> CachedMediaProgress {
+    public func updateStatus(itemId: String, episodeId: String?, currentTime: Double, duration: Double) {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
         entity!.currentTime = currentTime
@@ -111,8 +111,6 @@ extension PersistenceController {
         entity!.localUpdate = true
         
         try! container.viewContext.save()
-        
-        return entity!
     }
     public func updateStatusWithoutUpdate(item: LibraryItem, progress: Float) {
         let entity = getEnitityByLibraryItem(item: item, required: true)
