@@ -151,7 +151,7 @@ extension APIResources {
     
     public struct MeResource {
         public func syncLocalProgress(_ progress: CachedMediaProgress) -> APIRequestEmpty {
-            APIRequestEmpty(method: "POST", path: "api/me/sync-local-progress", body: [
+            return APIRequestEmpty(method: "POST", path: "api/me/sync-local-progress", body: [
                 "numServerProgressUpdates": 1,
                 "localMediaProgress": [convertToDict(mediaProgress: progress)]
             ])
@@ -159,8 +159,8 @@ extension APIResources {
         
         private func convertToDict(mediaProgress: CachedMediaProgress) -> [String: Any] {
             return [
-                "id": mediaProgress.id ?? "_",
-                "libraryItemId": mediaProgress.libraryItemId ?? "_",
+                "id": mediaProgress.id!,
+                "libraryItemId": mediaProgress.libraryItemId!,
                 "episodeId": mediaProgress.episodeId ?? "",
                 "duration": mediaProgress.duration,
                 "progress": mediaProgress.progress,
@@ -169,7 +169,7 @@ extension APIResources {
                 "hideFromContinueListening": mediaProgress.hideFromContinueListening,
                 "lastUpdate": Double(mediaProgress.lastUpdate?.millisecondsSince1970 ?? 0),
                 "startedAt": Double(mediaProgress.startedAt?.millisecondsSince1970 ?? 0),
-                "finishedAt": Double(mediaProgress.finishedAt?.millisecondsSince1970 ?? 0),
+                "finishedAt": "",
             ]
         }
     }

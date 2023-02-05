@@ -75,7 +75,7 @@ extension PersistenceController {
             Task {
                 do {
                     if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite) {
-                        NSLog("Found updated progress \(updatedProgress.id ?? "?")")
+                        NSLog("Found updated progress \(updatedProgress.id ?? "?") \(updatedProgress.progress) \(updatedProgress.duration)")
                         try await APIClient.authorizedShared.request(APIResources.me.syncLocalProgress(updatedProgress))
                         
                         updatedProgress.localUpdate = false
@@ -103,7 +103,7 @@ extension PersistenceController {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
         entity?.currentTime = currentTime
-        entity?.duration = currentTime
+        entity?.duration = duration
         entity?.isFinished = currentTime >= duration
         entity?.progress = currentTime / duration
         
