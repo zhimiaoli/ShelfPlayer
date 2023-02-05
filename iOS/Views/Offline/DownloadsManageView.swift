@@ -67,7 +67,7 @@ struct DownloadsManageView: View {
     }
     
     private func updateItems() {
-        let items = DownloadHelper.getDownloadedItems(onlyPlayable: !detailed)
+        let items = DownloadHelper.getDownloadedItems(onlyPlayable: detailed)
         
         books = items.books
         podcasts = items.podcasts
