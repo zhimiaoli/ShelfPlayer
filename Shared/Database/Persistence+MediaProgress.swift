@@ -121,12 +121,13 @@ extension PersistenceController {
         
         try? container.viewContext.save()
     }
-    public func updateStatusWithoutUpdate(itemId: String, episodeId: String?, progress: Float) {
+    public func updateStatusWithoutUpdate(itemId: String, episodeId: String?, currentTime: Double, progress: Float, duration: Double) {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
         
+        entity?.currentTime = currentTime
         entity?.progress = Double(progress)
+        entity?.duration = duration
         entity?.isFinished = progress == 1
-        entity?.currentTime = (entity?.duration ?? 0) * Double(progress)
         
         try? container.viewContext.save()
     }

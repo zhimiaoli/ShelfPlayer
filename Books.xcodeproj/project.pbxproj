@@ -206,6 +206,7 @@
 		3AC7E03F298FC1B400BA35A1 /* LargeOfflineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeOfflineItem.swift; sourceTree = "<group>"; };
 		3AC7E041298FC20000BA35A1 /* OfflineItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineItemImage.swift; sourceTree = "<group>"; };
 		3AC7E043298FC3FB00BA35A1 /* LocalItem+Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalItem+Item.swift"; sourceTree = "<group>"; };
+		3AC7E046298FD2CB00BA35A1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3AD5EAD22923D87C00D74AF1 /* PersistenceController+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistenceController+User.swift"; sourceTree = "<group>"; };
 		3AD7AACB29805AB50052C17B /* ItemGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGrid.swift; sourceTree = "<group>"; };
 		3ADEBFE9292FF9370047CE12 /* ItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
@@ -557,6 +558,7 @@
 		3AF4CB60291FA70D0080451B = {
 			isa = PBXGroup;
 			children = (
+				3AC7E046298FD2CB00BA35A1 /* README.md */,
 				3AF393CE298D9617000F2EF0 /* Ideas.md */,
 				3A50166129856D9F00BB2C74 /* Books-Info.plist */,
 				3ABEC5EC2988081D002666DE /* Shared */,
