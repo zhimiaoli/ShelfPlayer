@@ -41,24 +41,20 @@ extension DetailView {
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 250)
                     
-                    Button {
-                        if let latestEpisode = latestEpisode {
+                    if let latestEpisode = latestEpisode {
+                        Button {
                             globalViewModel.playItem(item: {
                                 var withEpisode = item
                                 withEpisode.recentEpisode = latestEpisode
                                 
                                 return withEpisode
                             }())
-                        }
-                    } label: {
-                        if let latestItem = latestEpisode {
-                            let progress = PersistenceController.shared.getProgressByPodcastEpisode(episode: latestItem)
+                        } label: {
+                            let progress = PersistenceController.shared.getProgressByPodcastEpisode(episode: latestEpisode)
                             Label("\(progress > 0 && progress < 1 ? "Resume" : "Play") latest episode", systemImage: "play.fill")
-                        } else {
-                            Text("Loading...")
                         }
+                        .buttonStyle(PlayNowButtonStyle(colorScheme: backgroundIsLight ? .dark : .light))
                     }
-                    .buttonStyle(PlayNowButtonStyle(colorScheme: backgroundIsLight ? .dark : .light))
                     
                     VStack(alignment: .leading) {
                         let html = item.media?.metadata.description ?? "No description..."
@@ -115,6 +111,8 @@ extension DetailView {
                 
                 PodcastDetailEpisodeList(episodes: item.media?.episodes ?? [], item: item, latestEpisode: $latestEpisode)
                     .frame(minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .top)
+                
+                Spacer()
             }
             .navigationTitle(item.title)
             .frame(maxWidth: .infinity)

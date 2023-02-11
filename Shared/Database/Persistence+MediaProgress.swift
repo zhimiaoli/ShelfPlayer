@@ -74,7 +74,7 @@ extension PersistenceController {
         getUpdatedEntities().forEach { updatedProgress in
             Task {
                 do {
-                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite || updatedProgress.currentTime == 0 || updatedProgress.progress == 0) {
+                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite) {
                         NSLog("Found updated progress \(updatedProgress.id ?? "?") \(updatedProgress.progress) \(updatedProgress.duration)")
                         try await APIClient.authorizedShared.request(APIResources.me.syncLocalProgress(updatedProgress))
                         

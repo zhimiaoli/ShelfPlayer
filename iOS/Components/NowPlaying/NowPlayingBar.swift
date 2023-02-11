@@ -64,7 +64,8 @@ extension NowPlayingWrapper {
                 playing = PlayerHelper.audioPlayer?.isPlaying() ?? false
             })
             .contextMenu {
-                Text("oof")
+                Text("Hello")
+                Text("i have no idea what i should put here")
             }
         }
     }

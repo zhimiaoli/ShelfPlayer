@@ -33,7 +33,9 @@ struct VolumeSlider: View {
         }
         .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
             if !isDragging {
-                volume = Double(value) * 100
+                withAnimation {
+                    volume = Double(value) * 100
+                }
             }
         })
     }
