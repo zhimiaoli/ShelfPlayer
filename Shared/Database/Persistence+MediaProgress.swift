@@ -76,7 +76,7 @@ extension PersistenceController {
                 do {
                     if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite) {
                         NSLog("Found updated progress \(updatedProgress.id ?? "?") \(updatedProgress.progress) \(updatedProgress.duration)")
-                        try await APIClient.authorizedShared.request(APIResources.me.syncLocalProgress(updatedProgress))
+                        try await APIClient.authorizedShared.request(APIResources.session.local(updatedProgress))
                         
                         updatedProgress.localUpdate = false
                         try container.viewContext.save()

@@ -143,38 +143,6 @@ extension APIResources {
     }
 }
 
-// MARK: - /api/me/sync-local-progress
-extension APIResources {
-    public static var me: MeResource {
-        MeResource()
-    }
-    
-    public struct MeResource {
-        public func syncLocalProgress(_ progress: CachedMediaProgress) -> APIRequestEmpty {
-            return APIRequestEmpty(method: "POST", path: "api/me/sync-local-progress", body: [
-                "numServerProgressUpdates": 1,
-                "localMediaProgress": [convertToDict(mediaProgress: progress)]
-            ])
-        }
-        
-        private func convertToDict(mediaProgress: CachedMediaProgress) -> [String: Any] {
-            return [
-                "id": mediaProgress.id!,
-                "libraryItemId": mediaProgress.libraryItemId!,
-                "episodeId": mediaProgress.episodeId ?? "",
-                "duration": mediaProgress.duration,
-                "progress": mediaProgress.progress,
-                "currentTime": mediaProgress.currentTime,
-                "isFinished": mediaProgress.isFinished,
-                "hideFromContinueListening": mediaProgress.hideFromContinueListening,
-                "lastUpdate": Double(mediaProgress.lastUpdate?.millisecondsSince1970 ?? 0),
-                "startedAt": Double(mediaProgress.startedAt?.millisecondsSince1970 ?? 0),
-                "finishedAt": "",
-            ]
-        }
-    }
-}
-
 // MARK: - /api/items/{id}
 extension APIResources {
     public static func items(id: String) -> ItemResource {
@@ -206,11 +174,11 @@ extension APIResources {
 
 // MARK: - /api/session/{id}
 extension APIResources {
-    public static func session(id: String) -> SessionResource {
-        SessionResource(id: id)
+    public static func session(id: String) -> SessionIDResource {
+        SessionIDResource(id: id)
     }
     
-    public struct SessionResource {
+    public struct SessionIDResource {
         public var id: String
         
         public func sync(timeListened: Double, duration: Double, currentTime: Double) -> APIRequestEmpty {
@@ -219,6 +187,19 @@ extension APIResources {
                 "duration": duration,
                 "currentTime": currentTime,
             ])
+        }
+    }
+}
+
+// MARK: - /api/session/local
+extension APIResources {
+    public static var session: SessionResource {
+        SessionResource()
+    }
+    
+    public struct SessionResource {
+        public func local(_ progress: CachedMediaProgress) -> APIRequestEmpty {
+            return APIRequestEmpty(method: "POST", path: "api/session/local", body: progress.convertToDict())
         }
     }
 }
