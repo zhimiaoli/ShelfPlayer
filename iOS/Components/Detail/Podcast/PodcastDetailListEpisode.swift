@@ -16,22 +16,32 @@ extension DetailView {
         
         var body: some View {
             VStack(alignment: .leading, spacing: 2) {
-                if let publishedAt = episode.publishedAt {
-                    let date = Date(milliseconds: Int64(publishedAt))
-                    
-                    Group {
-                        if Calendar.current.isDateInToday(date) {
-                            Text("TODAY")
-                        } else if Calendar.current.isDateInYesterday(date) {
-                            Text("YESTERDAY")
-                        } else {
-                            Text(date.formatted(.dateTime.day().month(.wide).year()).uppercased())
+                HStack {
+                    if let publishedAt = episode.publishedAt {
+                        let date = Date(milliseconds: Int64(publishedAt))
+                        
+                        Group {
+                            if Calendar.current.isDateInToday(date) {
+                                Text("Today")
+                            } else if Calendar.current.isDateInYesterday(date) {
+                                Text("Yesterday")
+                            } else {
+                                Text(date.formatted(.dateTime.day().month(.wide).year()))
+                            }
                         }
                     }
-                    .foregroundColor(.primaryTransparent)
-                    .bold()
-                    .font(.caption)
+                    
+                    if let season = episode.seasonData.season, let episodeInSeason = episode.seasonData.episode {
+                        if episode.publishedAt != nil {
+                            Text("•")
+                        }
+                        Text("S\(season)E\(episodeInSeason)")
+                    }
                 }
+                .foregroundColor(.primaryTransparent)
+                .bold()
+                .font(.system(.subheadline).smallCaps())
+                
                 Text(episode.title ?? "?")
                     .font(.headline)
                     .bold()
@@ -52,7 +62,8 @@ extension DetailView {
                     }())
                 } label: {
                     Image(systemName: "play.circle.fill")
-                        .dynamicTypeSize(.xLarge)
+                        .dynamicTypeSize(.xxxLarge)
+                        .symbolRenderingMode(.hierarchical)
                     
                     Group {
                         if let entity = PersistenceController.shared.getEntityByPodcastEpisode(episode: episode), entity.progress > 0 {
@@ -72,6 +83,7 @@ extension DetailView {
                 .padding(.top, 4)
                 .foregroundColor(.accentColor)
             }
+            .padding(.vertical, 5)
         }
     }
 }

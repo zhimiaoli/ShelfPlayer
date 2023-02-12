@@ -47,15 +47,15 @@ extension DetailView {
                         }
                         .frame(height: 30)
                     }
-                    ScrollView(showsIndicators: false) {
+                    ScrollView {
                         LazyVStack(alignment: .leading) {
-                            let filtered = FilterHelper.sortEpisodes(FilterHelper.filterEpisodes(episodes, filter: filter), sort).filter { episode in
+                            let filtered = FilterHelper.filterEpisodes(FilterHelper.sortEpisodes(episodes.filter { episode in
                                 if activeSeason == nil {
                                     return true
                                 }
                                 
                                 return episode.season == activeSeason
-                            }
+                            }, sort), filter: filter)
                             if filtered.count > 0 {
                                 ForEach(Array(filtered.enumerated()), id: \.offset) { index, episode in
                                     if (seasons.count < 1 && index != 0) || index > 0 {

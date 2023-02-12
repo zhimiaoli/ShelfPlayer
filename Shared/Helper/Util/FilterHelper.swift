@@ -112,13 +112,19 @@ struct FilterHelper {
         }
     }
     public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], sortOrder: EpisodeSort, invert: Bool) -> [LibraryItem.PodcastEpisode] {
-        return episodes.sorted {
+        let episodes = episodes.sorted {
             var result = false
             
             if sortOrder == .date {
                 result = $0.publishedAt ?? 0 < $1.publishedAt ?? 0
             } else if sortOrder == .episode {
-                result = $0.index ?? 0 < $1.index ?? 0
+                if let lhsSeason = $0.seasonData.season, let rhsSeason = $1.seasonData.season, lhsSeason != rhsSeason {
+                    result = lhsSeason.localizedStandardCompare(rhsSeason) == .orderedAscending
+                } else if let lhsEpisode = $0.seasonData.episode, let rhsEpisode = $1.seasonData.episode {
+                    result = lhsEpisode.localizedStandardCompare(rhsEpisode) == .orderedAscending
+                } else {
+                    result = $0.index ?? 0 < $1.index ?? 0
+                }
             } else if sortOrder == .title {
                 result = ($0.title ?? "").localizedStandardCompare($1.title ?? "") == .orderedAscending
             }
@@ -129,6 +135,9 @@ struct FilterHelper {
                 return result
             }
         }
+        
+        print(episodes)
+        return episodes
     }
     public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], _ sort: (EpisodeSort, Bool)) -> [LibraryItem.PodcastEpisode] {
         sortEpisodes(episodes, sortOrder: sort.0, invert: sort.1)

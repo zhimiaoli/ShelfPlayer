@@ -76,7 +76,7 @@ extension LibraryItem {
         }
         
         // why?
-        var seasonData: (String?, String?) {
+        var seasonData: (season: String?, episode: String?) {
             var season: String?
             var episode: String?
             
@@ -87,7 +87,7 @@ extension LibraryItem {
                 episode = self.episode
             }
             
-            return (season, episode)
+            return (season: season, episode: episode)
         }
         var length: Double {
             duration ?? audioFile?.duration ?? 0

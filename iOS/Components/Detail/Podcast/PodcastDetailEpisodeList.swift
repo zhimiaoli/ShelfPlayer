@@ -111,16 +111,10 @@ extension DetailView {
             updateEpisodes()
         }
         private func updateEpisodes() {
-            filteredEpisodes = Array(
-                FilterHelper.sortEpisodes(
-                    FilterHelper.filterEpisodes(
-                        episodes,
-                        filter: filter),
-                    sort
-                ).prefix(15))
+            filteredEpisodes = Array(FilterHelper.filterEpisodes(FilterHelper.sortEpisodes(episodes, sort), filter: filter).prefix(15))
             
             Task.detached {
-                latestEpisode = FilterHelper.sortEpisodes(FilterHelper.filterEpisodes(episodes, filter: filter), sort).first
+                latestEpisode = FilterHelper.filterEpisodes(FilterHelper.sortEpisodes(episodes, sort), filter: filter).first
             }
         }
     }
