@@ -91,31 +91,33 @@ extension DetailView {
                     }
                     
                     if !(item.isLocal ?? false) {
-                        Text("About")
-                            .font(.title2)
-                            .bold()
-                            .padding(.vertical)
-                        
-                        VStack {
-                            Group {
-                                ListItem(title: "Title", text: item.title)
-                                    .foregroundColor(.accentColor)
-                                ListItem(title: "Podcast", text: item.media?.metadata.title ?? "unknown podcast")
-                                ListItem(title: "Author", text: item.author)
-                                ListItem(title: "Size", text: ByteCountFormatter().string(fromByteCount: Int64(item.recentEpisode?.audioFile?.metadata?.size ?? 0)))
-                                
-                                if let seasonData = item.recentEpisode?.seasonData, seasonData.0 != nil {
-                                    ListItem(title: "Series", text: "Season: \(seasonData.0 ?? "?") | Episode: \(seasonData.1 ?? "?")")
+                        DisclosureGroup {
+                            VStack {
+                                Group {
+                                    ListItem(title: "Title", text: item.title)
+                                    ListItem(title: "Podcast", text: item.media?.metadata.title ?? "unknown podcast")
+                                    ListItem(title: "Author", text: item.author)
+                                    ListItem(title: "Size", text: ByteCountFormatter().string(fromByteCount: Int64(item.recentEpisode?.audioFile?.metadata?.size ?? 0)))
+                                    
+                                    if let seasonData = item.recentEpisode?.seasonData, seasonData.0 != nil {
+                                        ListItem(title: "Series", text: "Season: \(seasonData.0 ?? "?") | Episode: \(seasonData.1 ?? "?")")
+                                    }
+                                }
+                                Group {
+                                    ListItem(title: "Duration", text: TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))
+                                    ListItem(title: "Codec", text: item.recentEpisode?.audioFile?.codec ?? "?")
+                                    ListItem(title: "Channels", text: item.recentEpisode?.audioFile?.channelLayout ?? "?")
                                 }
                             }
-                            Group {
-                                ListItem(title: "Duration", text: TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))
-                                ListItem(title: "Codec", text: item.recentEpisode?.audioFile?.codec ?? "?")
-                                ListItem(title: "Channels", text: item.recentEpisode?.audioFile?.channelLayout ?? "?")
-                            }
+                            .listStyle(.inset)
+                            .frame(minHeight: minRowHeight * (item.recentEpisode?.seasonData.0 == nil ? 7 : 8), alignment: .topLeading)
+                        } label: {
+                            Text("About")
+                                .font(.title2)
+                                .bold()
+                                .padding(.vertical)
+                                .foregroundColor(.primary)
                         }
-                        .listStyle(.inset)
-                        .frame(minHeight: minRowHeight * (item.recentEpisode?.seasonData.0 == nil ? 7 : 8), alignment: .topLeading)
                     }
                 }
                 .padding()
