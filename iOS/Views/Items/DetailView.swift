@@ -20,16 +20,16 @@ struct DetailView: View {
     var body: some View {
         if let item = currentItem {
             if item.isBook {
-                FullscreenView(presentationMode: presentationMode) {
+                FullscreenView(viewModel: FullscrenViewViewModel(title: item.title)) {
                     BookDetailInner(viewModel: ViewModel(item: item))
                 } menu: {}
             } else if item.isPodcast {
                 if item.hasEpisode {
-                    FullscreenView(presentationMode: presentationMode) {
+                    FullscreenView(viewModel: FullscrenViewViewModel(title: item.title)) {
                         EpisodeDetailInner(item: item)
                     } menu: {}
                 } else if item.media?.episodes != nil {
-                    FullscreenView(presentationMode: presentationMode) {
+                    FullscreenView(viewModel: FullscrenViewViewModel(title: item.title)) {
                         PodcastDetailInner(item: item)
                     } menu: {
                         PodcastSettingsSheet(item: item)

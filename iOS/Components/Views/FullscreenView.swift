@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct FullscreenView<Content: View, Menu: View>: View {
-    var presentationMode: Binding<PresentationMode>
+    @StateObject var viewModel: FullscrenViewViewModel
+    
     @ViewBuilder var content: Content
     @ViewBuilder var menu: Menu
-    
-    @StateObject var viewModel: FullscrenViewViewModel = FullscrenViewViewModel()
     
     var body: some View {
         GeometryReader { reader in
@@ -24,9 +23,6 @@ struct FullscreenView<Content: View, Menu: View>: View {
                         let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
                         
                         DispatchQueue.main.async {
-                            // This causes cpu usage to be at 100%
-                            // viewModel.changeScrollViewBackground = offset < 0
-                            
                             if viewModel.changeScrollViewBackground && offset > 0 {
                                 viewModel.changeScrollViewBackground = false
                             } else if !viewModel.changeScrollViewBackground && offset < 0 {
@@ -39,54 +35,15 @@ struct FullscreenView<Content: View, Menu: View>: View {
             // Navigation bar
             .edgesIgnoringSafeArea(.top)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(viewModel.isNavigationBarVisible ? viewModel.title : !viewModel.animateNavigationBarChanges ? "_______________________________" : "")
             
             // Toolbar
-            .toolbar(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
+            .toolbarBackground(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     menu
-                        .fontWeight(.bold)
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(.accentColor)
                 }
             }
-            .overlay(alignment: .topLeading) {
-                HStack {
-                    if presentationMode.wrappedValue.isPresented {
-                        // A button does not work here
-                        Image(systemName: "chevron.left.circle.fill")
-                            .onTapGesture {
-                                withAnimation {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }
-                            .offset(y: 60)
-                            .ignoresSafeArea()
-                    }
-                    
-                    Spacer()
-                    
-                    HStack {
-                        menu
-                    }
-                    .offset(y: 60)
-                    .ignoresSafeArea()
-                }
-                .fontWeight(.bold)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundColor(.accentColor)
-                .dynamicTypeSize(.xxxLarge)
-                .padding(.horizontal, 20)
-                .animation(.easeInOut, value: viewModel.isNavigationBarVisible)
-                .opacity(viewModel.isNavigationBarVisible ? 0 : 1)
-            }
-            .modifier(GestureSwipeRight(action: {
-                if presentationMode.wrappedValue.isPresented && !viewModel.isNavigationBarVisible {
-                    withAnimation {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }))
             
             // Background color
             .coordinateSpace(name: "scroll")
@@ -106,6 +63,8 @@ struct FullscreenView<Content: View, Menu: View>: View {
 }
 
 class FullscrenViewViewModel: ObservableObject {
+    @Published var title: String
+    
     @Published var isNavigationBarVisible: Bool = false
     @Published var animateNavigationBarChanges: Bool = false
     
@@ -113,6 +72,10 @@ class FullscrenViewViewModel: ObservableObject {
     @Published var mainContentMinHeight: CGFloat = 400
     
     @Published var backgroundColor = UIColor.secondarySystemBackground
+    
+    init(title: String) {
+        self.title = title
+    }
     
     /// Tells the FullscreenView to display the navigation bar
     public func showNavigationBar() {
@@ -135,18 +98,6 @@ class FullscrenViewViewModel: ObservableObject {
         
         withAnimation(.easeInOut(duration: 0.25)) {
             isNavigationBarVisible = false
-        }
-    }
-}
-
-struct FullscreenView_Previews: PreviewProvider {
-    @Environment(\.presentationMode) private static var presentationMode: Binding<PresentationMode>
-    
-    static var previews: some View {
-        FullscreenView(presentationMode: presentationMode) {
-            Text("This is not usefull at all")
-        } menu: {
-            
         }
     }
 }

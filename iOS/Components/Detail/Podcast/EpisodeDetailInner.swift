@@ -123,7 +123,6 @@ extension DetailView {
                 .padding()
                 .frame(maxWidth: .infinity, minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .topLeading)
             }
-            .navigationTitle(item.title)
             .onAppear {
                 Task.detached {
                     let backgroundColor = await ImageHelper.getAverageColor(item: item).0.withAlphaComponent(0.7)

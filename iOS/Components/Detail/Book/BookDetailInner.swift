@@ -18,7 +18,6 @@ extension DetailView {
                 BookDetailHeader()
                 BookDetailBody()
             }
-            .navigationTitle(viewModel.item.title)
             .onAppear {
                 Task.detached {
                     let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)

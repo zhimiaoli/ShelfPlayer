@@ -14,6 +14,7 @@
 		3A22634A29866C5300B7CD94 /* Color+Primary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634929866C5300B7CD94 /* Color+Primary.swift */; };
 		3A22634C2986701700B7CD94 /* FilterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634B2986701700B7CD94 /* FilterHelper.swift */; };
 		3A22634E2986732300B7CD94 /* Persistence+KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */; };
+		3A28DA3B299A7B8300257BD4 /* LineLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A28DA3A299A7B8300257BD4 /* LineLimitView.swift */; };
 		3A3110E029885A2000D4E93E /* SeekSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110DF29885A2000D4E93E /* SeekSlider.swift */; };
 		3A3110E22988618A00D4E93E /* String+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110E12988618A00D4E93E /* String+Padding.swift */; };
 		3A3110E929898D7F00D4E93E /* NowPlayingFooterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3110E829898D7F00D4E93E /* NowPlayingFooterButtons.swift */; };
@@ -128,6 +129,7 @@
 		3A22634929866C5300B7CD94 /* Color+Primary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Primary.swift"; sourceTree = "<group>"; };
 		3A22634B2986701700B7CD94 /* FilterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHelper.swift; sourceTree = "<group>"; };
 		3A22634D2986732300B7CD94 /* Persistence+KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistence+KeyValue.swift"; sourceTree = "<group>"; };
+		3A28DA3A299A7B8300257BD4 /* LineLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineLimitView.swift; sourceTree = "<group>"; };
 		3A3110DF29885A2000D4E93E /* SeekSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekSlider.swift; sourceTree = "<group>"; };
 		3A3110E12988618A00D4E93E /* String+Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Padding.swift"; sourceTree = "<group>"; };
 		3A3110E829898D7F00D4E93E /* NowPlayingFooterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingFooterButtons.swift; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				3A50164F2985208700BB2C74 /* Slider.swift */,
 				3A5016562985445A00BB2C74 /* LibraryPicker.swift */,
 				3A9DE5992986D78B00567488 /* FilterSelector.swift */,
+				3A28DA3A299A7B8300257BD4 /* LineLimitView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -731,6 +734,7 @@
 				3AC75B68292FE6FC0057A250 /* ItemRowContainer.swift in Sources */,
 				3A0D7794297F02FB004F5A7D /* String+Base64.swift in Sources */,
 				3AB97F2F2920032A00E07DB5 /* FullscreenLoadingIndicator.swift in Sources */,
+				3A28DA3B299A7B8300257BD4 /* LineLimitView.swift in Sources */,
 				3A501634298442E400BB2C74 /* GlobalViewModel.swift in Sources */,
 				3A5016572985445A00BB2C74 /* LibraryPicker.swift in Sources */,
 				3ABEC5F429880AC4002666DE /* PlayMethod.swift in Sources */,

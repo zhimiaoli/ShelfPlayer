@@ -57,12 +57,11 @@ extension DetailView {
                     }
                     
                     VStack(alignment: .leading) {
-                        let html = item.media?.metadata.description ?? "No description..."
-                        
-                        Text(TextHelper.parseHTML(html))
-                            .lineLimit(3)
-                            .padding(.bottom)
-                            .font(.subheadline)
+                        if let html = item.media?.metadata.description {
+                            LineLimitView(text: TextHelper.parseHTML(html), title: item.title, limit: 3)
+                                .padding(.bottom)
+                                .font(.subheadline)
+                        }
                         
                         HStack {
                             let explict = item.media?.metadata.explicit ?? false
@@ -114,7 +113,6 @@ extension DetailView {
                 
                 Spacer()
             }
-            .navigationTitle(item.title)
             .frame(maxWidth: .infinity)
             .onAppear {
                 Task.detached {
