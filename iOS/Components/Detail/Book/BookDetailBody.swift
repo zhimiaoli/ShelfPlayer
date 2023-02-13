@@ -17,7 +17,8 @@ extension DetailView {
                 VStack(alignment: .leading) {
                     if let description = viewModel.item.media?.metadata.description {
                         Text("Description")
-                            .font(.system(.headline, design: .serif))
+                            .font(.headline)
+                            .fontDesign(.serif)
                             .padding(.bottom, 7)
                         Text(description)
                         

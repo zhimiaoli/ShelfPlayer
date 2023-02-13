@@ -12,7 +12,7 @@ struct PlayNowButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(.body, design: .serif))
+            .fontDesign(.serif)
             .fontWeight(.bold)
             .padding(.vertical, 12)
             .padding(.horizontal, 30)

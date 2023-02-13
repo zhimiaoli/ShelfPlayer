@@ -22,7 +22,7 @@ struct ItemRowContainer<Content: View>: View {
                 if let title = title {
                     Group {
                         let text = Text(title)
-                            .font(.system(.body, design: .serif))
+                            .fontDesign(.serif)
                             .dynamicTypeSize(.xxLarge)
                         
                         Group {

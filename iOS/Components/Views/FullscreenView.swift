@@ -38,6 +38,7 @@ struct FullscreenView<Content: View, Menu: View>: View {
             .navigationTitle(viewModel.isNavigationBarVisible ? viewModel.title : !viewModel.animateNavigationBarChanges ? "_______________________________" : "")
             
             // Toolbar
+            .toolbarRole(.editor)
             .toolbarBackground(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

@@ -41,6 +41,7 @@ extension DetailView {
                 .foregroundColor(.primaryTransparent)
                 .bold()
                 .font(.system(.subheadline).smallCaps())
+                .fontDesign(.rounded)
                 
                 Text(episode.title ?? "?")
                     .font(.headline)

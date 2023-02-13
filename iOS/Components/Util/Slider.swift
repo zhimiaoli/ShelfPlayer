@@ -15,6 +15,7 @@ struct Slider: View {
     
     var body: some View {
         GeometryReader { geometry in
+            
             ZStack(alignment: .leading) {
                 Rectangle()
                     .foregroundColor(.gray.opacity(0.5) )

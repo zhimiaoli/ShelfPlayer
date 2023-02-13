@@ -15,7 +15,7 @@ struct DebugView: View {
     @State private var search: String = ""
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 Group {
                     Button {
@@ -83,7 +83,7 @@ struct DebugView: View {
                 
                 Text(PersistenceController.shared.getLoggedInUser()?.token ?? "Not logged in")
                     .textSelection(.enabled)
-                    .font(.system(.body, design: .monospaced))
+                    .fontDesign(.monospaced)
                 
                 ForEach(cachedMediaProgresses.filter { progress in
                     if search == "" {

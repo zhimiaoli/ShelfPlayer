@@ -15,8 +15,10 @@ extension DetailView {
         @State var sort: (EpisodeSort, Bool) = (FilterHelper.defaultSortOrder, FilterHelper.defaultInvert)
         @State var filter: EpisodeFilter = FilterHelper.defaultFilter
         
-        @State private var activeSeason: String?
-        @State private var seasons = [String]()
+        @State var query: String = ""
+        
+        @State var activeSeason: String?
+        @State var seasons = [String]()
         
         var fallback: some View {
             Text("No episodes")
@@ -50,6 +52,9 @@ extension DetailView {
                     ScrollView {
                         LazyVStack(alignment: .leading) {
                             let filtered = FilterHelper.filterEpisodes(FilterHelper.sortEpisodes(episodes.filter { episode in
+                                if query != "" && !(episode.title ?? "").localizedStandardContains(query) {
+                                    return false
+                                }
                                 if activeSeason == nil {
                                     return true
                                 }
@@ -80,12 +85,14 @@ extension DetailView {
                                 .frame(maxWidth: .infinity)
                             }
                         }
+                        .contentTransition(ContentTransition.interpolate)
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                 }
             }
             .navigationTitle("Episodes")
             .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $query, placement: .navigationBarDrawer)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Menu {

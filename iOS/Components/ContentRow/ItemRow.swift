@@ -15,7 +15,8 @@ struct ItemRow: View {
         VStack(alignment: .leading) {
             if let title = title {
                 Text(title)
-                    .font(.system(.headline, design: .serif))
+                    .font(.headline)
+                    .fontDesign(.serif)
                     .padding(.horizontal, 4)
             }
             

@@ -31,7 +31,8 @@ struct LoginView: View {
                         }
                 } else {
                     Text("Welcome")
-                        .font(.system(.title, design: .serif))
+                        .font(.title)
+                        .fontDesign(.serif)
                         .padding(.bottom, 3)
                     Text("To start using the app please login")
                     

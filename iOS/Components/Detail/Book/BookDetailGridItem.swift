@@ -21,7 +21,8 @@ extension DetailView {
                     .fontWeight(.bold)
                 Spacer()
                 Text("\(summary)")
-                    .font(.system(.title2, design: .serif))
+                    .font(.title2)
+                    .fontDesign(.serif)
                 Text("\(description)")
                     .font(.caption)
             }

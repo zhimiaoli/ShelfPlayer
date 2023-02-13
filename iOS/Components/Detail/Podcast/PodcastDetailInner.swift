@@ -101,6 +101,7 @@ extension DetailView {
                         }
                         .foregroundColor((backgroundIsLight ? Color.black : Color.white).opacity(0.7))
                         .font(.caption)
+                        .fontDesign(.rounded)
                     }
                     .padding()
                 }

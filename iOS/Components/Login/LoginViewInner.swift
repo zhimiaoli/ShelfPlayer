@@ -13,7 +13,7 @@ extension LoginView {
         @EnvironmentObject private var viewModel: LoginViewModel
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 Group {
                     switch viewModel.currentState {
                     case .server:

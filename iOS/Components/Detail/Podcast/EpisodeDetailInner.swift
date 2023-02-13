@@ -52,6 +52,7 @@ extension DetailView {
                         }
                     }
                     .font(.caption)
+                    .fontDesign(.rounded)
                     .foregroundColor(.gray)
                     
                     Group {
@@ -109,6 +110,7 @@ extension DetailView {
                                     ListItem(title: "Channels", text: item.recentEpisode?.audioFile?.channelLayout ?? "?")
                                 }
                             }
+                            .fontDesign(.rounded)
                             .listStyle(.inset)
                             .frame(minHeight: minRowHeight * (item.recentEpisode?.seasonData.0 == nil ? 7 : 8), alignment: .topLeading)
                         } label: {

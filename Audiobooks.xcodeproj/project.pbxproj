@@ -103,7 +103,6 @@
 		3ADEBFEF293133A40047CE12 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFEE293133A40047CE12 /* DetailView.swift */; };
 		3ADEBFF42931FBF70047CE12 /* PlayNowButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFF32931FBF70047CE12 /* PlayNowButtonStyle.swift */; };
 		3ADEBFF62931FC140047CE12 /* SecondaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFF52931FC140047CE12 /* SecondaryButtonStyle.swift */; };
-		3ADEBFF82931FC5E0047CE12 /* GestureSwipeRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFF72931FC5E0047CE12 /* GestureSwipeRight.swift */; };
 		3ADEBFFA2931FC800047CE12 /* View+BecomingVisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFF92931FC800047CE12 /* View+BecomingVisible.swift */; };
 		3ADEBFFC2931FCB30047CE12 /* BookDetailGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFFB2931FCB30047CE12 /* BookDetailGridItem.swift */; };
 		3ADEC0002931FD9D0047CE12 /* BookDetailInner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEBFFF2931FD9D0047CE12 /* BookDetailInner.swift */; };
@@ -218,7 +217,6 @@
 		3ADEBFEE293133A40047CE12 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		3ADEBFF32931FBF70047CE12 /* PlayNowButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayNowButtonStyle.swift; sourceTree = "<group>"; };
 		3ADEBFF52931FC140047CE12 /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
-		3ADEBFF72931FC5E0047CE12 /* GestureSwipeRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureSwipeRight.swift; sourceTree = "<group>"; };
 		3ADEBFF92931FC800047CE12 /* View+BecomingVisible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+BecomingVisible.swift"; sourceTree = "<group>"; };
 		3ADEBFFB2931FCB30047CE12 /* BookDetailGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailGridItem.swift; sourceTree = "<group>"; };
 		3ADEBFFF2931FD9D0047CE12 /* BookDetailInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailInner.swift; sourceTree = "<group>"; };
@@ -525,7 +523,6 @@
 			children = (
 				3A5016552985444400BB2C74 /* Items */,
 				3AB97F25291FB8F000E07DB5 /* ButtonStyles */,
-				3ADEBFF72931FC5E0047CE12 /* GestureSwipeRight.swift */,
 				3A50164F2985208700BB2C74 /* Slider.swift */,
 				3A5016562985445A00BB2C74 /* LibraryPicker.swift */,
 				3A9DE5992986D78B00567488 /* FilterSelector.swift */,
@@ -778,7 +775,6 @@
 				3AC75B66292FE6DD0057A250 /* ProgressIndicator.swift in Sources */,
 				3AF6175129900E4800789BBE /* Date+Delta.swift in Sources */,
 				3AC7E042298FC20000BA35A1 /* OfflineItemImage.swift in Sources */,
-				3ADEBFF82931FC5E0047CE12 /* GestureSwipeRight.swift in Sources */,
 				3A8E5FC52999190C00E6F13C /* CachedmediaPorgress+JSON.swift in Sources */,
 				3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */,
 				3A50162C29841E8500BB2C74 /* SeriesView.swift in Sources */,

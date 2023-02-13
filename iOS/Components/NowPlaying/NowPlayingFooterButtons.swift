@@ -76,7 +76,7 @@ struct NowPlayingFooterButtons: View {
             }
             .frame(width: 75)
         }
-        .font(.system(.body, design: .rounded))
+        .fontDesign(.rounded)
         .bold()
         .foregroundColor(.primaryTransparent)
         .tint(.pink)

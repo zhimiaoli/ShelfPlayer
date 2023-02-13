@@ -64,7 +64,8 @@ struct ItemRowItem: View {
                 
                 HStack {
                     Text(verbatim: item.title)
-                        .font(.system(.caption, design: .serif))
+                        .font(.caption)
+                        .fontDesign(.serif)
                         .bold()
                         .tint(.primary)
                     
