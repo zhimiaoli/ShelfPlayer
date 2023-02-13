@@ -10,3 +10,9 @@
 - isLocal computed property ?? false
 - auto download episodes
 - notifications
+
+### I just want to put this here
+
+// So for some reason this does not work for a few milliseconds...
+// WHY?
+// .toolbarBackground(viewModel.animateNavigationBarChanges ? Color(viewModel.backgroundColor) : .pink, for: .navigationBar)

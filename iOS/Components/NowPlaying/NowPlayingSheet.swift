@@ -37,6 +37,7 @@ extension NowPlayingWrapper {
                                         }
                                     }
                                     .font(.caption2)
+                                    .fontDesign(.rounded)
                                 }
                             }
                             

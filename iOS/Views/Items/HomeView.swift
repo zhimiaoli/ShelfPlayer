@@ -40,6 +40,7 @@ struct HomeView: View {
                             ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .small : row.id == "continue-listening" && row.entities.count == 1 ? .large : .normal) {
                                 ItemRow(content: row.entities)
                             }
+                            .id(row.id)
                             
                             if row.id == "continue-series" {
                                 NavigationLink(destination: SeriesView()) {

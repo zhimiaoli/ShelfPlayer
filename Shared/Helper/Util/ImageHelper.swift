@@ -24,4 +24,12 @@ struct ImageHelper {
         
         return (UIColor.secondarySystemBackground, UIColor.secondarySystemBackground.isLight() ?? false)
     }
+    
+    public static func setUseBackgroundImage(_ use: Bool, podcastId: String) {
+        PersistenceController.shared.setKey("podcast.\(podcastId).useBackgroundImage", value: use.description)
+    }
+    public static func getUseBackgroundImage(podcastId: String) -> Bool {
+        let value: String = PersistenceController.shared.getValue(key: "podcast.\(podcastId).useBackgroundImage") ?? "false"
+        return Bool(value) ?? false
+    }
 }

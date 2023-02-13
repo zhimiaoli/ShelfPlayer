@@ -11,14 +11,21 @@ extension DetailView {
     /// Detail view for books
     struct BookDetailInner: View {
         @StateObject var viewModel: ViewModel
-        @EnvironmentObject var fullscreenViewModel: FullscrenViewViewModel
+        @StateObject var fullscreenViewModel: FullscrenViewViewModel
+        
+        init(viewModel: ViewModel) {
+            _viewModel = StateObject(wrappedValue: viewModel)
+            _fullscreenViewModel = StateObject(wrappedValue: FullscrenViewViewModel(title: viewModel.item.title))
+        }
         
         var body: some View {
-            Group {
+            FullscreenView(header: {
                 BookDetailHeader()
+            }, content: {
                 BookDetailBody()
-            }
-            .onAppear {
+            }, background: {
+                Color(fullscreenViewModel.backgroundColor)
+            }).onAppear {
                 Task.detached {
                     let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)
                     await viewModel.getMoreBooksFromSeries()
@@ -30,6 +37,7 @@ extension DetailView {
                 }
             }
             .environmentObject(viewModel)
+            .environmentObject(fullscreenViewModel)
         }
     }
 }

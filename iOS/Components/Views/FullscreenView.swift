@@ -7,59 +7,90 @@
 
 import SwiftUI
 
-struct FullscreenView<Content: View, Menu: View>: View {
-    @StateObject var viewModel: FullscrenViewViewModel
+/// Reworked using native apis. Its pretty bad now. Thanks apple
+struct FullscreenView<Header: View, Content: View, Background: View>: View {
+    var header: Header
+    var content: Content
+    var background: Background
+    var menu: Menu?
     
-    @ViewBuilder var content: Content
-    @ViewBuilder var menu: Menu
+    init(header: () -> Header, content: () -> Content, background: () -> Background, menu: (() -> Menu)? = nil) {
+        self.header = header()
+        self.content = content()
+        self.background = background()
+        self.menu = menu?()
+    }
+    
+    typealias Menu = AnyView
+    @EnvironmentObject var viewModel: FullscrenViewViewModel
     
     var body: some View {
         GeometryReader { reader in
             ScrollView(showsIndicators: false) {
                 VStack() {
-                    content
-                }.background(
-                    GeometryReader { proxy -> Color in
-                        let offset = -proxy.frame(in: .named("scroll")).origin.y - 59
-                        
-                        DispatchQueue.main.async {
-                            if viewModel.changeScrollViewBackground && offset > 0 {
-                                viewModel.changeScrollViewBackground = false
-                            } else if !viewModel.changeScrollViewBackground && offset < 0 {
-                                viewModel.changeScrollViewBackground = true
+                    header
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .animation(.easeInOut, value: viewModel.backgroundColor)
+                        .background {
+                            GeometryReader { proxy in
+                                let height = proxy.size.height
+                                let minY = proxy.frame(in: .global).minY
+                                
+                                background
+                                    .animation(.easeInOut, value: viewModel.backgroundColor)
+                                    .offset(y: -minY)
+                                    .frame(width: proxy.size.width, height: height + (abs(minY) < height ? minY : -height))
+                                    .onChange(of: proxy.frame(in: .global)) { _ in
+                                        if height + minY < 175 {
+                                            viewModel.showNavigationBar()
+                                        } else if abs(minY) > 0 && !viewModel.navigationBarHasBeenHidden {
+                                            viewModel.navigationBarHasBeenHidden = true
+                                            viewModel.showNavigationBar()
+                                            
+                                            // This is required because whoever implemented the toolbarBackground modifier did a terrible job. It
+                                            // A) it requires the programm to wait for a few millis before working (here at least) and
+                                            // B) ignores .hidden when the user scrolls down for the first time...
+                                            // WHY?
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                                viewModel.hideNavigationBar()
+                                            }
+                                        } else {
+                                            viewModel.hideNavigationBar()
+                                        }
+                                    }
+                                    .onAppear {
+                                        viewModel.mainContentMinHeight = reader.size.height - proxy.size.height
+                                    }
                             }
                         }
-                        return Color(uiColor: UIColor.systemBackground)
-                    })
+                    
+                    content
+                        .frame(maxWidth: .infinity, minHeight: viewModel.mainContentMinHeight, alignment: .top)
+                        .background(Color(UIColor.systemBackground))
+                        .padding(.top, -10)
+                }
             }
+            // Toolbar
+            .toolbar {
+                if let menu = menu {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        menu
+                    }
+                }
+            }
+            .toolbarBackground(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
+            
             // Navigation bar
             .edgesIgnoringSafeArea(.top)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.isNavigationBarVisible ? viewModel.title : !viewModel.animateNavigationBarChanges ? "_______________________________" : "")
-            
-            // Toolbar
-            .toolbarRole(.editor)
-            .toolbarBackground(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    menu
-                }
-            }
-            
-            // Background color
-            .coordinateSpace(name: "scroll")
-            .background(viewModel.changeScrollViewBackground ? Color(viewModel.backgroundColor) : Color.clear)
-            .animation(.easeInOut, value: viewModel.backgroundColor)
+            .navigationTitle(viewModel.isNavigationBarVisible ? viewModel.title : !viewModel.animateNavigationBarChanges ? "________________________________" : "")
             
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     viewModel.animateNavigationBarChanges = true
                 }
-                
-                viewModel.mainContentMinHeight = reader.size.height - 300
             }
         }
-        .environmentObject(viewModel)
     }
 }
 
@@ -69,8 +100,8 @@ class FullscrenViewViewModel: ObservableObject {
     @Published var isNavigationBarVisible: Bool = false
     @Published var animateNavigationBarChanges: Bool = false
     
-    @Published var changeScrollViewBackground: Bool = false
     @Published var mainContentMinHeight: CGFloat = 400
+    @Published var navigationBarHasBeenHidden: Bool = false
     
     @Published var backgroundColor = UIColor.secondarySystemBackground
     

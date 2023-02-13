@@ -112,7 +112,7 @@ struct FilterHelper {
         }
     }
     public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], sortOrder: EpisodeSort, invert: Bool) -> [LibraryItem.PodcastEpisode] {
-        let episodes = episodes.sorted {
+        episodes.sorted {
             var result = false
             
             if sortOrder == .date {
@@ -135,9 +135,6 @@ struct FilterHelper {
                 return result
             }
         }
-        
-        print(episodes)
-        return episodes
     }
     public static func sortEpisodes(_ episodes: [LibraryItem.PodcastEpisode], _ sort: (EpisodeSort, Bool)) -> [LibraryItem.PodcastEpisode] {
         sortEpisodes(episodes, sortOrder: sort.0, invert: sort.1)

@@ -11,21 +11,21 @@ extension DetailView {
     struct EpisodeDetailInner: View {
         let item: LibraryItem
         
-        @EnvironmentObject private var fullscreenViewModel: FullscrenViewViewModel
+        @StateObject private var fullscreenViewModel: FullscrenViewViewModel
+        
+        init(item: LibraryItem) {
+            _fullscreenViewModel = StateObject(wrappedValue: FullscrenViewViewModel(title: item.title))
+            self.item = item
+        }
+        
         @Environment(\.defaultMinListRowHeight) var minRowHeight
         @Environment(\.colorScheme) var colorScheme
         
         var body: some View {
-            VStack {
+            FullscreenView(header: {
                 VStack {
                     ItemImage(item: item, size: 165)
                         .padding(.top, 150)
-                        .onBecomingVisible {
-                            fullscreenViewModel.hideNavigationBar()
-                        }
-                        .onBecomingInvisible {
-                            fullscreenViewModel.showNavigationBar()
-                        }
                     
                     HStack {
                         if let publishedAt = item.recentEpisode?.publishedAt {
@@ -80,12 +80,7 @@ extension DetailView {
                     ItemButtons(item: item, colorScheme: colorScheme)
                         .padding(.bottom, 25)
                 }
-                .frame(maxWidth: .infinity)
-                .background {
-                    // It is not possible to animate this
-                    LinearGradient(colors: [Color(fullscreenViewModel.backgroundColor), Color(UIColor.secondarySystemBackground)], startPoint: .top, endPoint: .bottom)
-                }
-                
+            }, content: {
                 VStack(alignment: .leading) {
                     if let html = item.recentEpisode?.description {
                         Text(TextHelper.parseHTML(html))
@@ -123,8 +118,9 @@ extension DetailView {
                     }
                 }
                 .padding()
-                .frame(maxWidth: .infinity, minHeight: fullscreenViewModel.mainContentMinHeight, alignment: .topLeading)
-            }
+            }, background: {
+                LinearGradient(colors: [Color(fullscreenViewModel.backgroundColor), Color(UIColor.secondarySystemBackground)], startPoint: .top, endPoint: .bottom)
+            })
             .onAppear {
                 Task.detached {
                     let backgroundColor = await ImageHelper.getAverageColor(item: item).0.withAlphaComponent(0.7)
@@ -134,6 +130,7 @@ extension DetailView {
                     }
                 }
             }
+            .environmentObject(fullscreenViewModel)
         }
     }
     

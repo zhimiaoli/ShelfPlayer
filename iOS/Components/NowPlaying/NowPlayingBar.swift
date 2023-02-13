@@ -60,6 +60,7 @@ extension NowPlayingWrapper {
             .frame(maxWidth: .infinity)
             .frame(height: 65)
             .background(.regularMaterial)
+            .toolbarBackground(.regularMaterial, for: ToolbarPlacement.tabBar)
             .onReceive(NSNotification.PlayerStateChanged, perform: { _ in
                 playing = PlayerHelper.audioPlayer?.isPlaying() ?? false
             })

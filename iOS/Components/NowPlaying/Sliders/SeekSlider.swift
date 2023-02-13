@@ -64,8 +64,10 @@ struct SeekSlider: View {
                 .frame(width: 45)
                 .padding(.trailing, -5)
         }
+        .fontDesign(.rounded)
         .frame(height: 30)
         .padding(.top, seekSliderDragging ? -7 : -10)
+        .padding(.bottom, seekSliderDragging ? -7 : -10)
         .animation(.easeInOut, value: seekSliderDragging)
         .foregroundColor(.primaryTransparent)
         .onReceive(timer) { _ in

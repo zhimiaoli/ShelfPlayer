@@ -62,7 +62,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Libraries")
                 } footer: {
-                    Text("This filter will be applied by default")
+                    Text("This sort order will be applied by default")
                 }
                 
                 Section {

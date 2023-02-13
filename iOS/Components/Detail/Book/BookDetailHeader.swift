@@ -18,12 +18,6 @@ extension DetailView {
             VStack {
                 ItemImage(item: viewModel.item, size: 300)
                     .shadow(radius: 10)
-                    .onBecomingVisible {
-                        fullscreenViewModel.hideNavigationBar()
-                    }
-                    .onBecomingInvisible {
-                        fullscreenViewModel.showNavigationBar()
-                    }
                 
                 VStack {
                     Text(viewModel.item.title)
@@ -39,9 +33,6 @@ extension DetailView {
                 .animation(.easeInOut, value: viewModel.backgroundIsLight)
             }
             .padding(.top, 100)
-            .frame(maxWidth: .infinity, alignment: .top)
-            .background(Color(fullscreenViewModel.backgroundColor))
-            .animation(.easeInOut, value: fullscreenViewModel.backgroundColor)
         }
     }
 }
