@@ -14,7 +14,7 @@ extension DetailView {
         
         init(item: LibraryItem) {
             _fullscreenViewModel = StateObject(wrappedValue: FullscrenViewViewModel(title: item.title))
-            useBackgroundImage = ImageHelper.getUseBackgroundImage(podcastId: item.id)
+            useBackgroundImage = item.getUseBackgroundImage()
             
             self.item = item
         }
@@ -34,6 +34,7 @@ extension DetailView {
                             .padding(.top, 100)
                     }
                     
+                    Spacer()
                     VStack {
                         VStack {
                             Text(item.title)
@@ -139,7 +140,7 @@ extension DetailView {
             })
             .onAppear {
                 Task.detached {
-                    let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: item)
+                    let (backgroundColor, backgroundIsLight) = await item.getAverageColor()
                     
                     DispatchQueue.main.async {
                         fullscreenViewModel.backgroundColor = backgroundColor
@@ -148,7 +149,7 @@ extension DetailView {
                 }
             }
             .onReceive(NSNotification.PodcastSettingsUpdated) { _ in
-                useBackgroundImage = ImageHelper.getUseBackgroundImage(podcastId: item.id)
+                useBackgroundImage = item.getUseBackgroundImage()
             }
             .environmentObject(fullscreenViewModel)
         }

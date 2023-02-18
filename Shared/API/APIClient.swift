@@ -37,9 +37,10 @@ class APIClient {
         return try JSONDecoder().decode(T.self, from: data)
     }
     func request(_ resource: APIRequestEmpty) async throws {
-        let _ = try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
+        try await _request(path: resource.path, method: resource.method, query: resource.query, body: resource.body)
     }
     
+    @discardableResult
     private func _request(path: String, method: String, query: [URLQueryItem]?, body: Any?) async throws -> Data {
         var url = baseUrl.appending(path: path)
         if let query = query {

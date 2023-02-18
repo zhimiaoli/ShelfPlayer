@@ -33,7 +33,7 @@ struct NowPlayingWrapper<Content: View>: View {
         .onChange(of: globalViewModel.currentlyPlaying) { item in
             if globalViewModel.showNowPlayingBar {
                 Task.detached {
-                    let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: globalViewModel.currentlyPlaying!)
+                    let (backgroundColor, backgroundIsLight) = await globalViewModel.currentlyPlaying!.getAverageColor()
                     
                     DispatchQueue.main.async {
                         withAnimation {

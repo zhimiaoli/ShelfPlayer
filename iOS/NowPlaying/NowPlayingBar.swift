@@ -64,10 +64,6 @@ extension NowPlayingWrapper {
             .onReceive(NSNotification.PlayerStateChanged, perform: { _ in
                 playing = PlayerHelper.audioPlayer?.isPlaying() ?? false
             })
-            .contextMenu {
-                Text("Hello")
-                Text("i have no idea what i should put here")
-            }
         }
     }
 }

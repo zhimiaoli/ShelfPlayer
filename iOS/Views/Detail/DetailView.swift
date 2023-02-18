@@ -21,7 +21,7 @@ struct DetailView: View {
                 BookDetailInner(viewModel: ViewModel(item: item))
             } else if item.isPodcast {
                 if item.hasEpisode {
-                    EpisodeDetailInner(item: item)
+                    EpisodeDetailView(item: item)
                 } else if item.media?.episodes != nil {
                     PodcastDetailInner(item: item)
                         .id(item.id)

@@ -18,13 +18,9 @@ extension LocalItem {
             isLocal: true
         )
         
-        if episodeId == nil {
-            let media = LibraryItem.LibraryItemMedia(metdata: LibraryItem.LibraryItemMetadata(description: descriptionText))
-            item.media = media
-        } else {
-            let epeisode = LibraryItem.PodcastEpisode(id: episodeId, libraryItemId: itemId, title: episodeTitle, description: episodeDescription)
-            item.recentEpisode = epeisode
-            item.recentEpisode?.duration = duration
+        if episodeId != nil {
+            let episode = LibraryItem.PodcastEpisode(id: episodeId, libraryItemId: itemId, title: episodeTitle, description: episodeDescription, duration: duration)
+            item.recentEpisode = episode
         }
         
         return item

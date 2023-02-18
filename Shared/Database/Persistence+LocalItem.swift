@@ -112,7 +112,7 @@ extension PersistenceController {
         
         return []
     }
-    public func getLocalItem(itemId: String, episodeId: String?) -> LocalItem? {
+    public func getLocalItem(itemId: String, episodeId: String?, verify: Bool = true) -> LocalItem? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "LocalItem")
         fetchRequest.fetchLimit = 1
         
@@ -126,7 +126,9 @@ extension PersistenceController {
         }
         
         if let entities = try? PersistenceController.shared.container.viewContext.fetch(fetchRequest) as? [LocalItem], let first = entities.first {
-            first.verify()
+            if verify {
+                first.verify()
+            }
             return first
         }
         
@@ -161,13 +163,13 @@ extension PersistenceController {
         let _ = try! container.viewContext.execute(deleteRequest)
     }
     public func setLocalConflict(itemId: String, episodeId: String?) {
-        let item = getLocalItem(itemId: itemId, episodeId: episodeId)
+        let item = getLocalItem(itemId: itemId, episodeId: episodeId, verify: false)
         
         item?.hasConflict = true
         try! container.viewContext.save()
     }
     public func setDownloadStatus(itemId: String, episodeId: String?, downloaded: Bool) {
-        let item = getLocalItem(itemId: itemId, episodeId: episodeId)
+        let item = getLocalItem(itemId: itemId, episodeId: episodeId, verify: false)
         
         item?.isDownloaded = downloaded
         try! container.viewContext.save()

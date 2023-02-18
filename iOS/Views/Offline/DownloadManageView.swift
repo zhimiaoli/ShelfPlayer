@@ -25,9 +25,9 @@ struct DownloadsManageView: View {
                 
                 ForEach(books) { localItem in
                     if detailed {
-                        LargeOfflineItem(item: localItem)
+                        DownloadLargeItem(item: localItem)
                     } else {
-                        SmallOfflineItem(item: localItem)
+                        DownloadSmallItem(item: localItem)
                     }
                 }
             } header: {
@@ -38,9 +38,9 @@ struct DownloadsManageView: View {
                 Section {
                     ForEach(podcast.value) { localItem in
                         if detailed {
-                            LargeOfflineItem(item: localItem)
+                            DownloadLargeItem(item: localItem)
                         } else {
-                            SmallOfflineItem(item: localItem)
+                            DownloadSmallItem(item: localItem)
                         }
                     }
                 } header: {

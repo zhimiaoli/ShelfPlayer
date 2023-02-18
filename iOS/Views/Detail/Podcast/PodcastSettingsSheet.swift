@@ -16,7 +16,7 @@ struct PodcastSettingsSheet: View {
         self.selectedFilter = FilterHelper.getDefaultFilter(podcastId: item.id)
         (self.selectedSortOrder, self.sortInvert) = FilterHelper.getDefaultSortOrder(podcastId: item.id)
         
-        self.useBackgroundImage = ImageHelper.getUseBackgroundImage(podcastId: item.id)
+        self.useBackgroundImage = item.getUseBackgroundImage()
     }
     
     @State var sheetPresented: Bool = false
@@ -51,7 +51,7 @@ struct PodcastSettingsSheet: View {
                             
                             Toggle("Background image", isOn: $useBackgroundImage)
                                 .onChange(of: useBackgroundImage) { use in
-                                    ImageHelper.setUseBackgroundImage(use, podcastId: item.id)
+                                    item.setUseBackgroundImage(use)
                                     broadcastUpdate()
                                 }
                         }

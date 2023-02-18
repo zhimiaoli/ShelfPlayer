@@ -27,7 +27,7 @@ extension DetailView {
                 Color(fullscreenViewModel.backgroundColor)
             }).onAppear {
                 Task.detached {
-                    let (backgroundColor, backgroundIsLight) = await ImageHelper.getAverageColor(item: viewModel.item)
+                    let (backgroundColor, backgroundIsLight) = await viewModel.item.getAverageColor()
                     await viewModel.getMoreBooksFromSeries()
                     
                     DispatchQueue.main.async {

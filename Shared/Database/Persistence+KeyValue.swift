@@ -12,7 +12,6 @@ extension PersistenceController {
     func getValue(key: String) -> String? {
         getKeyValue(key)?.value
     }
-    
     func setKey(_ key: String, value: String) {
         let keyValue = getKeyValue(key) ?? KeyValue(context: container.viewContext)
         
@@ -29,7 +28,6 @@ extension PersistenceController {
         
         let _ = try! container.viewContext.execute(deleteRequest)
     }
-    
     func flushKeyValueStorage() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "KeyValue")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -49,5 +47,12 @@ extension PersistenceController {
         } catch {
             return nil
         }
+    }
+}
+
+extension PersistenceController {
+    func getBoolValue(key: String, defaultValue: Bool) -> Bool {
+        let value: String = PersistenceController.shared.getValue(key: key) ?? defaultValue.description
+        return Bool(value) ?? defaultValue
     }
 }

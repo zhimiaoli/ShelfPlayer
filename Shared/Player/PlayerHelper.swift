@@ -76,7 +76,7 @@ struct PlayerHelper {
                 } else {
                     MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
                 }
-            } else if let item = PersistenceController.shared.getLocalItem(itemId: itemId, episodeId: episodeId) {
+            } else if let item = PersistenceController.shared.getLocalItem(itemId: itemId, episodeId: episodeId, verify: false) {
                 nowPlayingInfo[MPMediaItemPropertyTitle] = item.title
                 nowPlayingInfo[MPMediaItemPropertyArtist] = item.author
                 

@@ -53,6 +53,24 @@ extension PersistenceController {
             }
         }
     }
+    public func syncEntities() {
+        getUpdatedEntities().forEach { updatedProgress in
+            Task {
+                do {
+                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite || updatedProgress.currentTime == 0) {
+                        NSLog("Found updated progress \(updatedProgress.id ?? "?") \(updatedProgress.progress) \(updatedProgress.duration)")
+                        try await APIClient.authorizedShared.request(APIResources.session.local(updatedProgress))
+                        
+                        updatedProgress.localUpdate = false
+                        try container.viewContext.save()
+                    }
+                } catch {
+                    NSLog("Failed to sync entities")
+                    print(error)
+                }
+            }
+        }
+    }
     public func deleteAllCachedSessions() throws {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CachedMediaProgress")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -69,24 +87,6 @@ extension PersistenceController {
         }
         
         return []
-    }
-    public func syncEntities() {
-        getUpdatedEntities().forEach { updatedProgress in
-            Task {
-                do {
-                    if !(updatedProgress.currentTime.isNaN || updatedProgress.currentTime.isInfinite || updatedProgress.progress.isNaN || updatedProgress.progress.isInfinite) {
-                        NSLog("Found updated progress \(updatedProgress.id ?? "?") \(updatedProgress.progress) \(updatedProgress.duration)")
-                        try await APIClient.authorizedShared.request(APIResources.session.local(updatedProgress))
-                        
-                        updatedProgress.localUpdate = false
-                        try container.viewContext.save()
-                    }
-                } catch {
-                    NSLog("Failed to sync entities")
-                    print(error)
-                }
-            }
-        }
     }
     
     // MARK: - Progress

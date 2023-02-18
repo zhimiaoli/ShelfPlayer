@@ -52,9 +52,9 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             return
         }
         
-        downloading[id]? += 1
+        downloading[id]! += 1
         
-        let localItem = PersistenceController.shared.getLocalItem(itemId: itemId, episodeId: episodeid)!
+        let localItem = PersistenceController.shared.getLocalItem(itemId: itemId, episodeId: episodeid, verify: false)!
         
         do {
             let directoryURL = documentsURL.appending(path: id)
@@ -69,7 +69,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         }
         PersistenceController.shared.markTrackAsDownloaded(downloadTask.taskIdentifier)
         
-        if downloading[id] ?? 0 == localItem.numFiles {
+        if downloading[id]! == localItem.numFiles {
             downloading[id] = nil
             localItem.isDownloaded = true
             try! PersistenceController.shared.container.viewContext.save()

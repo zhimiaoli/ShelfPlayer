@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SmallOfflineItem: View {
+struct DownloadSmallItem: View {
     let item: LocalItem
     
     @EnvironmentObject private var globalViewModel: GlobalViewModel

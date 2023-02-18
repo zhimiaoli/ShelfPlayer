@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LargeOfflineItem: View {
+struct DownloadLargeItem: View {
     let item: LocalItem
 
     var body: some View {

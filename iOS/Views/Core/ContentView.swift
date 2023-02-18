@@ -39,7 +39,7 @@ struct ContentView: View {
         }
         .environmentObject(globalViewModel)
         .onReceive(NSNotification.PlayerFinished, perform: { _ in
-            if DownloadHelper.getDeleteDownloadsWhenFinished() {
+            if DownloadHelper.getDeleteDownloadsWhenFinished() && PersistenceController.shared.getLocalItem(itemId: globalViewModel.currentlyPlaying!.id, episodeId: globalViewModel.currentlyPlaying?.recentEpisode?.id) != nil {
                 DownloadHelper.deleteDownload(itemId: globalViewModel.currentlyPlaying!.id, episodeId: globalViewModel.currentlyPlaying?.recentEpisode?.id)
             }
             
