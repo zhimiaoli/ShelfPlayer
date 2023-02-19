@@ -10,7 +10,7 @@ import SwiftUI
 /// Manages wich login form is presented to the user
 extension LoginView {
     struct LoginViewInner: View {
-        @EnvironmentObject private var viewModel: LoginViewModel
+        @EnvironmentObject var viewModel: LoginViewModel
         
         var body: some View {
             NavigationStack {

@@ -9,17 +9,16 @@ import SwiftUI
 
 extension NowPlayingWrapper {
     struct NowPlayingSheet: View {
-        @EnvironmentObject private var viewModel: ViewModel
-        @EnvironmentObject private var globalViewModel: GlobalViewModel
+        @EnvironmentObject var viewModel: ViewModel
+        @EnvironmentObject var globalViewModel: GlobalViewModel
         
         var body: some View {
             GeometryReader { proxy in
                 VStack {
                     ItemImage(item: globalViewModel.currentlyPlaying, size: proxy.size.width)
-                        .shadow(radius: 10)
-                        .padding(.vertical, 10)
-                    // this does not work
-                    // .matchedGeometryEffect(id: "image", in: namespace)
+                        .shadow(radius: 25)
+                        .padding(.top, 10)
+                        .padding(.bottom, 25)
                     
                     HStack {
                         VStack(alignment: .leading) {

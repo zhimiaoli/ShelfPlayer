@@ -10,7 +10,7 @@ import SwiftUI
 struct DownloadsManageView: View {
     var detailed: Bool
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     @State var books = [LocalItem]()
     @State var podcasts = [String: [LocalItem]]()

@@ -10,7 +10,7 @@ import SwiftUI
 struct GenreView: View {
     let genre: String
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         ItemGridView(getItems: {

@@ -9,7 +9,7 @@ import SwiftUI
 
 extension LoginView {
     struct LoginFlowCredentials: View {
-        @EnvironmentObject private var viewModel: LoginViewModel
+        @EnvironmentObject var viewModel: LoginViewModel
         
         var body: some View {
             VStack {

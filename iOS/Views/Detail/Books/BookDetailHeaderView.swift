@@ -10,9 +10,9 @@ import SwiftUI
 extension DetailView {
     /// Header for books containing the title, author and image of the item
     struct BookDetailHeader: View {
-        @EnvironmentObject private var viewModel: ViewModel
-        @EnvironmentObject private var globalViewModel: GlobalViewModel
-        @EnvironmentObject private var fullscreenViewModel: FullscrenViewViewModel
+        @EnvironmentObject var viewModel: ViewModel
+        @EnvironmentObject var globalViewModel: GlobalViewModel
+        @EnvironmentObject var fullscreenViewModel: FullscrenViewViewModel
         
         var body: some View {
             VStack {

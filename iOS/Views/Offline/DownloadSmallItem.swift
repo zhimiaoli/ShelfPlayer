@@ -10,7 +10,7 @@ import SwiftUI
 struct DownloadSmallItem: View {
     let item: LocalItem
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         Button {

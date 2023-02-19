@@ -12,7 +12,7 @@ extension DetailView {
         var episode: LibraryItem.PodcastEpisode
         var item: LibraryItem
         
-        @EnvironmentObject private var globalViewModel: GlobalViewModel
+        @EnvironmentObject var globalViewModel: GlobalViewModel
         
         var body: some View {
             VStack(alignment: .leading, spacing: 2) {

@@ -9,8 +9,8 @@ import SwiftUI
 
 /// Login flow root view
 struct LoginView: View {
-    @StateObject private var viewModel: LoginViewModel = LoginViewModel()
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @StateObject var viewModel: LoginViewModel = LoginViewModel()
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         Group {

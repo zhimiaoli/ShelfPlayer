@@ -10,9 +10,9 @@ import MarqueeText
 
 extension NowPlayingWrapper {
     struct NowPlayingBar: View {
-        @EnvironmentObject private var globalViewModel: GlobalViewModel
+        @EnvironmentObject var globalViewModel: GlobalViewModel
         
-        @State private var playing: Bool = PlayerHelper.audioPlayer?.isPlaying() ?? false
+        @State var playing: Bool = PlayerHelper.audioPlayer?.isPlaying() ?? false
         
         var body: some View {
             HStack(alignment: .center) {
@@ -31,12 +31,14 @@ extension NowPlayingWrapper {
                     if globalViewModel.currentlyPlaying!.isBook {
                         Button {
                             PlayerHelper.audioPlayer?.seek(to: PlayerHelper.audioPlayer!.getCurrentTime() - Double(PlayerHelper.getBackwardsSeekDuration()))
+                            Haptics.shared.play(.medium)
                         } label: {
                             Image(systemName: "gobackward.\(PlayerHelper.getBackwardsSeekDuration())")
                         }
                     }
                     Button {
-                        PlayerHelper.audioPlayer?.setPlaying(!(PlayerHelper.audioPlayer?.isPlaying() ?? false))
+                        PlayerHelper.audioPlayer?.setPlaying(!(PlayerHelper.audioPlayer?.isPlaying() ?? false), allowAdjustment: true)
+                        Haptics.shared.play(.heavy)
                     } label: {
                         if playing {
                             Image(systemName: "pause.fill")
@@ -48,6 +50,7 @@ extension NowPlayingWrapper {
                     if globalViewModel.currentlyPlaying!.isPodcast {
                         Button {
                             PlayerHelper.audioPlayer?.seek(to: PlayerHelper.audioPlayer!.getCurrentTime() + Double(PlayerHelper.getBackwardsSeekDuration()))
+                            Haptics.shared.play(.medium)
                         } label: {
                             Image(systemName: "goforward.\(PlayerHelper.getBackwardsSeekDuration())")
                         }

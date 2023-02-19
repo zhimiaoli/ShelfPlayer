@@ -13,8 +13,8 @@ struct LineLimitView: View {
     let title: String
     let limit: Int
     
-    @State private var isExpanded = false
-    @State private var canBeExpanded = false
+    @State var isExpanded = false
+    @State var canBeExpanded = false
     
     var body: some View {
         VStack {

@@ -10,8 +10,8 @@ import SwiftUI
 struct NowPlayingWrapper<Content: View>: View {
     @ViewBuilder var content: Content
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
-    @StateObject private var viewModel: ViewModel = ViewModel()
+    @EnvironmentObject var globalViewModel: GlobalViewModel
+    @StateObject var viewModel: ViewModel = ViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {

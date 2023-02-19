@@ -10,7 +10,7 @@ import SwiftUI
 struct ItemGrid: View {
     var content: [LibraryItem]
     
-    @State private var size: CGFloat = 0
+    @State var size: CGFloat = 0
     
     var body: some View {
         GeometryReader { reader in

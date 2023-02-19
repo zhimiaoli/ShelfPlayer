@@ -11,15 +11,15 @@ struct ItemButtons: View {
     var item: LibraryItem
     var colorScheme: ColorScheme
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     @Environment(\.scenePhase) var scenePhase
     
-    @State private var isDownloaded = false
-    @State private var isDownloading = false
-    @State private var hasConflict = false
-    @State private var progress: Float = 0
+    @State var isDownloaded = false
+    @State var isDownloading = false
+    @State var hasConflict = false
+    @State var progress: Float = 0
     
-    @State private var deleteDownloadAlertPresented: Bool = false
+    @State var deleteDownloadAlertPresented: Bool = false
     
     var body: some View {
         HStack {
@@ -31,6 +31,8 @@ struct ItemButtons: View {
                 } else {
                     globalViewModel.playItem(item: item)
                 }
+                
+                Haptics.shared.play(.medium)
             } label: {
                 Label(progress > 0 && progress < 1 ? "Resume" : "Listen now", systemImage: "play.fill")
             }
@@ -46,6 +48,8 @@ struct ItemButtons: View {
                         await DownloadHelper.downloadItem(item: item)
                     }
                 }
+                
+                Haptics.shared.play(.light)
             } label: {
                 if isDownloading {
                     ProgressView()
@@ -65,6 +69,8 @@ struct ItemButtons: View {
                         }
                     }
                 }
+                
+                Haptics.shared.play(.light)
             } label: {
                 Image(systemName: "checkmark")
             }

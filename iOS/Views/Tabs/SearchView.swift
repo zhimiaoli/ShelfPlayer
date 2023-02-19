@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SearchView: View {
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
-    @State private var query: String = ""
+    @State var query: String = ""
     
     var body: some View {
         ItemGridView(getItems: {

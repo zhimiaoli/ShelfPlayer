@@ -12,17 +12,17 @@ struct SeekSlider: View {
     
     let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
-    @State private var currentTime: Double = 0
-    @State private var duration: Double = 0
-    @State private var playedPercentage: Double = 0
-    @State private var chapter: PlayResponse.Chapter?
+    @State var currentTime: Double = 0
+    @State var duration: Double = 0
+    @State var playedPercentage: Double = 0
+    @State var chapter: PlayResponse.Chapter?
     
-    @State private var buffering: Bool = true
-    @State private var seekTarget: Double?
-    @State private var seekSliderDragging: Bool = false
-    @State private var useChapterView: Bool = PlayerHelper.getUseChapterView()
+    @State var buffering: Bool = true
+    @State var seekTarget: Double?
+    @State var seekSliderDragging: Bool = false
+    @State var useChapterView: Bool = PlayerHelper.getUseChapterView()
     
     var body: some View {
         HStack {

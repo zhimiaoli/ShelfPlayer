@@ -14,7 +14,7 @@ struct ItemRowContainer<Content: View>: View {
     @ViewBuilder var content: Content
     
     @Environment(\.colorScheme) var colorScheme
-    @State private var size: CGFloat = 175
+    @State var size: CGFloat = 175
     
     var body: some View {
         GeometryReader { reader in

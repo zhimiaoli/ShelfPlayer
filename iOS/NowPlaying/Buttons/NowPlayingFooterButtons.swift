@@ -9,9 +9,9 @@ import SwiftUI
 import AVKit
 
 struct NowPlayingFooterButtons: View {
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
-    @State private var currentSpeed = PlayerHelper.audioPlayer?.desiredPlaybackRate ?? 0
+    @State var currentSpeed = PlayerHelper.audioPlayer?.desiredPlaybackRate ?? 0
     
     var body: some View {
         HStack {

@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct NowPlayingButtons: View {
-    @State private var playing: Bool = PlayerHelper.audioPlayer?.isPlaying() ?? false
+    @State var playing: Bool = PlayerHelper.audioPlayer?.isPlaying() ?? false
     
     var body: some View {
         HStack {
             Button {
                 PlayerHelper.audioPlayer?.seek(to: PlayerHelper.audioPlayer!.getCurrentTime() - Double(PlayerHelper.getBackwardsSeekDuration()))
+                Haptics.shared.play(.medium)
             } label: {
                 Image(systemName: "gobackward.\(PlayerHelper.getBackwardsSeekDuration())")
                     .dynamicTypeSize(.xxxLarge)
@@ -21,7 +22,8 @@ struct NowPlayingButtons: View {
             }
             
             Button {
-                PlayerHelper.audioPlayer?.setPlaying(!playing)
+                PlayerHelper.audioPlayer?.setPlaying(!playing, allowAdjustment: true)
+                Haptics.shared.play(.heavy)
             } label: {
                 if playing {
                     Image(systemName: "pause.fill")
@@ -37,6 +39,7 @@ struct NowPlayingButtons: View {
             
             Button {
                 PlayerHelper.audioPlayer?.seek(to: PlayerHelper.audioPlayer!.getCurrentTime() + Double(PlayerHelper.getForwardsSeekDuration()))
+                Haptics.shared.play(.medium)
             } label: {
                 Image(systemName: "goforward.\(PlayerHelper.getForwardsSeekDuration())")
                     .dynamicTypeSize(.xxxLarge)
