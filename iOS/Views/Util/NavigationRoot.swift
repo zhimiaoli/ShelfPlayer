@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Main navigation controller. Only used when the user is logged in and online
 struct NavigationRoot: View {
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         TabView {

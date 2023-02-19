@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
-    @State private var sortOrder: ItemSort = .title
+    @State var sortOrder: ItemSort = .title
     
     var body: some View {
         ItemGridView(getItems: {

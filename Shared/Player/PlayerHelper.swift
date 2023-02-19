@@ -14,10 +14,10 @@ struct PlayerHelper {
         return 1.0
     }
     public static func getForwardsSeekDuration() -> Int {
-        return 15
+        return 30
     }
     public static func getBackwardsSeekDuration() -> Int {
-        return 15
+        return 30
     }
     
     public static func setUseChapterView(_ use: Bool) {

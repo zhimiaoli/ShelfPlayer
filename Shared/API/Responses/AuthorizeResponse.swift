@@ -7,7 +7,6 @@
 
 import Foundation
 
-// None of this classes are complete, there are a lot of values missing
 struct AuthorizeResponse: Codable {
     var user: ABSUser
     var userDefaultLibraryId: String

@@ -10,7 +10,7 @@ import SwiftUI
 extension DetailView {
     /// More books from the same series as the item
     struct BookDetailSeries: View {
-        @EnvironmentObject private var viewModel: ViewModel
+        @EnvironmentObject var viewModel: ViewModel
         
         var body: some View {
             if let moreBooksFromSeries = viewModel.moreBooksFromSeries {

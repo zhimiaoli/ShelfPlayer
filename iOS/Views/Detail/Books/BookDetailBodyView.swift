@@ -10,7 +10,7 @@ import SwiftUI
 extension DetailView {
     /// Main detail content view for books
     struct BookDetailBody: View {
-        @EnvironmentObject private var viewModel: ViewModel
+        @EnvironmentObject var viewModel: ViewModel
         
         var body: some View {
             VStack {

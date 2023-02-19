@@ -12,10 +12,10 @@ struct ItemRowItem: View {
     var size: CGFloat?
     var shadow: Bool = false
     
-    @State private var progressPercentage: Float = 0
-    @State private var actualSize: CGFloat = 175
+    @State var progressPercentage: Float = 0
+    @State var actualSize: CGFloat = 175
     
-    @Environment(\.itemRowItemWidth) private var enviromentSize
+    @Environment(\.itemRowItemWidth) var itemRowItemWidth
     
     var body: some View {
         NavigationLink(destination: DetailView(item: item)) {
@@ -94,7 +94,7 @@ struct ItemRowItem: View {
         }
         .onAppear {
             progressPercentage = PersistenceController.shared.getProgressByLibraryItem(item: item)
-            actualSize = size ?? enviromentSize.wrappedValue
+            actualSize = size ?? itemRowItemWidth.wrappedValue
         }
     }
 }

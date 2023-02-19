@@ -9,10 +9,10 @@ import SwiftUI
 
 /// View only used for debug purposes
 struct DebugView: View {
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.id, order: .reverse)]) private var cachedMediaProgresses: FetchedResults<CachedMediaProgress>
+    @EnvironmentObject var globalViewModel: GlobalViewModel
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.id, order: .reverse)]) var cachedMediaProgresses: FetchedResults<CachedMediaProgress>
     
-    @State private var search: String = ""
+    @State var search: String = ""
     
     var body: some View {
         NavigationStack {

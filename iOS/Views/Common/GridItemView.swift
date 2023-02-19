@@ -10,8 +10,8 @@ import SwiftUI
 struct ItemGridView: View {
     let getItems: @Sendable () async throws -> [LibraryItem]?
     
-    @State private var failed: Bool = false
-    @State private var items: [LibraryItem]?
+    @State var failed: Bool = false
+    @State var items: [LibraryItem]?
     
     var body: some View {
         Group {

@@ -10,7 +10,7 @@ import SwiftUI
 struct LibraryPicker: View {
     @State var libraries: [Library]?
     
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         if let libraries = libraries {

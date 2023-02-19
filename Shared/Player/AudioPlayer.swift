@@ -51,12 +51,15 @@ class AudioPlayer: NSObject {
         setupTimeObserver()
         
         PlayerHelper.setNowPlayingMetadata(itemId: itemId, episodeId: episodeId)
-        NotificationCenter.default.addObserver(self, selector: #selector(itemEnded), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleItemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
         
         updateQueueTracks(time: startTime, forceStart: true)
+        updateAudioSession(active: true)
     }
     public func destroy() {
         setPlaying(false)
+        updateAudioSession(active: false)
         
         player.removeAllItems()
         PlayerHelper.resetNowPlayingInfo()
@@ -92,11 +95,14 @@ class AudioPlayer: NSObject {
             player.rate = rate
         }
     }
-    public func setPlaying(_ playing: Bool) {
+    public func setPlaying(_ playing: Bool, allowAdjustment: Bool = false) {
         self.expectsToBePlaying = playing
         player.rate = isPlaying() ? 0 : desiredPlaybackRate
         
-        updateAudioSession(active: playing)
+        if allowAdjustment && playing {
+            seek(to: getCurrentTime() - 5)
+        }
+        
         sync()
         
         DispatchQueue.main.async {
@@ -130,7 +136,7 @@ class AudioPlayer: NSObject {
         let commandCenter = MPRemoteCommandCenter.shared()
         
         commandCenter.playCommand.addTarget { [unowned self] event in
-            setPlaying(true)
+            setPlaying(true, allowAdjustment: true)
             return .success
         }
         commandCenter.pauseCommand.addTarget { [unowned self] event in
@@ -138,7 +144,7 @@ class AudioPlayer: NSObject {
             return .success
         }
         commandCenter.togglePlayPauseCommand.addTarget { [unowned self] event in
-            setPlaying(!isPlaying())
+            setPlaying(!isPlaying(), allowAdjustment: true)
             return .success
         }
         
@@ -210,7 +216,7 @@ class AudioPlayer: NSObject {
         }
     }
     
-    @objc private func itemEnded() {
+    @objc private func handleItemDidPlayToEndTime() {
         if currentTrackIndex == audioTracks.last?.index ?? 0 {
             sync()
             NotificationCenter.default.post(name: NSNotification.PlayerFinished, object: nil)
@@ -218,6 +224,22 @@ class AudioPlayer: NSObject {
             // This *could* cause problems, but it *should* be fine
             currentTrackIndex += 1
             NSLog("Item / Track changed to index \(currentTrackIndex)")
+        }
+    }
+    @objc func handleInterruption(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+        
+        switch type {
+        case .ended:
+            guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+            
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                self.setPlaying(true, allowAdjustment: true)
+            }
+        default: ()
         }
     }
     

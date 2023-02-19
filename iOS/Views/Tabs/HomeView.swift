@@ -11,7 +11,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var globalViewModel: GlobalViewModel
     @Environment(\.colorScheme) var colorScheme
-    @State private var rows: [PersonalizedLibraryRow]?
+    @State var rows: [PersonalizedLibraryRow]?
     
     var body: some View {
         if let rows = rows {
@@ -51,17 +51,9 @@ struct HomeView: View {
                         }
                     }
                 }
-                .onChange(of: globalViewModel.activeLibraryId) { _ in
-                    Task.detached {
-                        await loadRows()
-                    }
-                }
+                .onChange(of: globalViewModel.activeLibraryId) { _ in loadRows() }
             }
-            .refreshable(action: {
-                Task.detached {
-                    await loadRows()
-                }
-            })
+            .refreshable(action: { loadRows() })
             .navigationTitle("Listen now")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -70,31 +62,30 @@ struct HomeView: View {
             }
             .onReceive(NSNotification.ItemUpdated) { _ in
                 self.rows = nil
-                
-                Task.detached {
-                    await loadRows()
-                }
+                loadRows()
             }
         } else {
             FullscreenLoadingIndicator(description: "Loading")
-                .onAppear {
-                    Task.detached {
-                        await loadRows()
-                    }
-                }
+                .onAppear(perform: loadRows)
         }
     }
     
-    @Sendable private func loadRows() async {
-        rows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
-        
-        if let rows = rows, rows.count > 0 {
-            var type = rows[0].type
-            if type == "episode" {
-                type = "podcast"
-            }
+    private func loadRows() {
+        Task.detached {
+            let personalizedRows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
             
-            globalViewModel.activeLibraryType = type
+            DispatchQueue.main.async {
+                rows = personalizedRows
+                
+                if let rows = rows, rows.count > 0 {
+                    var type = rows[0].type
+                    if type == "episode" {
+                        type = "podcast"
+                    }
+                    
+                    globalViewModel.activeLibraryType = type
+                }
+            }
         }
     }
 }

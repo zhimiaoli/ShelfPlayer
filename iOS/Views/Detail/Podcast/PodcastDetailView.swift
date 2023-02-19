@@ -10,7 +10,7 @@ import SwiftUI
 extension DetailView {
     struct PodcastDetailInner: View {
         let item: LibraryItem
-        @StateObject private var fullscreenViewModel: FullscrenViewViewModel
+        @StateObject var fullscreenViewModel: FullscrenViewViewModel
         
         init(item: LibraryItem) {
             _fullscreenViewModel = StateObject(wrappedValue: FullscrenViewViewModel(title: item.title))
@@ -19,11 +19,11 @@ extension DetailView {
             self.item = item
         }
         
-        @EnvironmentObject private var globalViewModel: GlobalViewModel
+        @EnvironmentObject var globalViewModel: GlobalViewModel
         
-        @State private var backgroundIsLight: Bool = UIColor.systemBackground.isLight() ?? false
-        @State private var latestEpisode: LibraryItem.PodcastEpisode?
-        @State private var useBackgroundImage: Bool
+        @State var backgroundIsLight: Bool = UIColor.systemBackground.isLight() ?? false
+        @State var latestEpisode: LibraryItem.PodcastEpisode?
+        @State var useBackgroundImage: Bool
         
         var body: some View {
             FullscreenView(header: {

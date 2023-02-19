@@ -9,45 +9,43 @@ import SwiftUI
 
 /// Login flow root view
 struct LoginView: View {
-    @StateObject private var viewModel: LoginViewModel = LoginViewModel()
-    @EnvironmentObject private var globalViewModel: GlobalViewModel
+    @StateObject var viewModel: LoginViewModel = LoginViewModel()
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
-        Group {
-            VStack {
-                if viewModel.currentState == .done {
-                    FullscreenLoadingIndicator(description: "Processing")
-                        .onAppear {
-                            if let user = PersistenceController.shared.getLoggedInUser() {
-                                globalViewModel.activeLibraryId = user.lastActiveLibraryId!
-                                globalViewModel.token = user.token!
-                                
-                                APIClient.updateAuthorizedClient()
-                                globalViewModel.loggedIn = true
-                                globalViewModel.onlineStatus = .online
-                            } else {
-                                viewModel.currentState = .server
-                            }
+        VStack {
+            if viewModel.currentState == .done {
+                FullscreenLoadingIndicator(description: "Processing")
+                    .onAppear {
+                        if let user = PersistenceController.shared.getLoggedInUser() {
+                            globalViewModel.activeLibraryId = user.lastActiveLibraryId!
+                            globalViewModel.token = user.token!
+                            
+                            APIClient.updateAuthorizedClient()
+                            globalViewModel.loggedIn = true
+                            globalViewModel.onlineStatus = .online
+                        } else {
+                            viewModel.currentState = .server
                         }
-                } else {
-                    Text("Welcome")
-                        .font(.title)
-                        .fontDesign(.serif)
-                        .padding(.bottom, 3)
-                    Text("To start using the app please login")
-                    
-                    Button {
-                        viewModel.loginSheetPresented.toggle()
-                    } label: {
-                        Text("Login")
                     }
-                    .buttonStyle(LargeButtonStyle())
-                    .padding()
+            } else {
+                Text("Welcome")
+                    .font(.title)
+                    .fontDesign(.serif)
+                    .padding(.bottom, 3)
+                Text("To start using the app please login")
+                
+                Button {
+                    viewModel.loginSheetPresented.toggle()
+                } label: {
+                    Text("Login")
                 }
+                .buttonStyle(LargeButtonStyle())
+                .padding()
             }
-            .sheet(isPresented: $viewModel.loginSheetPresented) {
-                LoginViewInner()
-            }
+        }
+        .sheet(isPresented: $viewModel.loginSheetPresented) {
+            LoginViewInner()
         }
         .environmentObject(viewModel)
     }
