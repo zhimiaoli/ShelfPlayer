@@ -512,7 +512,6 @@
 			isa = PBXGroup;
 			children = (
 				3A2B614729A209B80083CA3C /* String */,
-				3A2B614629A2096E0083CA3C /* SwiftUI */,
 				3A2B614529A209610083CA3C /* CoreData */,
 				3A2B614429A209540083CA3C /* Date */,
 				3ABE749C2986A34F00152332 /* NSNotification+Custom.swift */,
@@ -681,6 +680,7 @@
 		3AF4CB6B291FA70D0080451B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				3A2B614629A2096E0083CA3C /* SwiftUI */,
 				3AB97F1F291FB6E100E07DB5 /* Views */,
 				3AC75B63292FE6AD0057A250 /* ItemCollections */,
 				3A50163C2985058200BB2C74 /* NowPlaying */,

@@ -110,7 +110,7 @@ extension PersistenceController {
         entity!.lastUpdate = Date()
         entity!.localUpdate = true
         
-        try! container.viewContext.save()
+        try? container.viewContext.save()
     }
     public func updateStatusWithoutUpdate(item: LibraryItem, progress: Float) {
         let entity = getEnitityByLibraryItem(item: item, required: true)
@@ -119,7 +119,7 @@ extension PersistenceController {
         entity?.isFinished = progress == 1
         entity?.currentTime = (entity?.duration ?? 0) * Double(progress)
         
-        try! container.viewContext.save()
+        try? container.viewContext.save()
     }
     public func updateStatusWithoutUpdate(itemId: String, episodeId: String?, currentTime: Double, progress: Float, duration: Double) {
         let entity = getEnitityById(itemId: itemId, episodeId: episodeId, required: true)
@@ -129,7 +129,7 @@ extension PersistenceController {
         entity!.duration = duration
         entity!.isFinished = progress == 1
         
-        try! container.viewContext.save()
+        try? container.viewContext.save()
     }
     
     // MARK: - Getter
