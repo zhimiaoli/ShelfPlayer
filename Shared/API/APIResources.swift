@@ -126,6 +126,17 @@ extension APIResources {
     }
 }
 
+// MARK: - /api/genres
+extension APIResources {
+    public static var genres: GenresResource {
+        GenresResource()
+    }
+    
+    public struct GenresResource {
+        public var all = APIRequest<GenresResponse>(method: "GET", path: "api/genres")
+    }
+}
+
 // MARK: - /api/me/progress/{id}
 extension APIResources {
     public static func progress(id: String) -> ProgressResource {

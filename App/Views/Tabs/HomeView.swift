@@ -55,11 +55,13 @@ struct HomeView: View {
             }
             .refreshable(action: { loadRows() })
             .navigationTitle("Listen now")
+            #if !targetEnvironment(macCatalyst)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     LibraryPicker()
                 }
             }
+            #endif
             .onReceive(NSNotification.ItemUpdated) { _ in
                 self.rows = nil
                 loadRows()

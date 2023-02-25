@@ -14,6 +14,14 @@ struct NowPlayingWrapper<Content: View>: View {
     @StateObject var viewModel: ViewModel = ViewModel()
     
     var body: some View {
+        #if targetEnvironment(macCatalyst)
+        VStack(spacing: 0) {
+            content
+            
+            Rectangle()
+                .frame(height: 75)
+        }
+        #else
         ZStack(alignment: .bottom) {
             content
                 .padding(.bottom, globalViewModel.showNowPlayingBar ? 65 : 0)
@@ -45,6 +53,7 @@ struct NowPlayingWrapper<Content: View>: View {
             }
         }
         .environmentObject(viewModel)
+        #endif
     }
 }
 

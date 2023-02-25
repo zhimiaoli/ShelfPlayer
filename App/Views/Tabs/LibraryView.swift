@@ -36,10 +36,14 @@ struct LibraryView: View {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                 }
             }
+        }
+        #if !targetEnvironment(macCatalyst)
+        .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 LibraryPicker()
             }
         }
+        #endif
         .onAppear(perform: updateSortOrder)
         .onChange(of: globalViewModel.activeLibraryId) { _ in
             updateSortOrder()

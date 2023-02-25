@@ -60,19 +60,43 @@ struct ItemRowContainer<Content: View>: View {
             }
             .padding(.vertical, title == nil ? 0 : 10)
             .onAppear {
-                size = (reader.size.width - 60) / 2
-                
-                if appearence == .small {
-                    size /= 1.75
-                    size -= 23
-                } else if appearence == .large {
-                    size *= 2
-                    size += 20
-                }
+                calculateItemWidth(reader.size.width)
+            }
+            .onChange(of: reader.size) { _ in
+                calculateItemWidth(reader.size.width)
             }
             .environment(\.itemRowItemWidth, $size)
         }
         .frame(height: size + 80)
+    }
+    
+    private func calculateItemWidth(_ width: CGFloat) {
+        #if targetEnvironment(macCatalyst)
+        let width = Float(width)
+        var minWidth: Float = 250
+
+        if appearence == .small {
+            minWidth = 100
+        }
+
+        minWidth += 20
+
+        let additional = width.truncatingRemainder(dividingBy: minWidth)
+        let amount = (width - additional) / minWidth
+
+        size = CGFloat(minWidth - 20 - 20 / additional + additional / amount)
+
+        #else
+        size = (width - 60) / 2
+
+        if appearence == .small {
+            size /= 1.75
+            size -= 23
+        } else if appearence == .large {
+            size *= 2
+            size += 20
+        }
+        #endif
     }
     
     enum Size {

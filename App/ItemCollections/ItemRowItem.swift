@@ -96,5 +96,8 @@ struct ItemRowItem: View {
             progressPercentage = PersistenceController.shared.getProgressByLibraryItem(item: item)
             actualSize = size ?? itemRowItemWidth.wrappedValue
         }
+        .onChange(of: itemRowItemWidth.wrappedValue) { _ in
+            actualSize = size ?? itemRowItemWidth.wrappedValue
+        }
     }
 }

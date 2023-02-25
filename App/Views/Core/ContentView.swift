@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @StateObject var globalViewModel: GlobalViewModel = GlobalViewModel()
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     
     var body: some View {
         Group {
@@ -37,7 +37,6 @@ struct ContentView: View {
                 NavigationRoot()
             }
         }
-        .environmentObject(globalViewModel)
         .onReceive(NSNotification.PlayerFinished, perform: { _ in
             if DownloadHelper.getDeleteDownloadsWhenFinished() && PersistenceController.shared.getLocalItem(itemId: globalViewModel.currentlyPlaying!.id, episodeId: globalViewModel.currentlyPlaying?.recentEpisode?.id) != nil {
                 DownloadHelper.deleteDownload(itemId: globalViewModel.currentlyPlaying!.id, episodeId: globalViewModel.currentlyPlaying?.recentEpisode?.id)

@@ -78,6 +78,8 @@
 		3A9DE59C2986F99800567488 /* GenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9DE59B2986F99800567488 /* GenreView.swift */; };
 		3A9DE59E2986FEE600567488 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9DE59D2986FEE600567488 /* LibraryView.swift */; };
 		3A9DE5A02986FF9B00567488 /* ItemSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9DE59F2986FF9B00567488 /* ItemSort.swift */; };
+		3A9F4FC729AA0E680001C60D /* Array+Repeating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9F4FC629AA0E680001C60D /* Array+Repeating.swift */; };
+		3A9F4FC929AA1A6D0001C60D /* GenresResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9F4FC829AA1A6D0001C60D /* GenresResponse.swift */; };
 		3A9FD8C2298AD3E100928DFC /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C1298AD3E100928DFC /* SearchView.swift */; };
 		3A9FD8C4298AD6D700928DFC /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C3298AD6D700928DFC /* SearchResponse.swift */; };
 		3A9FD8C6298ADD0D00928DFC /* PodcastCompleteEpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FD8C5298ADD0D00928DFC /* PodcastCompleteEpisodeList.swift */; };
@@ -196,10 +198,13 @@
 		3A9DE59B2986F99800567488 /* GenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreView.swift; sourceTree = "<group>"; };
 		3A9DE59D2986FEE600567488 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A9DE59F2986FF9B00567488 /* ItemSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSort.swift; sourceTree = "<group>"; };
+		3A9F4FC629AA0E680001C60D /* Array+Repeating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Repeating.swift"; sourceTree = "<group>"; };
+		3A9F4FC829AA1A6D0001C60D /* GenresResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresResponse.swift; sourceTree = "<group>"; };
 		3A9FD8C1298AD3E100928DFC /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3A9FD8C3298AD6D700928DFC /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		3A9FD8C5298ADD0D00928DFC /* PodcastCompleteEpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCompleteEpisodeList.swift; sourceTree = "<group>"; };
 		3A9FD8C7298AF4A500928DFC /* TextPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPill.swift; sourceTree = "<group>"; };
+		3AB4D63229AA035B004F6441 /* Audiobooks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Audiobooks.entitlements; sourceTree = "<group>"; };
 		3AB97F21291FB6F700E07DB5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3AB97F26291FB8FF00E07DB5 /* LargeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButtonStyle.swift; sourceTree = "<group>"; };
 		3AB97F28291FFC2100E07DB5 /* LoginInner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInner.swift; sourceTree = "<group>"; };
@@ -515,6 +520,7 @@
 				3A2B614529A209610083CA3C /* CoreData */,
 				3A2B614429A209540083CA3C /* Date */,
 				3ABE749C2986A34F00152332 /* NSNotification+Custom.swift */,
+				3A9F4FC629AA0E680001C60D /* Array+Repeating.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -549,6 +555,7 @@
 				3A50165A298545A900BB2C74 /* LibrariesResponse.swift */,
 				3ABEC5F729880FFB002666DE /* PlayResponse.swift */,
 				3A9FD8C3298AD6D700928DFC /* SearchResponse.swift */,
+				3A9F4FC829AA1A6D0001C60D /* GenresResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -660,10 +667,11 @@
 		3AF4CB60291FA70D0080451B = {
 			isa = PBXGroup;
 			children = (
+				3AB4D63229AA035B004F6441 /* Audiobooks.entitlements */,
 				3AC7E046298FD2CB00BA35A1 /* README.md */,
 				3A50166129856D9F00BB2C74 /* Audiobooks-Info.plist */,
 				3ABEC5EC2988081D002666DE /* Shared */,
-				3AF4CB6B291FA70D0080451B /* iOS */,
+				3AF4CB6B291FA70D0080451B /* App */,
 				3AF4CB6A291FA70D0080451B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -677,7 +685,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3AF4CB6B291FA70D0080451B /* iOS */ = {
+		3AF4CB6B291FA70D0080451B /* App */ = {
 			isa = PBXGroup;
 			children = (
 				3A2B614629A2096E0083CA3C /* SwiftUI */,
@@ -688,7 +696,7 @@
 				3AB97F24291FB8D500E07DB5 /* Components */,
 				3AF4CB70291FA7120080451B /* Assets.xcassets */,
 			);
-			path = iOS;
+			path = App;
 			sourceTree = "<group>";
 		};
 		3AF4CB7F291FAA9D0080451B /* Core */ = {
@@ -794,6 +802,7 @@
 				3A73425E298D6C0300CFEC3B /* DownloadManageView.swift in Sources */,
 				3A22634829866C1800B7CD94 /* EpisodeFilter.swift in Sources */,
 				3A50166A298582FD00BB2C74 /* ItemButtons.swift in Sources */,
+				3A9F4FC929AA1A6D0001C60D /* GenresResponse.swift in Sources */,
 				3A9FD8C8298AF4A500928DFC /* TextPill.swift in Sources */,
 				3AC75B6C292FE74F0057A250 /* ItemRowItem.swift in Sources */,
 				3A50162E29841EF500BB2C74 /* GridItemView.swift in Sources */,
@@ -848,6 +857,7 @@
 				3AC7E040298FC1B400BA35A1 /* DownloadLargeItem.swift in Sources */,
 				3A5016422985092000BB2C74 /* NowPlayingSheet.swift in Sources */,
 				3A36DF70298FAB3A00C67B8B /* LocalItem+Verify.swift in Sources */,
+				3A9F4FC729AA0E680001C60D /* Array+Repeating.swift in Sources */,
 				3ABEC5EF29880841002666DE /* AudioPlayer.swift in Sources */,
 				3A22634C2986701700B7CD94 /* FilterHelper.swift in Sources */,
 				3A501640298505C300BB2C74 /* NowPlayingBar.swift in Sources */,
@@ -1026,6 +1036,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = Audiobooks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
@@ -1048,6 +1059,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.audiobooks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1060,6 +1074,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = Audiobooks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
@@ -1082,6 +1097,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.audiobooks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

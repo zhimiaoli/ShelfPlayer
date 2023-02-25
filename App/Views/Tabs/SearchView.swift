@@ -25,11 +25,13 @@ struct SearchView: View {
             return items
         })
         .navigationTitle("Search")
+        #if !targetEnvironment(macCatalyst)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 LibraryPicker()
             }
         }
+        #endif
         .searchable(text: $query)
         .onAppear(perform: {
             NotificationCenter.default.post(name: NSNotification.ItemGridSortOrderUpdated, object: nil)

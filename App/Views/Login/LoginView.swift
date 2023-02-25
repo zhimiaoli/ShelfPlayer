@@ -46,8 +46,11 @@ struct LoginView: View {
         }
         .sheet(isPresented: $viewModel.loginSheetPresented) {
             LoginViewInner()
+// #if os(macOS)
+                .environmentObject(viewModel)
+// #endif
         }
-        .environmentObject(viewModel)
+        // .environmentObject(viewModel)
     }
 }
 
