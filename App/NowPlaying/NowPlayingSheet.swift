@@ -18,7 +18,6 @@ extension NowPlayingWrapper {
                     ItemImage(item: globalViewModel.currentlyPlaying, size: proxy.size.width)
                         .shadow(radius: 25)
                         .padding(.top, 10)
-                        .padding(.bottom, 25)
                     
                     HStack {
                         VStack(alignment: .leading) {
@@ -36,6 +35,7 @@ extension NowPlayingWrapper {
                                         }
                                     }
                                     .font(.caption2)
+                                    .foregroundColor(.primaryTransparent)
                                     .fontDesign(.rounded)
                                 }
                             }
