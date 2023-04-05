@@ -39,6 +39,26 @@ struct ItemButtons: View {
             .buttonStyle(PlayNowButtonStyle(colorScheme: colorScheme))
             
             Button {
+                Task.detached {
+                    let result = await item.toggleFinishedStatus()
+                    if result {
+                        DispatchQueue.main.async {
+                            progress = progress == 1 ? 0 : 1
+                        }
+                    }
+                }
+                
+                Haptics.shared.play(.light)
+            } label: {
+                if(progress > 0 && progress < 1) {
+                    Text("\(Int(progress * 100))%")
+                } else {
+                    Image(systemName: "checkmark")
+                }
+            }
+            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, backgroundColor: progress == 1 ? .accentColor : nil))
+            
+            Button {
                 if isDownloaded {
                     deleteDownloadAlertPresented.toggle()
                 } else {
@@ -59,26 +79,6 @@ struct ItemButtons: View {
                 }
             }
             .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, backgroundColor: hasConflict ? .red : isDownloaded ? .accentColor : nil))
-            
-            Button {
-                Task.detached {
-                    let result = await item.toggleFinishedStatus()
-                    if result {
-                        DispatchQueue.main.async {
-                            progress = progress == 1 ? 0 : 1
-                        }
-                    }
-                }
-                
-                Haptics.shared.play(.light)
-            } label: {
-                if(progress > 0 && progress < 1) {
-                    Text("\(Int(progress * 100))%")
-                } else {
-                    Image(systemName: "checkmark")
-                }
-            }
-            .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, backgroundColor: progress == 1 ? .accentColor : nil))
         }
         .foregroundColor(colorScheme == .light ? .black : .white)
         .alert("Delete download", isPresented: $deleteDownloadAlertPresented, actions: {

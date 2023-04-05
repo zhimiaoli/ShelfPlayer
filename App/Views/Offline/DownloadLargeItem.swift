@@ -23,7 +23,14 @@ struct DownloadLargeItem: View {
                             .font(.caption)
                     } else {
                         Text(item.episodeTitle ?? "unknown title")
-                        Text(item.title ?? "unknown podcast")
+                        // Text(item.title ?? "unknown podcast")
+                        Group {
+                            if let entity = PersistenceController.shared.getEnitityByLibraryItem(item: item.convertToItem()) {
+                                Text(TextHelper.formatRemainingTime(seconds: Int(entity.duration - entity.currentTime)))
+                            } else {
+                                Text(TextHelper.formatRemainingTime(seconds: Int(item.duration)))
+                            }
+                        }
                             .font(.caption)
                     }
                 }

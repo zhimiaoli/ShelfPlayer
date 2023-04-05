@@ -57,6 +57,7 @@ struct DownloadsManageView: View {
                 .foregroundColor(.accentColor)
             }
         }
+        .listStyle(InsetGroupedListStyle())
         .foregroundColor(.primary)
         .onAppear {
             updateItems()

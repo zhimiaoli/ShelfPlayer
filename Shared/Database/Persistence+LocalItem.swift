@@ -21,7 +21,7 @@ extension PersistenceController {
         download.duration = duration
         download.isDownloaded = false
         
-        try! PersistenceController.shared.container.viewContext.save()
+        try? PersistenceController.shared.container.viewContext.save()
     }
     
     public func getDownloadedTracks() -> [DownloadTrack] {
@@ -72,7 +72,7 @@ extension PersistenceController {
             if let result = try container.viewContext.fetch(request).first as? DownloadTrack {
                 result.isDownloaded = true
                 result.identifier = -1
-                try! container.viewContext.save()
+                try? container.viewContext.save()
             }
         } catch {
             NSLog("Failed to mark entity as downloaded")

@@ -18,7 +18,7 @@ extension LocalItem {
         } else if files.count == numFiles {
             hasConflict = false
             isDownloaded = true
-            try! PersistenceController.shared.container.viewContext.save()
+            try? PersistenceController.shared.container.viewContext.save()
         }
     }
 }

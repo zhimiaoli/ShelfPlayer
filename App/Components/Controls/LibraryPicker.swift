@@ -33,6 +33,11 @@ struct LibraryPicker: View {
             }
             
             Button {
+                globalViewModel.onlineStatus = .offline
+            } label: {
+                Label("Go offline", systemImage: "wifi.slash")
+            }
+            Button {
                 globalViewModel.settingsSheetPresented.toggle()
             } label: {
                 Label("Settings", systemImage: "gearshape.fill")

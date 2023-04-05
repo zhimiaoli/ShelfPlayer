@@ -99,7 +99,7 @@ struct DownloadHelper {
         localItem.episodeDescription = item.recentEpisode?.description
         
         localItem.hasConflict = false
-        localItem.duration = localItem.duration
+        localItem.duration = item.media?.duration ?? item.recentEpisode?.duration ?? 0
         
         localItem.isDownloaded = false
         localItem.numFiles = Int16(tracks.count)
