@@ -15,7 +15,7 @@ struct DebugView: View {
     @State var search: String = ""
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             List {
                 Group {
                     Button {

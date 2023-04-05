@@ -22,8 +22,8 @@ struct HomeView: View {
                             ItemRowContainer() {
                                 var entities = row.entities
                                 
-                                if let first = entities.removeFirst() {
-                                    ItemRow(title: "Latest", content: [first])
+                                if entities.count > 0 {
+                                    ItemRow(title: "Latest", content: [entities.removeFirst()])
                                 }
                                 if entities.count > 0 {
                                     ItemRow(title: row.label, content: entities)

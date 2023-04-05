@@ -72,7 +72,11 @@ struct ItemButtons: View {
                 
                 Haptics.shared.play(.light)
             } label: {
-                Image(systemName: "checkmark")
+                if(progress > 0 && progress < 1) {
+                    Text("\(Int(progress * 100))%")
+                } else {
+                    Image(systemName: "checkmark")
+                }
             }
             .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme, backgroundColor: progress == 1 ? .accentColor : nil))
         }

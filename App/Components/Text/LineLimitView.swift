@@ -38,7 +38,7 @@ struct LineLimitView: View {
                 }
         }
         .sheet(isPresented: $isExpanded, content: {
-            NavigationStack {
+            NavigationView {
                 VStack {
                     Text(text)
                         .padding()

@@ -178,7 +178,7 @@ extension APIResources {
                     "clientVersion": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "beta",
                 ],
                 "supportedMimeTypes": ["audio/flac", "audio/mpeg", "audio/mp4", "audio/aac", "audio/x-aiff", "audio/webm"],
-            ])
+            ] as [String : Any])
         }
     }
 }

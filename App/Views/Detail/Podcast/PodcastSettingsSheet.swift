@@ -33,7 +33,7 @@ struct PodcastSettingsSheet: View {
         } label: {
             Image(systemName: "ellipsis.circle.fill")
                 .sheet(isPresented: $sheetPresented) {
-                    NavigationStack {
+                    NavigationView {
                         Form {
                             FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)
                                 .onChange(of: selectedFilter) { filter in

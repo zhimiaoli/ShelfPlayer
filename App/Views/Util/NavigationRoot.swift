@@ -20,7 +20,7 @@ struct NavigationRoot: View {
         #if os(iOS) && !targetEnvironment(macCatalyst)
         TabView {
             NowPlayingWrapper {
-                NavigationStack {
+                NavigationView {
                     HomeView()
                 }
             }
@@ -31,7 +31,7 @@ struct NavigationRoot: View {
             // switch is way to complicated
             if globalViewModel.activeLibraryType == "book" {
                 NowPlayingWrapper {
-                    NavigationStack {
+                    NavigationView {
                         SeriesView()
                     }
                 }
@@ -41,7 +41,7 @@ struct NavigationRoot: View {
             }
             
             NowPlayingWrapper {
-                NavigationStack {
+                NavigationView {
                     LibraryView()
                 }
             }
@@ -50,7 +50,7 @@ struct NavigationRoot: View {
             }
             
             NowPlayingWrapper {
-                NavigationStack {
+                NavigationView {
                     SearchView()
                 }
             }
@@ -97,7 +97,7 @@ struct NavigationRoot: View {
             }
         }, detail: {
             NowPlayingWrapper {
-                NavigationStack {
+                NavigationView {
                     switch(selectedTab) {
                     case .series:
                         SeriesView()

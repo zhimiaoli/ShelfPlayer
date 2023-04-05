@@ -22,7 +22,7 @@ struct SettingsView: View {
     @State var deleteDownloadsWhenFinished: Bool = DownloadHelper.getDeleteDownloadsWhenFinished()
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 // Podcast
                 FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)

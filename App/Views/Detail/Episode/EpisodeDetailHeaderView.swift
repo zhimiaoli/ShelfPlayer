@@ -31,11 +31,9 @@ struct EpisodeDetailHeaderView: View {
                         }
                     }
                     
-                    if let progress = PersistenceController.shared.getProgressByLibraryItem(item: item) {
-                        Text("•")
-                        ProgressIndicator(completedPercentage: progress)
-                            .frame(height: 13)
-                    }
+                    Text("•")
+                    ProgressIndicator(completedPercentage: PersistenceController.shared.getProgressByLibraryItem(item: item))
+                        .frame(height: 13)
                     
                     Text("•")
                     Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))

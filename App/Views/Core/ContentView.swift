@@ -25,7 +25,7 @@ struct ContentView: View {
                 }
             case .offline:
                 if globalViewModel.loggedIn {
-                    NavigationStack {
+                    NavigationView {
                         NowPlayingWrapper {
                             DownloadsManageView(detailed: true)
                         }
