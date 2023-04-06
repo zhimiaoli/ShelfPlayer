@@ -13,6 +13,7 @@ struct ItemRowContainer<Content: View>: View {
     var appearence: Size = .normal
     @ViewBuilder var content: Content
     
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     @Environment(\.colorScheme) var colorScheme
     @State var size: CGFloat = 175
     
@@ -22,7 +23,7 @@ struct ItemRowContainer<Content: View>: View {
                 if let title = title {
                     Group {
                         let text = Text(title)
-                            .fontDesign(.serif)
+                            .fontDesign(.libraryFontDesign(globalViewModel.activeLibraryType))
                             .dynamicTypeSize(.xxLarge)
                         
                         Group {
@@ -43,14 +44,14 @@ struct ItemRowContainer<Content: View>: View {
                         .bold()
                         .padding(.horizontal, 20)
                     }
-                    .padding(.bottom, -7)
+                    .padding(.bottom, -3)
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack() {
                         content
                     }
-                    .padding(.horizontal, 15)
-                    .padding(.vertical)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
                 }
                 .background {
                     if colorScheme == .light {
@@ -58,7 +59,7 @@ struct ItemRowContainer<Content: View>: View {
                     }
                 }
             }
-            .padding(.vertical, title == nil ? 0 : 10)
+            .padding(.top, title == nil ? 0 : 10)
             .onAppear {
                 calculateItemWidth(reader.size.width)
             }

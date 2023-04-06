@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct PlayNowButtonStyle: ButtonStyle {
+    @EnvironmentObject var globalViewModel: GlobalViewModel
     let colorScheme: ColorScheme
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .fontDesign(.serif)
+            .fontDesign(.libraryFontDesign(globalViewModel.activeLibraryType))
             .fontWeight(.bold)
             .padding(.vertical, 12)
             .padding(.horizontal, 30)

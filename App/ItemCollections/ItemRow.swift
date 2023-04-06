@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ItemRow: View {
+    @EnvironmentObject var globalViewModel: GlobalViewModel
+    
     var title: String?
     var content: [LibraryItem]
     
@@ -16,7 +18,7 @@ struct ItemRow: View {
             if let title = title {
                 Text(title)
                     .font(.headline)
-                    .fontDesign(.serif)
+                    .fontDesign(.libraryFontDesign(globalViewModel.activeLibraryType))
                     .padding(.horizontal, 4)
             }
             

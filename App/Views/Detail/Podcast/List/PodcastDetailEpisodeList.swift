@@ -62,7 +62,7 @@ extension DetailView {
                         }
                     }
                     
-                    LazyVStack(alignment: .leading) {
+                    LazyVStack(alignment: .leading, pinnedViews: [.sectionHeaders]) {
                         if filteredEpisodes.count > 0 {
                             ForEach(filteredEpisodes, id: \.id) { episode in
                                 Divider()

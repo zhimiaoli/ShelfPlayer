@@ -14,6 +14,19 @@ struct BooksApp: App {
     
     @State var libraries = [Library]()
     
+    init() {
+        var newYorkFont: UIFont {
+            let descriptor = UIFont.systemFont(ofSize: 34, weight: .bold).fontDescriptor
+            if let serif = descriptor.withDesign(.serif) {
+                return UIFont(descriptor: serif, size: 0.0)
+            }
+            return UIFont(descriptor: descriptor, size: 0.0)
+        }
+        
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font: newYorkFont]
+        UINavigationBar.appearance().titleTextAttributes = [.font: newYorkFont.withSize(17)]
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

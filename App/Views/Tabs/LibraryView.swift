@@ -17,6 +17,13 @@ struct LibraryView: View {
             try await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).items(sort: sortOrder)).results
         })
         .navigationTitle("Library")
+        #if !targetEnvironment(macCatalyst)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                LibraryPicker()
+            }
+        }
+        #endif
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
@@ -37,13 +44,6 @@ struct LibraryView: View {
                 }
             }
         }
-        #if !targetEnvironment(macCatalyst)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                LibraryPicker()
-            }
-        }
-        #endif
         .onAppear(perform: updateSortOrder)
         .onChange(of: globalViewModel.activeLibraryId) { _ in
             updateSortOrder()

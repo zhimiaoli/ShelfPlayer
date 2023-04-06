@@ -130,7 +130,6 @@ struct NavigationRoot: View {
     private func getGenres() {
         Task.detached {
             let genres = (try? await APIClient.authorizedShared.request(APIResources.genres.all).genres) ?? []
-            print(genres)
             
             DispatchQueue.main.async {
                 self.genres = genres

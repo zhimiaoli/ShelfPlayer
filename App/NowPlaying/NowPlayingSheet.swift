@@ -41,7 +41,7 @@ extension NowPlayingWrapper {
                             }
                             
                             Text(globalViewModel.currentlyPlaying!.title)
-                                .font(.system(size: 21, weight: .bold, design: .serif))
+                                .font(.system(size: 21, weight: .bold, design: .libraryFontDesign(globalViewModel.activeLibraryType)))
                                 .foregroundColor((viewModel.backgroundIsLight ? Color.black : Color.white))
                             Text(globalViewModel.currentlyPlaying!.author)
                                 .bold()

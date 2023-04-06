@@ -45,7 +45,7 @@ struct HomeView: View {
                             if row.id == "continue-series" {
                                 NavigationLink(destination: SeriesView()) {
                                     SeriesBanner()
-                                        .padding(.top, -18)
+                                        .padding(.top, -8)
                                 }
                             }
                         }

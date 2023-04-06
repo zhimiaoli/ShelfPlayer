@@ -14,6 +14,8 @@ extension DetailView {
         var summary: String
         var description: String
         
+        @EnvironmentObject var globalViewModel: GlobalViewModel
+        
         var body: some View {
             VStack() {
                 Text("\(title.uppercased())")
@@ -22,7 +24,7 @@ extension DetailView {
                 Spacer()
                 Text("\(summary)")
                     .font(.title2)
-                    .fontDesign(.serif)
+                    .fontDesign(.libraryFontDesign(globalViewModel.activeLibraryType))
                 Text("\(description)")
                     .font(.caption)
             }

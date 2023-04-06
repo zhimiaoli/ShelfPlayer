@@ -10,6 +10,7 @@ import SwiftUI
 extension DetailView {
     /// Main detail content view for books
     struct BookDetailBody: View {
+        @EnvironmentObject var globalViewModel: GlobalViewModel
         @EnvironmentObject var viewModel: ViewModel
         
         var body: some View {
@@ -18,7 +19,7 @@ extension DetailView {
                     if let description = viewModel.item.media?.metadata.description {
                         Text("Description")
                             .font(.headline)
-                            .fontDesign(.serif)
+                            .fontDesign(.libraryFontDesign(globalViewModel.activeLibraryType))
                             .padding(.bottom, 7)
                         Text(description)
                         

@@ -22,7 +22,7 @@ extension DetailView {
                 VStack {
                     Text(viewModel.item.title)
                         .font(.headline)
-                        .fontDesign(.serif)
+                        .fontDesign(.libraryFontDesign(globalViewModel.activeLibraryType))
                     Text(viewModel.item.author)
                         .font(.subheadline)
                     
