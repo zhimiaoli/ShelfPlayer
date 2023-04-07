@@ -50,7 +50,7 @@ struct ItemRowContainer<Content: View>: View {
                     HStack() {
                         content
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 16)
                     .padding(.vertical, 10)
                 }
                 .background {

@@ -18,16 +18,12 @@ struct HomeView: View {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
                     ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
-                        if index == 0 && row.type == "book" {
+                        if index == 0 && row.type == "book" && row.entities.count > 0 {
                             ItemRowContainer() {
                                 var entities = row.entities
                                 
-                                if entities.count > 0 {
-                                    ItemRow(title: "Latest", content: [entities.removeFirst()])
-                                }
-                                if entities.count > 0 {
-                                    ItemRow(title: row.label, content: entities)
-                                }
+                                ItemRow(title: "Latest", content: [entities.removeFirst()])
+                                ItemRow(title: row.label, content: entities)
                             }
                         } else {
                             if colorScheme == .dark && index != 0 {
@@ -37,7 +33,7 @@ struct HomeView: View {
                                 }
                             }
                             
-                            ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .small : row.id == "continue-listening" && row.entities.count == 1 ? .large : .normal) {
+                            ItemRowContainer(title: row.label, appearence: row.type == "authors" ? .small : .normal) {
                                 ItemRow(content: row.entities)
                             }
                             .id(row.id)
@@ -53,9 +49,9 @@ struct HomeView: View {
                 }
                 .onChange(of: globalViewModel.activeLibraryId) { _ in loadRows() }
             }
-            .refreshable(action: { loadRows() })
             .navigationTitle("Listen now")
             #if !targetEnvironment(macCatalyst)
+            .refreshable(action: { loadRows() })
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     LibraryPicker()
