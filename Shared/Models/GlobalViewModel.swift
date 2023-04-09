@@ -77,6 +77,11 @@ class GlobalViewModel: ObservableObject {
             return
         }
         
+        if let localItem = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
+            playLocalItem(localItem)
+            return
+        }
+        
         closePlayer()
         
         Task.detached {

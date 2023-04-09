@@ -98,6 +98,7 @@ extension DetailView {
                     Menu {
                         ForEach(EpisodeSort.allCases, id: \.rawValue) { sort in
                             Button {
+                                Haptics.shared.play(.light)
                                 withAnimation {
                                     self.sort.0 = sort
                                 }
@@ -113,6 +114,7 @@ extension DetailView {
                         Divider()
                         
                         Button {
+                            Haptics.shared.play(.light)
                             withAnimation {
                                 self.sort.1 = !self.sort.1
                             }
@@ -132,6 +134,7 @@ extension DetailView {
                     Menu {
                         ForEach(EpisodeFilter.allCases, id: \.rawValue) { filter in
                             Button {
+                                Haptics.shared.play(.light)
                                 withAnimation {
                                     self.filter = filter
                                 }

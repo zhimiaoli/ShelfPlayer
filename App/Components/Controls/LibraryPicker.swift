@@ -16,6 +16,7 @@ struct LibraryPicker: View {
         Menu {
             ForEach(libraries, id: \.id) { library in
                 Button {
+                    Haptics.shared.play(.medium)
                     withAnimation {
                         globalViewModel.selectLibrary(libraryId: library.id, type: library.mediaType)
                     }
@@ -33,6 +34,7 @@ struct LibraryPicker: View {
             }
             
             Button {
+                Haptics.shared.play(.light)
                 globalViewModel.onlineStatus = .offline
             } label: {
                 Label("Go offline", systemImage: "wifi.slash")

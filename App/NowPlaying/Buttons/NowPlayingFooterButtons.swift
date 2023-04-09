@@ -16,6 +16,8 @@ struct NowPlayingFooterButtons: View {
     var body: some View {
         HStack {
             Button {
+                Haptics.shared.play(.light)
+                
                 currentSpeed += 0.25
                 
                 if currentSpeed > 2 {

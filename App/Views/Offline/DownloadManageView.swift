@@ -50,6 +50,7 @@ struct DownloadsManageView: View {
             
             if globalViewModel.onlineStatus == .offline {
                 Button {
+                    Haptics.shared.play(.light)
                     globalViewModel.onlineStatus = .unknown
                 } label: {
                     Text("Go online")

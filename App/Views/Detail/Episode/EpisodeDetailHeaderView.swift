@@ -32,12 +32,13 @@ struct EpisodeDetailHeaderView: View {
                     }
                     
                     Text("•")
-                    ProgressIndicator(completedPercentage: PersistenceController.shared.getProgressByLibraryItem(item: item))
-                        .frame(height: 13)
-                    
-                    Text("•")
-                    Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))
                 }
+                
+                ProgressIndicator(completedPercentage: PersistenceController.shared.getProgressByLibraryItem(item: item))
+                    .frame(height: 13)
+                
+                Text("•")
+                Text(TextHelper.formatTime(tourple: Date.secondsToHoursMinutesSeconds(Int(item.recentEpisode?.length ?? 0))))
             }
             .font(.caption)
             .fontDesign(.rounded)

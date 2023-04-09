@@ -32,6 +32,9 @@ struct ItemGridView: View {
                     .foregroundColor(Color.gray)
             }
         }.onReceive(NSNotification.ItemGridSortOrderUpdated) { _ in
+            if items?.count != nil {
+                Haptics.shared.play(.light)
+            }
             Task.detached {
                 await _getItems()
             }

@@ -24,14 +24,7 @@ struct ItemButtons: View {
     var body: some View {
         HStack {
             Button {
-                if isDownloaded {
-                    if let localItem = PersistenceController.shared.getLocalItem(itemId: item.id, episodeId: item.recentEpisode?.id) {
-                        globalViewModel.playLocalItem(localItem)
-                    }
-                } else {
-                    globalViewModel.playItem(item: item)
-                }
-                
+                globalViewModel.playItem(item: item)
                 Haptics.shared.play(.medium)
             } label: {
                 Label(progress > 0 && progress < 1 ? "Resume" : "Listen now", systemImage: "play.fill")

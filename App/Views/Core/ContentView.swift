@@ -47,5 +47,11 @@ struct ContentView: View {
         .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in
             globalViewModel.isItemStillAvaiable()
         })
+        .onReceive(NSNotification.PodcastSettingsUpdated, perform: playLightHaptic)
+        .onReceive(NSNotification.LibrarySettingsUpdated, perform: playLightHaptic)
+    }
+    
+    private func playLightHaptic(_: Any) {
+        Haptics.shared.play(.light)
     }
 }
