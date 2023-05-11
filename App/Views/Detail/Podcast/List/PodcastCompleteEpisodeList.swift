@@ -9,6 +9,8 @@ import SwiftUI
 
 extension DetailView {
     struct PodcastFullEpisodeList: View {
+        @Namespace var namespace
+        
         var episodes: [LibraryItem.PodcastEpisode]
         var item: LibraryItem
         
@@ -30,25 +32,6 @@ extension DetailView {
                 if episodes.count == 0 {
                     fallback
                 } else {
-                    if seasons.count > 1 {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHStack {
-                                ForEach(seasons.sorted(by: { $0.localizedStandardCompare($1) == .orderedAscending }), id: \.hashValue) { season in
-                                    Button {
-                                        if activeSeason == season {
-                                            activeSeason = nil
-                                        } else {
-                                            activeSeason = season
-                                        }
-                                    } label: {
-                                        PodcastDetailPill(text: "Season \(season)", active: activeSeason == season)
-                                    }
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-                        .frame(height: 30)
-                    }
                     ScrollView {
                         LazyVStack(alignment: .leading) {
                             let filtered = FilterHelper.filterEpisodes(FilterHelper.sortEpisodes(episodes.filter { episode in
@@ -153,6 +136,31 @@ extension DetailView {
                             Image(systemName: "line.3.horizontal.decrease.circle.fill")
                         }
                     }
+                }
+            }
+            .safeAreaInset(edge: .top) {
+                if seasons.count > 1 {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack {
+                            ForEach(seasons.sorted(by: { $0.localizedStandardCompare($1) == .orderedAscending }), id: \.hashValue) { season in
+                                Button {
+                                    if activeSeason == season {
+                                        activeSeason = nil
+                                    } else {
+                                        activeSeason = season
+                                    }
+                                } label: {
+                                    PodcastDetailPill(text: "Season \(season)", active: activeSeason == season)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    .environment(\.namespace, namespace)
+                    .frame(height: 30)
+                    .padding(.vertical, 5)
+                    .background(.ultraThickMaterial)
+                    .toolbarBackground(.ultraThickMaterial, for: .navigationBar)
                 }
             }
             .onReceive(NSNotification.PodcastSettingsUpdated) { _ in

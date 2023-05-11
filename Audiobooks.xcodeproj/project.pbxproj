@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A0D7794297F02FB004F5A7D /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D7793297F02FB004F5A7D /* String+Base64.swift */; };
 		3A0D7796297F04E3004F5A7D /* Date+Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D7795297F04E3004F5A7D /* Date+Conversions.swift */; };
+		3A1AAB7D2A0D88690080B2BD /* Namespace+Enviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1AAB7C2A0D88690080B2BD /* Namespace+Enviroment.swift */; };
 		3A22634629866BA600B7CD94 /* PodcastDetailListEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634529866BA600B7CD94 /* PodcastDetailListEpisode.swift */; };
 		3A22634829866C1800B7CD94 /* EpisodeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634729866C1800B7CD94 /* EpisodeFilter.swift */; };
 		3A22634A29866C5300B7CD94 /* Color+Primary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22634929866C5300B7CD94 /* Color+Primary.swift */; };
@@ -131,6 +132,7 @@
 /* Begin PBXFileReference section */
 		3A0D7793297F02FB004F5A7D /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		3A0D7795297F04E3004F5A7D /* Date+Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Conversions.swift"; sourceTree = "<group>"; };
+		3A1AAB7C2A0D88690080B2BD /* Namespace+Enviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Namespace+Enviroment.swift"; sourceTree = "<group>"; };
 		3A22634529866BA600B7CD94 /* PodcastDetailListEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDetailListEpisode.swift; sourceTree = "<group>"; };
 		3A22634729866C1800B7CD94 /* EpisodeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeFilter.swift; sourceTree = "<group>"; };
 		3A22634929866C5300B7CD94 /* Color+Primary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Primary.swift"; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				3ADEC0032931FF010047CE12 /* UIImage+Color.swift */,
 				3A22634929866C5300B7CD94 /* Color+Primary.swift */,
 				3A702FDA29DF0AFB001B9064 /* Font+Library.swift */,
+				3A1AAB7C2A0D88690080B2BD /* Namespace+Enviroment.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 				3AF6175129900E4800789BBE /* Date+Delta.swift in Sources */,
 				3A2B613E29A14EDF0083CA3C /* LibraryItem+Media.swift in Sources */,
 				3AC7E042298FC20000BA35A1 /* OfflineItemImage.swift in Sources */,
+				3A1AAB7D2A0D88690080B2BD /* Namespace+Enviroment.swift in Sources */,
 				3A8E5FC52999190C00E6F13C /* CachedmediaPorgress+JSON.swift in Sources */,
 				3AD7AACC29805AB50052C17B /* ItemGrid.swift in Sources */,
 				3A50162C29841E8500BB2C74 /* SeriesView.swift in Sources */,

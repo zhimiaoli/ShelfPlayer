@@ -78,12 +78,18 @@ struct FullscreenView<Header: View, Content: View, Background: View>: View {
                     }
                 }
             }
+            #if !targetEnvironment(macCatalyst)
             .toolbarBackground(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
+            #endif
             
             // Navigation bar
             .edgesIgnoringSafeArea(.top)
             .navigationBarTitleDisplayMode(.inline)
+            #if !targetEnvironment(macCatalyst)
             .navigationTitle(viewModel.isNavigationBarVisible ? viewModel.title : !viewModel.animateNavigationBarChanges ? "________________________________" : "")
+            #else
+            .navigationTitle(viewModel.title)
+            #endif
             
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

@@ -150,6 +150,7 @@ struct ItemRowItem: View {
                 .background(.background)
             })
         }
+        .buttonStyle(.plain)
         .onAppear {
             progressPercentage = PersistenceController.shared.getProgressByLibraryItem(item: item)
             actualSize = size ?? itemRowItemWidth.wrappedValue

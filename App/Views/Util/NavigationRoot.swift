@@ -17,7 +17,7 @@ struct NavigationRoot: View {
     
     var body: some View {
         // This is so stupid... You CANNOT check for iPads here
-        #if os(iOS) && !targetEnvironment(macCatalyst)
+#if os(iOS) && !targetEnvironment(macCatalyst)
         TabView {
             NowPlayingWrapper {
                 NavigationView {
@@ -61,7 +61,7 @@ struct NavigationRoot: View {
         .sheet(isPresented: $globalViewModel.settingsSheetPresented) {
             SettingsView()
         }
-        #else
+#else
         NavigationSplitView(sidebar: {
             List(selection: $selectedTab) {
                 NavigationLink(value: Tab.home) {
@@ -95,28 +95,27 @@ struct NavigationRoot: View {
                     }
                 }
             }
+            .listStyle(SidebarListStyle())
         }, detail: {
             NowPlayingWrapper {
-                NavigationView {
-                    switch(selectedTab) {
-                    case .series:
-                        SeriesView()
-                    case .library:
-                        LibraryView()
-                    case .genre:
-                        GenreView(genre: genre)
-                            .id(genre)
-                    case .search:
-                        SearchView()
-                    default:
-                        HomeView()
-                    }
+                switch(selectedTab) {
+                case .series:
+                    SeriesView()
+                case .library:
+                    LibraryView()
+                case .genre:
+                    GenreView(genre: genre)
+                        .id(genre)
+                case .search:
+                    SearchView()
+                default:
+                    HomeView()
                 }
             }
         })
         .onAppear(perform: getGenres)
         .onChange(of: globalViewModel.activeLibraryId, perform: { _ in getGenres() })
-        #endif
+#endif
     }
     
     enum Tab: Hashable {
