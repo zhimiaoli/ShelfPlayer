@@ -16,6 +16,14 @@ struct BooksApp: App {
     
     init() {
         var newYorkFont: UIFont {
+            let descriptor = UIFont.systemFont(ofSize: 34, weight: .regular).fontDescriptor
+            if let serif = descriptor.withDesign(.serif) {
+                return UIFont(descriptor: serif, size: 0.0)
+            }
+            return UIFont(descriptor: descriptor, size: 0.0)
+        }
+        
+        var newYorkFontBold: UIFont {
             let descriptor = UIFont.systemFont(ofSize: 34, weight: .bold).fontDescriptor
             if let serif = descriptor.withDesign(.serif) {
                 return UIFont(descriptor: serif, size: 0.0)
@@ -23,8 +31,12 @@ struct BooksApp: App {
             return UIFont(descriptor: descriptor, size: 0.0)
         }
         
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font: newYorkFont]
-        UINavigationBar.appearance().titleTextAttributes = [.font: newYorkFont.withSize(17)]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font: newYorkFontBold]
+        UINavigationBar.appearance().titleTextAttributes = [.font: newYorkFontBold.withSize(17)]
+        
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: newYorkFont.withSize(17)], for: .normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: newYorkFont.withSize(17)], for: .focused)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: newYorkFont.withSize(17)], for: .highlighted)
     }
     
     var body: some Scene {

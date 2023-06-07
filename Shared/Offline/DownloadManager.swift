@@ -40,6 +40,9 @@ class DownloadManager: NSObject {
             NotificationCenter.default.post(name: NSNotification.ItemDownloadStatusChanged, object: nil)
         }
     }
+    public func cancelDownloads() {
+        urlSession.invalidateAndCancel()
+    }
 }
 
 extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {

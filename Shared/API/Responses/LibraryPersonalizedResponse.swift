@@ -11,7 +11,6 @@ struct PersonalizedLibraryRow: Codable, Identifiable {
     let id: String
     let label: String
     let type: String
-    let category: String
     
     let entities: [LibraryItem]
 }

@@ -175,6 +175,7 @@ class AudioPlayer: NSObject {
             return .commandFailed
         }
         
+        commandCenter.nextTrackCommand.isEnabled = true
         commandCenter.nextTrackCommand.addTarget { [unowned self] event in
             if currentTrackIndex + 1 >= audioTracks.count {
                 return .commandFailed
@@ -183,6 +184,7 @@ class AudioPlayer: NSObject {
             seek(to: audioTracks[currentTrackIndex + 1].startOffset)
             return .success
         }
+        commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget { [unowned self] event in
             if currentTrackIndex - 1 < 0 {
                 return .commandFailed

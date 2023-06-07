@@ -53,6 +53,11 @@ struct DebugView: View {
                     } label: {
                         Text("Delete documents folder")
                     }
+                    Button {
+                        DownloadManager.shared.cancelDownloads()
+                    } label: {
+                        Text("Cancel pending tasks")
+                    }
                 }
                 
                 Text("Downloaded tracks")

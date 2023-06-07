@@ -19,8 +19,9 @@ extension DetailView {
         
         @State var query: String = ""
         
-        @State var activeSeason: String?
-        @State var seasons = [String]()
+        @State var activeSeasonIndex: Int?
+        @State var activeSeason: Int?
+        @State var seasons = [Int]()
         
         var fallback: some View {
             Text("No episodes")
@@ -42,7 +43,11 @@ extension DetailView {
                                     return true
                                 }
                                 
-                                return episode.season == activeSeason
+                                if let season = episode.season, let season = Int(season) {
+                                    return season == activeSeason
+                                }
+                                
+                                return false
                             }, sort), filter: filter)
                             if filtered.count > 0 {
                                 ForEach(Array(filtered.enumerated()), id: \.offset) { index, episode in
@@ -140,27 +145,16 @@ extension DetailView {
             }
             .safeAreaInset(edge: .top) {
                 if seasons.count > 1 {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack {
-                            ForEach(seasons.sorted(by: { $0.localizedStandardCompare($1) == .orderedAscending }), id: \.hashValue) { season in
-                                Button {
-                                    if activeSeason == season {
-                                        activeSeason = nil
-                                    } else {
-                                        activeSeason = season
-                                    }
-                                } label: {
-                                    PodcastDetailPill(text: "Season \(season)", active: activeSeason == season)
-                                }
+                    PillSelector(activeIndex: $activeSeasonIndex, items: seasons.map({ "Season \($0)" }), pillWidth: 80)
+                        .onChange(of: activeSeasonIndex) { _ in
+                            if let activeSeasonIndex = activeSeasonIndex {
+                                activeSeason = seasons[activeSeasonIndex]
                             }
                         }
-                        .padding(.horizontal)
-                    }
-                    .environment(\.namespace, namespace)
-                    .frame(height: 30)
-                    .padding(.vertical, 5)
-                    .background(.ultraThickMaterial)
-                    .toolbarBackground(.ultraThickMaterial, for: .navigationBar)
+                        .frame(height: 30)
+                        .padding(.vertical, 5)
+                        .background(.ultraThickMaterial)
+                        .toolbarBackground(.ultraThickMaterial, for: .navigationBar)
                 }
             }
             .onReceive(NSNotification.PodcastSettingsUpdated) { _ in
@@ -173,7 +167,8 @@ extension DetailView {
                 updateFilter()
                 
                 episodes.forEach { episode in
-                    if let season = episode.season, season != "" {
+                    // i hate this
+                    if let season = episode.season, season != "", let season = Int(season) {
                         if !seasons.contains(season) {
                             seasons.append(season)
                         }
@@ -182,6 +177,7 @@ extension DetailView {
                     // i haven't found a podcast where a episode has no season, so i will not implement this
                     // if episode.season == nil || episode.season == ""
                 }
+                seasons.sort()
             }
         }
         

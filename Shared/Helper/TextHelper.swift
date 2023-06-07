@@ -13,6 +13,7 @@ struct TextHelper {
         do {
             let cleaned = try SwiftSoup.clean(html, Whitelist.basic())!
             let document: Document = try SwiftSoup.parse(cleaned)
+            
             return try document.text()
         } catch {
             return "error while parsing description"

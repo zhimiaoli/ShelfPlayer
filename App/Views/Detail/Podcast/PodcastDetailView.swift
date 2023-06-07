@@ -47,7 +47,7 @@ extension DetailView {
                                 .foregroundColor((backgroundIsLight ? Color.black : Color.white).opacity(0.7))
                         }
                         .multilineTextAlignment(.center)
-                        .frame(maxWidth: 250)
+                        .frame(maxWidth: 300)
                         
                         if let latestEpisode = latestEpisode {
                             Button {

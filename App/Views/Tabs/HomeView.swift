@@ -70,19 +70,24 @@ struct HomeView: View {
     
     private func loadRows() {
         Task.detached {
-            let personalizedRows = try? await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
-            
-            DispatchQueue.main.async {
-                rows = personalizedRows
+            do {
+                let personalizedRows = try await APIClient.authorizedShared.request(APIResources.libraries(id: globalViewModel.activeLibraryId).personalized)
                 
-                if let rows = rows, rows.count > 0 {
-                    var type = rows[0].type
-                    if type == "episode" {
-                        type = "podcast"
-                    }
+                DispatchQueue.main.async {
+                    rows = personalizedRows
                     
-                    globalViewModel.activeLibraryType = type
+                    if let rows = rows, rows.count > 0 {
+                        var type = rows[0].type
+                        if type == "episode" {
+                            type = "podcast"
+                        }
+                        
+                        globalViewModel.activeLibraryType = type
+                    }
                 }
+            } catch {
+                NSLog("Error while retriving home items")
+                print(error)
             }
         }
     }

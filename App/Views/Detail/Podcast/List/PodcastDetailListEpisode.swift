@@ -85,6 +85,12 @@ extension DetailView {
                 .foregroundColor(.accentColor)
             }
             .padding(.vertical, 5)
+            .modifier(ContextMenu(item: {
+                var item = item
+                item.recentEpisode = episode
+                
+                return item
+            }()))
         }
     }
 }
