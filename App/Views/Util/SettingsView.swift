@@ -26,14 +26,14 @@ struct SettingsView: View {
             Form {
                 // Podcast
                 FilterSelector(selectedFilter: $selectedFilter, selectedSortOrder: $selectedSortOrder, sortInvert: $sortInvert)
-                    .onChange(of: selectedFilter) { filter in
-                        FilterHelper.setDefaultFilter(filter: filter)
+                    .onChange(of: selectedFilter) {
+                        FilterHelper.setDefaultFilter(filter: selectedFilter)
                     }
-                    .onChange(of: selectedSortOrder) { order in
-                        FilterHelper.setDefaultSortOrder(order: order)
+                    .onChange(of: selectedSortOrder) {
+                        FilterHelper.setDefaultSortOrder(order: selectedSortOrder)
                     }
-                    .onChange(of: sortInvert) { invert in
-                        FilterHelper.setDefaultInvert(invert: invert)
+                    .onChange(of: sortInvert) {
+                        FilterHelper.setDefaultInvert(invert: sortInvert)
                     }
                 
                 // Library
@@ -44,8 +44,8 @@ struct SettingsView: View {
                                 .tag($0)
                         }
                     }
-                    .onChange(of: bookDefaultSort) { order in
-                        FilterHelper.setDefaultLibrarySortOrder(order: order, mediaType: "book")
+                    .onChange(of: bookDefaultSort) {
+                        FilterHelper.setDefaultLibrarySortOrder(order: bookDefaultSort, mediaType: "book")
                         NotificationCenter.default.post(name: NSNotification.LibrarySettingsUpdated, object: nil)
                     }
                     
@@ -55,8 +55,8 @@ struct SettingsView: View {
                                 .tag($0)
                         }
                     }
-                    .onChange(of: podcastDefaultSort) { order in
-                        FilterHelper.setDefaultLibrarySortOrder(order: order, mediaType: "podcast")
+                    .onChange(of: podcastDefaultSort) {
+                        FilterHelper.setDefaultLibrarySortOrder(order: podcastDefaultSort, mediaType: "podcast")
                         NotificationCenter.default.post(name: NSNotification.LibrarySettingsUpdated, object: nil)
                     }
                 } header: {
@@ -67,23 +67,23 @@ struct SettingsView: View {
                 
                 Section {
                     Toggle("Show chapter track", isOn: $useChapterView)
-                        .onChange(of: useChapterView, perform: { use in
-                            PlayerHelper.setUseChapterView(use)
+                        .onChange(of: useChapterView) {
+                            PlayerHelper.setUseChapterView(useChapterView)
                             NotificationCenter.default.post(name: NSNotification.PlayerSettingsUpdated, object: nil)
-                        })
+                        }
                 } header: {
                     Text("Player")
                 }
                 
                 Section {
                     Toggle("Mobile downloads", isOn: $allowDownloadsOverMobile)
-                        .onChange(of: allowDownloadsOverMobile, perform: { allow in
-                            DownloadHelper.setAllowDownloadsOverMobile(allow)
-                        })
+                        .onChange(of: allowDownloadsOverMobile) {
+                            DownloadHelper.setAllowDownloadsOverMobile(allowDownloadsOverMobile)
+                        }
                     Toggle("Delete downloads when finished", isOn: $deleteDownloadsWhenFinished)
-                        .onChange(of: deleteDownloadsWhenFinished, perform: { delete in
-                            DownloadHelper.setDeleteDownloadsWhenFinished(delete)
-                        })
+                        .onChange(of: deleteDownloadsWhenFinished) {
+                            DownloadHelper.setDeleteDownloadsWhenFinished(allowDownloadsOverMobile)
+                        }
                     NavigationLink(destination: DownloadsManageView(detailed: false)) {
                         Text("Manage")
                     }

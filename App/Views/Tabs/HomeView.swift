@@ -47,7 +47,7 @@ struct HomeView: View {
                         }
                     }
                 }
-                .onChange(of: globalViewModel.activeLibraryId) { _ in loadRows() }
+                .onChange(of: globalViewModel.activeLibraryId) { loadRows() }
             }
             .navigationTitle("Listen now")
             #if !targetEnvironment(macCatalyst)

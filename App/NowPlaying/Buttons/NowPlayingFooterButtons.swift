@@ -15,13 +15,30 @@ struct NowPlayingFooterButtons: View {
     
     var body: some View {
         HStack {
-            Button {
-                Haptics.shared.play(.light)
-                
-                currentSpeed += 0.25
-                
-                if currentSpeed > 2 {
-                    currentSpeed = 0.25
+            Menu {
+                Button("0.25x") {
+                    setPlaybackSpeed(0.25)
+                }
+                Button("0.5x") {
+                    setPlaybackSpeed(0.5)
+                }
+                Button("0.75x") {
+                    setPlaybackSpeed(0.75)
+                }
+                Button("1x") {
+                    setPlaybackSpeed(1)
+                }
+                Button("1.25x") {
+                    setPlaybackSpeed(1.25)
+                }
+                Button("1.5x") {
+                    setPlaybackSpeed(1.5)
+                }
+                Button("1.75x") {
+                    setPlaybackSpeed(1.75)
+                }
+                Button("2x") {
+                    setPlaybackSpeed(2)
                 }
             } label: {
                 if currentSpeed == 1 {
@@ -30,6 +47,14 @@ struct NowPlayingFooterButtons: View {
                     Text("2x")
                 } else {
                     Text(String(currentSpeed)) + Text("x")
+                }
+            } primaryAction: {
+                Haptics.shared.play(.light)
+                
+                currentSpeed += 0.25
+                
+                if currentSpeed > 2 {
+                    currentSpeed = 0.25
                 }
             }
             .frame(width: 75)
@@ -84,6 +109,11 @@ struct NowPlayingFooterButtons: View {
         .tint(.pink)
         .symbolRenderingMode(.multicolor)
         .frame(height: 25)
+    }
+    
+    func setPlaybackSpeed(_ speed: Float) {
+        Haptics.shared.play(.light)
+        currentSpeed = speed
     }
 }
 

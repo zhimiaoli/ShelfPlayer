@@ -97,8 +97,8 @@ struct ItemButtons: View {
         .onReceive(NSNotification.ItemDownloadStatusChanged, perform: { _ in
             updateDownloadedStatus()
         })
-        .onChange(of: scenePhase) { phase in
-            if phase == .active {
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
                 updateDownloadedStatus()
             }
         }

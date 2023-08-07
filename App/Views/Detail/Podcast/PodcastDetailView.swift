@@ -73,17 +73,18 @@ extension DetailView {
                             
                             HStack {
                                 let explict = item.media?.metadata.explicit ?? false
-                                if explict {
-                                    Image(systemName: "e.square")
-                                }
+                                
                                 if let count = item.media?.episodes?.count {
-                                    if explict {
-                                        Text("•")
-                                    }
-                                    
                                     Image(systemName: "number")
                                     Text(String(count))
                                         .padding(.leading, -6)
+                                    
+                                    if explict {
+                                        Text("•")
+                                    }
+                                }
+                                if explict {
+                                    Image(systemName: "e.square")
                                     
                                     if item.media?.metadata.genres.count ?? 0 > 0 {
                                         Text("•")

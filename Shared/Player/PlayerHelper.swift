@@ -31,10 +31,18 @@ struct PlayerHelper {
     private static var nowPlayingInfo = [String: Any]()
     
     // MARK: - Session reporting
-    public static func syncSession(sessionId: String?, itemId: String, episodeId: String?, timeListened: Double, duration: Double, currentTime: Double) {
-        if currentTime == 0 || duration == 0 {
+    public static func syncSession(sessionId: String?, itemId: String, episodeId: String?, timeListened: Double, duration: Double, currentTime uncheckedCurrentTime : Double) {
+        var checkedCurrentTime = uncheckedCurrentTime
+        
+        if checkedCurrentTime == 0 || duration == 0 {
             return
         }
+        
+        if checkedCurrentTime.isNaN {
+            checkedCurrentTime = duration
+        }
+        
+        let currentTime = checkedCurrentTime
         
         if let sessionId = sessionId {
             Task.detached {

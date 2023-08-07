@@ -116,7 +116,7 @@ extension PersistenceController {
         let entity = getEnitityByLibraryItem(item: item, required: true)
         
         entity?.progress = Double(progress)
-        entity?.isFinished = progress == 1
+        entity?.isFinished = progress >= 1
         entity?.currentTime = (entity?.duration ?? 0) * Double(progress)
         
         try? container.viewContext.save()

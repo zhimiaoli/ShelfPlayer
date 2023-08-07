@@ -40,7 +40,7 @@ struct FullscreenView<Header: View, Content: View, Background: View>: View {
                                     .animation(.easeInOut, value: viewModel.backgroundColor)
                                     .offset(y: -minY)
                                     .frame(width: proxy.size.width, height: height + (abs(minY) < height ? minY : -height))
-                                    .onChange(of: proxy.frame(in: .global)) { _ in
+                                    .onChange(of: proxy.frame(in: .global)) {
                                         if height + minY < 175 {
                                             viewModel.showNavigationBar()
                                         } else if abs(minY) > 0 && !viewModel.navigationBarHasBeenHidden {
@@ -82,14 +82,15 @@ struct FullscreenView<Header: View, Content: View, Background: View>: View {
             .toolbarBackground(viewModel.isNavigationBarVisible ? .visible : .hidden, for: .navigationBar)
             #endif
             
-            // Navigation bar
-            .edgesIgnoringSafeArea(.top)
-            .navigationBarTitleDisplayMode(.inline)
             #if !targetEnvironment(macCatalyst)
             .navigationTitle(viewModel.isNavigationBarVisible ? viewModel.title : !viewModel.animateNavigationBarChanges ? "________________________________" : "")
             #else
             .navigationTitle(viewModel.title)
             #endif
+            
+            // Navigation bar
+            .edgesIgnoringSafeArea(.top)
+            .navigationBarTitleDisplayMode(.inline)
             
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

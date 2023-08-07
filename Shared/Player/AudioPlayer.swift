@@ -103,7 +103,9 @@ class AudioPlayer: NSObject {
             seek(to: getCurrentTime() - 5)
         }
         
-        sync()
+        if allowAdjustment {
+            sync()
+        }
         
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: NSNotification.PlayerStateChanged, object: playing)
@@ -319,7 +321,7 @@ class AudioPlayer: NSObject {
         }
     }
     
-    private func sync() {
+    private func sync() {        
         PlayerHelper.syncSession(
             sessionId: sessionId,
             itemId: itemId,

@@ -12,12 +12,18 @@ extension NowPlayingWrapper {
         @EnvironmentObject var viewModel: ViewModel
         @EnvironmentObject var globalViewModel: GlobalViewModel
         
+        @State var playing: Bool = PlayerHelper.audioPlayer?.isPlaying() ?? false
+        
         var body: some View {
             GeometryReader { proxy in
                 VStack {
-                    ItemImage(item: globalViewModel.currentlyPlaying, size: proxy.size.width)
-                        .shadow(radius: 25)
-                        .padding(.top, 10)
+                    VStack {
+                        ItemImage(item: globalViewModel.currentlyPlaying, size: proxy.size.width - (playing ? 0 : 40))
+                            .shadow(radius: 25)
+                            .padding(.top, 10)
+                            .animation(.bouncy, value: playing)
+                    }
+                    .frame(height: proxy.size.width)
                     
                     HStack {
                         VStack(alignment: .leading) {
@@ -51,6 +57,7 @@ extension NowPlayingWrapper {
                         
                         Spacer()
                     }
+                    .padding(.vertical)
                     
                     SeekSlider(isBook: globalViewModel.currentlyPlaying!.isBook)
                         .padding(.top, 10)
@@ -78,6 +85,9 @@ extension NowPlayingWrapper {
             }
             .environment(\.colorScheme, viewModel.backgroundIsLight ? .light : .dark)
             .edgesIgnoringSafeArea(.bottom)
+            .onReceive(NSNotification.PlayerStateChanged, perform: { _ in
+                playing = PlayerHelper.audioPlayer?.isPlaying() ?? false
+            })
         }
     }
 }
