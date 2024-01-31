@@ -73,6 +73,9 @@
         }
       }
     },
+    "a" : {
+
+    },
     "account.delete.cache" : {
       "localizations" : {
         "de" : {
@@ -120,6 +123,24 @@
           }
         }
       }
+    },
+    "account.localServer.footer" : {
+
+    },
+    "account.localServer.heading" : {
+
+    },
+    "account.localServer.server" : {
+
+    },
+    "account.localServer.unauthorized" : {
+
+    },
+    "account.localServer.unavailable" : {
+
+    },
+    "account.localServer.verify" : {
+
     },
     "account.logout" : {
       "localizations" : {
@@ -200,6 +221,9 @@
           }
         }
       }
+    },
+    "account.title" : {
+
     },
     "account.user" : {
       "localizations" : {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NetworkExtension
 
 extension AudiobookshelfClient {
     struct ClientRequest<T> {
@@ -18,7 +19,14 @@ extension AudiobookshelfClient {
     struct EmptyResponse: Decodable {}
     
     func request<T: Decodable>(_ clientRequest: ClientRequest<T>) async throws -> T {
-        var url = serverUrl.appending(path: clientRequest.path)
+        var url: URL
+        
+        if let network = await NEHotspotNetwork.fetchCurrent() {
+            print(network.ssid)
+            url = URL.applicationDirectory
+        } else {
+            url = serverUrl.appending(path: clientRequest.path)
+        }
         
         if let query = clientRequest.query {
             url = url.appending(queryItems: query)
@@ -26,6 +34,7 @@ extension AudiobookshelfClient {
         
         var request = URLRequest(url: url)
         request.httpMethod = clientRequest.method
+        request.timeoutInterval = 15
         
         if let token = token {
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
