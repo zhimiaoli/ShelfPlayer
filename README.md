@@ -4,14 +4,6 @@ ShelfPlayer is a meticulously crafted iOS and iPadOS app designed to seamlessly 
 
 ## Features:
 
-- Explore your Audiobooks, Podcasts, Episodes, Authors & Series: Use the beautiful UI to rediscover your favorite content
-- Sync listening statistics: ShelfPlayer will accurately update your Audiobookshelf listening stats
-- Download audiobooks & episodes and listen to them on the go: The app is designed to work as well offline as if you were at home
-- Sleep timer: Set a sleep timer to automatically stop playback, even at the end of the current chapter
-- Siri & Shortcuts integration: Use Siri to play your audiobooks or podcast episodes
-- Custom playback speed: Customize the playback speed
-- Automatic downloads & notifications: Download new episodes automatically in the background
-
 - **Immersive Exploration**: Effortlessly navigate through your audiobooks, podcasts, episodes, authors, and series with our beautifully designed interface.
 - **Synchronized Listening**: Accurately track your listening progress and seamlessly sync your statistics with Audiobookshelf.
 - **Offline Enjoyment**: Download your favorite audiobooks and episodes to indulge in uninterrupted listening, even without an internet connection.
@@ -22,14 +14,16 @@ ShelfPlayer is a meticulously crafted iOS and iPadOS app designed to seamlessly 
 
 ## Download
 
-<a href="https://apps.apple.com/app/apple-store/id6475221163?pt=126778919&ct=GitHub&mt=8" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1710288000" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+<a href="https://apps.apple.com/app/apple-store/id6475221163?ct=GitHub" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;">
+    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1710288000" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;">
+</a>
 
 ## Screenshots
 
-| Library | Audiobook | Player | Podcast |
+| Home | Audiobook | Player | Podcast |
 | ------------- | ------------- | ------------- | ------------- |
-| <img src="/Screenshots/Library.png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Audiobook.png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Podcast.png?raw=true" alt="Queue" width="200"/> 
-| <img src="/Screenshots/Library%20(iPad).png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Audiobook%20(iPad).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player%20(iPad).png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Podcast%20(iPad).png?raw=true" alt="Queue" width="200"/> 
+| <img src="/Screenshots/iOS%20Audiobook%20Home.png?raw=true" alt="Home (iOS)" width="200"/> | <img src="/Screenshots/iOS%20Audiobook.png?raw=true" alt="audiobook" width="200"/> | <img src="/Screenshots/iOS%20Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/iOS%20Podcast.png?raw=true" alt="width" width="200"/> 
+| <img src="/Screenshots/iPadOS%20Audiobook%20Home.png?raw=true" alt="Home (iPad)" width="200"/> | <img src="/Screenshots/iPadOS%20Audiobook.png?raw=true" alt="Audiobook" width="200"/> | <img src="/Screenshots/iPadOS%20Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/iPadOS%20Podcast.png?raw=true" alt="Podcast" width="200"/> 
 
 ## Sideload
 

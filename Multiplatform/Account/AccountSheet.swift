@@ -11,6 +11,8 @@ import Nuke
 import ShelfPlayerKit
 
 internal struct AccountSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @Default(.customSleepTimer) private var customSleepTimer
     @Default(.customPlaybackSpeed) private var customPlaybackSpeed
     @Default(.defaultPlaybackSpeed) private var defaultPlaybackSpeed
@@ -25,7 +27,6 @@ internal struct AccountSheet: View {
     @State private var cacheSize: Int? = nil
     @State private var downloadsSize: Int? = nil
     
-    @State private var navigationPath = NavigationPath()
     @State private var notificationPermission: UNAuthorizationStatus = .notDetermined
     
     private var playbackSpeedText: String {
@@ -38,7 +39,7 @@ internal struct AccountSheet: View {
     }
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             List {
                 Section {
                     if let username {
@@ -54,6 +55,8 @@ internal struct AccountSheet: View {
                         SpotlightIndexer.deleteIndex()
                         
                         AudiobookshelfClient.shared.store(token: nil)
+                        
+                        dismiss()
                     } label: {
                         Label("account.logout", systemImage: "person.crop.circle.badge.minus")
                             .foregroundStyle(.red)
@@ -142,7 +145,7 @@ internal struct AccountSheet: View {
                 Section {
                     TintPicker()
                     
-                    NavigationLink(value: "") {
+                    NavigationLink(destination: CustomHeaderEditView()) {
                         Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
                     }
                 }
@@ -254,11 +257,6 @@ internal struct AccountSheet: View {
             }
             .navigationTitle("account.title")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: String.self) { _ in
-                CustomHeaderEditView(backButtonVisible: false) {
-                    navigationPath.removeLast()
-                }
-            }
             .task {
                 await update()
             }
